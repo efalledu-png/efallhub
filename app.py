@@ -2,7 +2,7 @@ import streamlit as st
 
 # Page Configuration
 st.set_page_config(
-    page_title="EFALL Portal | Teacher & Parent Training Hub",
+    page_title="EFALL Portal | Teacher & Parent Training Hub (Ages 3-4)",
     page_icon="🌟",
     layout="wide"
 )
@@ -12,10 +12,13 @@ if "lang" not in st.session_state:
     st.session_state.lang = "English"
 if "current_page" not in st.session_state:
     st.session_state.current_page = "Teacher/Parent Dashboard"
+if "selected_unit" not in st.session_state:
+    st.session_state.selected_unit = 1
 
 # --- SIDEBAR NAVIGATION ---
 st.sidebar.title("🌟 EFALL Portal")
 st.sidebar.caption("Educated Mother Education Nation (Pakistan)")
+st.sidebar.info("🎯 **Active Target Group:** Ages 3-4 | **Learning Styles:** Visual 👁️ | Aural 👂 | Kinesthetic ✋")
 
 # Language Switcher
 lang_choice = st.sidebar.radio(
@@ -28,42 +31,42 @@ st.session_state.lang = lang_choice
 st.sidebar.markdown("---")
 st.sidebar.subheader("Navigation")
 
-if st.sidebar.button("👩‍🏫 Teacher & Parent Training Hub", use_container_width=True):
+if st.sidebar.button("👩‍🏫 Teacher & Parent Training Hub" if lang_choice == "English" else "👩‍🏫 استاد اور والدین کا پورٹل", use_container_width=True):
     st.session_state.current_page = "Teacher/Parent Dashboard"
-if st.sidebar.button("⚙️ Intelligent Unit Generator (50 Units)", use_container_width=True):
-    st.session_state.current_page = "Unit Generator"
-if st.sidebar.button("👧👦 Synchronized Student View", use_container_width=True):
+if st.sidebar.button("📚 50-Unit Master Library (6 Themes)" if lang_choice == "English" else "📚 تمام 50 یونٹس کی ماسٹر لائبریری", use_container_width=True):
+    st.session_state.current_page = "Unit Library"
+if st.sidebar.button("👧👦 Synchronized Student View" if lang_choice == "English" else "👧👦 طلباء کا صفحہ", use_container_width=True):
     st.session_state.current_page = "Student View"
 
-# --- PROGRESSIVE CURRICULUM MAPPING FOR AGES 3-4 (50 Units Breakdown) ---
+# --- CURRICULUM MAPPING (LEGAL COMPLIANCE + MULTI-SENSORY MAPPING) ---
 def get_unit_curriculum(unit_num):
     if unit_num <= 8:
-        theme_name = "Who We Are"
-        theme_desc = "Identity, body parts, basic emotions, and self-awareness"
+        theme_name = "Identity, Emotions, & Self-Discovery (Units 1-8)"
+        theme_desc = "Exploring body parts, basic emotions, and personal traits"
     elif unit_num <= 16:
-        theme_name = "Where We Are in Place and Time"
-        theme_desc = "Home surroundings, favorite room objects, and local spaces"
+        theme_name = "Local Environment & Surroundings (Units 9-16)"
+        theme_desc = "Exploring home spaces, favorite room objects, and local surroundings"
     elif unit_num <= 25:
-        theme_name = "How We Express Ourselves"
-        theme_desc = "Sensory sounds, facial expressions, and simple storytelling"
+        theme_name = "Expression, Art, & Storytelling (Units 17-25)"
+        theme_desc = "Sensory sounds, facial expressions, and simple creative storytelling"
     elif unit_num <= 33:
-        theme_name = "How the World Works"
-        theme_desc = "Water play, light/shadows, and natural elements"
+        theme_name = "Nature, Science, & Elements (Units 26-33)"
+        theme_desc = "Water play, light/shadows, and natural outdoor elements"
     elif unit_num <= 41:
-        theme_name = "How We Organize Ourselves"
-        theme_desc = "Daily toy cleanup routines and home helpers"
+        theme_name = "Home Organization & Community Helpers (Units 34-41)"
+        theme_desc = "Daily toy cleanup routines and helpful family roles"
     else:
-        theme_name = "Sharing the Planet"
-        theme_desc = "Plants, caring for pets, and nature appreciation"
+        theme_name = "Plants, Animals, & Sustainability (Units 42-50)"
+        theme_desc = "Caring for plants, gentle pet care, and natural appreciation"
 
     letters_en = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     letters_ur = ["الف", "ب", "پ", "ت", "ٹ", "ث", "ج", "چ", "ح", "خ", "د", "ڈ", "ذ", "ر", "ڑ", "ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف"]
     pre_writing_strokes = [
-        "Sensory finger-tracing standing lines (vertical strokes in salt/flour tray)",
-        "Sensory finger-tracing sleeping lines (horizontal motions)",
-        "Gross-motor slanting arm-swings & diagonal finger traces",
-        "Circular and curve motions (drawing big loops in the air and mud)",
-        "Zig-zag tactile touch-and-trace patterns using textured cards"
+        "Standing lines (Vertical strokes in salt/flour tray 🖐️)",
+        "Sleeping lines (Horizontal motions 🛋️)",
+        "Slanting lines (Diagonal arm-swings & finger traces ↗️)",
+        "Circular and curve motions (Loops in air and playdough ⭕)",
+        "Zig-zag tactile touch-and-trace patterns ⚡"
     ]
     
     idx = (unit_num - 1) % len(letters_en)
@@ -77,140 +80,221 @@ def get_unit_curriculum(unit_num):
 # --- MAIN VIEWS ---
 if st.session_state.current_page == "Teacher/Parent Dashboard":
     if st.session_state.lang == "English":
-        st.title("👩‍🏫 Teacher & Parent Training Framework")
-        st.write("Welcome! This portal trains adults first using the **IB PYP Transdisciplinary Framework**, inquiry-based learning, design thinking, and Harvard Project Zero routines.")
+        st.title("👩‍🏫 Teacher & Parent Multi-Sensory Training Hub")
+        st.write("Welcome! This portal trains adults to deliver lessons using **Visual 👁️, Aural 👂, and Kinesthetic ✋** multi-sensory techniques designed for small spaces with minimal furniture.")
         
-        st.info("💡 **Design Principle:** Tailored for small spaces, minimal furniture, and readily available home resources in Pakistan. Select your target age group below to access the 50-unit intelligent generator.")
+        st.info("💡 **Interactive Guide:** Select any of the 6 Theme Boxes below to access 50 progressive units packed with pictorial guides, video links, and tactile activities.")
         
         st.markdown("---")
-        st.subheader("Select Age Group Hub")
+        st.subheader("📦 Explore Curriculum by 6 Framed Theme Boxes")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            with st.container(border=True):
+                st.markdown("### 🧩 Box 1: Identity & Self-Discovery")
+                st.caption("Units 1 to 8 | 👁️ Face Mirrors | 👂 Emotion Songs | ✋ Body Tracing")
+                if st.button("Open Box 1 (Units 1-8)", key="box1"):
+                    st.session_state.selected_unit = 1
+                    st.session_state.current_page = "Unit Library"
+                    st.rerun()
 
-        # Framed Clickable Card for Ages 3-4
-        with st.container(border=True):
-            col_a, col_b = st.columns([3, 1])
-            with col_a:
-                st.markdown("### 🧸 Ages 3-4 (Early Years / Toddler Framework)")
-                st.write("Includes 50 progressive play-based units covering sensory pre-writing strokes, early English & Urdu phonics, and math numbers 1-20.")
-            with col_b:
-                st.write("")
-                st.write("")
-                if st.button("Open Ages 3-4 Hub", use_container_width=True, key="btn_age_3_4"):
-                    st.session_state.current_page = "Unit Generator"
+            with st.container(border=True):
+                st.markdown("### 🏡 Box 2: Local Environment")
+                st.caption("Units 9 to 16 | 👁️ Room Flashcards | 👂 Sound Walks | ✋ Object Sorting")
+                if st.button("Open Box 2 (Units 9-16)", key="box2"):
+                    st.session_state.selected_unit = 9
+                    st.session_state.current_page = "Unit Library"
+                    st.rerun()
+
+            with st.container(border=True):
+                st.markdown("### 🎨 Box 3: Expression & Storytelling")
+                st.caption("Units 17 to 25 | 👁️ Picture Cards | 👂 Phonics Chants | ✋ Playdough Sculpting")
+                if st.button("Open Box 3 (Units 17-25)", key="box3"):
+                    st.session_state.selected_unit = 17
+                    st.session_state.current_page = "Unit Library"
+                    st.rerun()
+
+        with col2:
+            with st.container(border=True):
+                st.markdown("### 💧 Box 4: Nature & Elements")
+                st.caption("Units 26 to 33 | 👁️ Shadow Tracing | 👂 Water Sounds | ✋ Sponge Squeezing")
+                if st.button("Open Box 4 (Units 26-33)", key="box4"):
+                    st.session_state.selected_unit = 26
+                    st.session_state.current_page = "Unit Library"
+                    st.rerun()
+
+            with st.container(border=True):
+                st.markdown("### 🧹 Box 5: Home Helpers & Cleanup")
+                st.caption("Units 34 to 41 | 👁️ Visual Charts | 👂 Cleanup Rhymes | ✋ Toy Sorting")
+                if st.button("Open Box 5 (Units 34-41)", key="box5"):
+                    st.session_state.selected_unit = 34
+                    st.session_state.current_page = "Unit Library"
+                    st.rerun()
+
+            with st.container(border=True):
+                st.markdown("### 🌿 Box 6: Plants & Sustainability")
+                st.caption("Units 42 to 50 | 👁️ Seed Pictures | 👂 Nature Chants | ✋ Soil Planting")
+                if st.button("Open Box 6 (Units 42-50)", key="box6"):
+                    st.session_state.selected_unit = 42
+                    st.session_state.current_page = "Unit Library"
                     st.rerun()
 
     else:
-        st.title("👩‍ၸ استاد اور والدین کی تربیت کا پورٹل")
-        st.write("خوش آمدید! اپنے بچوں کی عمر کا انتخاب کریں اور 50 یونٹس پر مشتمل جنریٹر تک رسائی حاصل کریں۔")
+        st.title("👩‍🏫 ملٹی سنصری استاد اور والدین کا پورٹل")
+        st.write("خوش آمدید! نیچے 6 فریم بکسز میں تمام 50 یونٹس بصری (Visual)، سمعی (Aural) اور حرکی (Kinesthetic) طریقوں کے ساتھ موجود ہیں۔")
+        if st.button("تمام یونٹس کی لائبریری کھولیں", use_container_width=True):
+            st.session_state.current_page = "Unit Library"
+            st.rerun()
+
+elif st.session_state.current_page == "Unit Library":
+    if st.session_state.lang == "English":
+        st.subheader("📚 Ages 3-4: Multi-Sensory Master Library & Sub-Unit Generator")
+        st.write("Select a unit below. Each unit contains **5 pictorial sub-units (A, B, C, D, E)** integrated with visual, aural, and kinesthetic learning elements.")
         
-        with st.container(border=True):
-            st.markdown("### 🧸 عمر 3 تا 4 سال ( ارلی یئرز)")
-            st.write("50 تفصیلی یونٹس، صوتیات، اور ہندسوں کی مشق۔")
-            if st.button("یونٹس کھولیں (عمر 3-4)", use_container_width=True, key="btn_age_3_4_ur"):
-                st.session_state.current_page = "Unit Generator"
-                st.rerun()
+        if st.button("⬅️ Back to Theme Boxes Dashboard"):
+            st.session_state.current_page = "Teacher/Parent Dashboard"
+            st.rerun()
 
-elif st.session_state.current_page == "Unit Generator":
-    st.subheader("⚙️ Intelligent Unit Generator (Ages 3-4 | 50 Progressive Units)")
-    st.write("Select a unit number below to generate a toddler-friendly, 75-minute time-mapped lesson plan with sensory pre-writing and playful handwriting frameworks.")
-
-    if st.button("⬅️ Back to Age Groups Dashboard"):
-        st.session_state.current_page = "Teacher/Parent Dashboard"
-        st.rerun()
-
-    unit_number = st.slider("Select Unit Number (1 to 50) for Ages 3-4", 1, 50, 1)
-
-    theme_name, theme_desc, en_focus, ur_focus, math_focus, stroke_focus = get_unit_curriculum(unit_number)
-
-    st.markdown(f"### 🎯 Unit {unit_number} Blueprint (Ages 3-4)")
-    st.success(f"**IB Theme:** {theme_name} ({theme_desc})")
-    st.info(f"🔤 **Phonics Focus:** English **'{en_focus}'** | Urdu **'{ur_focus}'** &nbsp;&nbsp;|&nbsp;&nbsp; 🔢 **Math:** **{math_focus}** &nbsp;&nbsp;|&nbsp;&nbsp; ✍️ **Pre-Writing:** {stroke_focus}")
-
-    if st.button("✨ Generate Ages 3-4 Extended 75-Minute Lesson Plan", use_container_width=True):
-        st.markdown(f"## 🌟 Ages 3-4 Unit Plan: Unit {unit_number}")
+        unit_number = st.selectbox("Select Unit Number (1 to 50):", list(range(1, 51)), index=st.session_state.selected_unit - 1, format_func=lambda x: f"Unit {x}: {get_unit_curriculum(x)[0]}")
         
-        lesson_text = f"""
-AGED 3-4 UNIT {unit_number}: {theme_name.upper()}
-Target Group: Ages 3-4 (Pre-K / Early Toddlers)
-Core Focus: English Sound '{en_focus}', Urdu Sound '{ur_focus}', Math Number {math_focus}
-Pre-Writing Sensory Stroke: {stroke_focus}
---------------------------------------------------------------------------------
-1. TODDLER PEDAGOGICAL VIDEO SCRIPT (0-5 mins)
-- Visual: Adult demonstrates finger tracing in a salt tray with a friendly smile, holding an everyday toy.
-- Voiceover: 'Hello little explorers! Today under {theme_name}, we make magical strokes, listen to sound '{en_focus}' ('{ur_focus}'), and find {math_focus} items!'
+        theme_name, theme_desc, en_focus, ur_focus, math_focus, stroke_focus = get_unit_curriculum(unit_number)
 
-2. EXTENDED 75-MINUTE TIME-MAPPED LESSON PLAN (Ages 3-4)
-- [00:00 - 00:10] Sensory Provocation & Circle Time (10 mins): Introduction using a comfortable floor mat and a household prop.
-- [00:10 - 00:25] Sensory Pre-Writing & Fine Motor Play (15 mins): Salt/flour tray tracing focusing on: {stroke_focus}.
-- [00:25 - 00:45] Phonics & Letter Exploration (20 mins): Listening, repeating, and finger-tracing English '{en_focus}' and Urdu '{ur_focus}'.
-- [00:45 - 01:00] Playful Numeracy & Counting (15 mins): Grouping toys or kitchen items to represent number {math_focus}.
-- [01:00 - 01:10] Mess-Free Art & Creative Play (10 mins): Finger painting or clay/dough shaping of the letter and number.
-- [01:10 - 01:15] Cozy Reflection Circle (5 mins): Gentle wrap-up celebrating today's discoveries.
+        st.markdown(f"---")
+        st.markdown(f"## 🌟 Unit {unit_number} Multi-Sensory Master Hub")
+        st.success(f"**Core Theme:** {theme_name} ({theme_desc})")
+        st.info(f"🔤 **Phonics:** English **'{en_focus}'** | Urdu **'{ur_focus}'** &nbsp;&nbsp;|&nbsp;&nbsp; 🔢 **Math:** **{math_focus}** &nbsp;&nbsp;|&nbsp;&nbsp; ✍️ **Pre-Writing:** {stroke_focus}")
 
-3. TEACHING AIDS & HANDWRITING PRACTICE
-- Materials: Shallow tray with flour/salt, thick crayons, chunky paper, safe household objects.
-- Writing Task: Guided toddler tracing for letter '{en_focus}'/'{ur_focus}' and numeral formation for {math_focus}.
+        # Sub-Unit Selector (A, B, C, D, E) with Emojis
+        sub_unit = st.radio(
+            "Select Sub-Unit Phase (Pictorial & Multi-Sensory):",
+            [
+                "Sub-Unit A: 👁️ Visual Provocation & Picture Hook", 
+                "Sub-Unit B: ✋ Kinesthetic Pre-Writing & Fine Motor", 
+                "Sub-Unit C: 👂 Aural Phonics & Letter Sounds", 
+                "Sub-Unit D: 🔢 Pictorial Numeracy & Counting Action", 
+                "Sub-Unit E: 🎨 Creative Art & Sensory Reflection"
+            ],
+            horizontal=False
+        )
 
-4. ADULT ASSESSMENT CHECKLIST
-- Engagement, grip comfort, stroke participation, and sound recognition check.
+        complete_package = f"""
+================================================================================
+EFALL PORTAL - UNIT {unit_number} ({sub_unit}) MULTI-SENSORY PACKAGE
+Theme: {theme_name}
+English Phonics: {en_focus} | Urdu Phonics: {ur_focus} | Math Number: {math_focus}
+Pre-Writing Stroke: {stroke_focus}
+================================================================================
+
+1. MULTI-SENSORY SCRIPT & PAKISTAN-CONTEXT VIDEO SUPPORT
+- 👁️ Visual: Showing colorful flashcards for '{en_focus}' and '{ur_focus}'.
+- 👂 Aural: Singing local Urdu Alif-Baa phonics rhymes.
+- ✋ Kinesthetic: Drawing shapes in salt trays and molding playdough numbers.
+- Local Video Resource: Culturally tailored Urdu Alif-Baa phonics and handwriting guide.
+
+2. DETAILED 75-MINUTE TIME-MAPPED LESSON PLAN ({sub_unit})
+- Focus: {sub_unit} integrated with {theme_name}.
+- Space & Setup: Small floor mat, optimized for small rooms with minimal furniture.
+
+3. PRINT-READY STUDENT WORKSHEETS (VISUAL & TACTILE)
+- Worksheet: Targeted practice for {sub_unit} featuring letter '{en_focus}' and number '{math_focus}'.
 --------------------------------------------------------------------------------
         """
 
         tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-            "🎬 1. Video Script", 
-            "📝 2. 75-Min Time-Mapped Plan", 
-            "🎨 3. Pre-Writing & Art", 
-            "📄 4. PDF Lesson Plan Download", 
+            "🎬 1. Script, Videos & Multi-Sensory Cues", 
+            "📝 2. Sub-Unit Lesson Plan", 
+            "📄 3. Print-Ready Worksheets", 
+            "🎨 4. Teaching Aids & Art", 
             "🎮 5. Assessment", 
             "💬 6. Teacher Feedback"
         ])
 
         with tab1:
-            st.markdown("### Toddler Pedagogical Video Script")
-            st.write(f"**Visual:** Friendly adult sitting on a floor mat, showing a colorful flashcard for letter **'{en_focus}'** / **'{ur_focus}'** and counting **{math_focus}** blocks.")
-            st.write(f"**Voiceover:** 'Hello little explorers! Today under *{theme_name}*, we practice our pre-writing movements, learn sound **{en_focus}**, and count **{math_focus}**!'")
+            st.markdown(f"### 🎬 Multi-Sensory Script & Learning Support Videos ({sub_unit})")
+            
+            col_v, col_a, col_k = st.columns(3)
+            with col_v:
+                st.markdown("#### 👁️ Visual Cue")
+                st.write(f"Show picture flashcard of letter **{en_focus}** / **{ur_focus}** and point to **{math_focus}** objects.")
+            with col_a:
+                st.markdown("#### 👂 Aural Cue")
+                st.write(f"Sing aloud: *'Bzz bzz goes the sound, letter **{en_focus}** is all around!'*")
+            with col_k:
+                st.markdown("#### ✋ Kinesthetic Cue")
+                st.write(f"Trace **{stroke_focus}** in the air with big arm motions before touching sand/salt.")
+
+            st.markdown("---")
+            st.markdown("#### 📺 Pakistan-Context Educational Support Video")
+            st.write("Use this culturally tailored Urdu phonics and handwriting demonstration to support visual and aural learning:")
+            st.video("https://www.youtube.com/watch?v=4thRB7x-YtY")
+            st.caption("🎥 *Suggested Resource:* Local Urdu Alif-Baa Phonics and Handwriting Practice for Early Learners.")
 
         with tab2:
-            st.markdown("### Ages 3-4 Detailed 75-Minute Lesson Plan")
-            st.markdown("- **Total Duration:** 75 minutes (paced specifically for toddler attention spans)")
-            st.markdown("- **Space & Setup:** Small floor circle / mat, no extra classroom furniture needed.")
+            st.markdown(f"### 📝 Detailed 75-Minute Multi-Sensory Lesson Plan for {sub_unit}")
+            st.markdown(f"- **Active Phase:** {sub_unit}")
+            st.markdown(f"- **Core Integration:** English **{en_focus}**, Urdu **{ur_focus}**, Math **{math_focus}**")
+            st.markdown(f"- **Pre-Writing Link:** {stroke_focus}")
             st.markdown("---")
-            st.markdown("⏱️ **[00:00 - 00:10] Sensory Provocation & Circle Time (10 mins):** Gentle engagement using household objects.")
-            st.markdown("⏱️ **[00:10 - 00:25] Sensory Pre-Writing & Fine Motor Play (15 mins):** Focus on **" + stroke_focus + "** using flour/salt trays.")
-            st.markdown("⏱️ **[00:25 - 00:45] Phonics & Letter Exploration (20 mins):** Sound play for English **" + en_focus + "** and Urdu **" + ur_focus + "**.")
-            st.markdown("⏱️ **[00:45 - 01:00] Playful Numeracy & Counting (15 mins):** Tactile counting of quantity **" + str(math_focus) + "**.")
-            st.markdown("⏱️ **[01:00 - 01:10] Mess-Free Art & Creative Play (10 mins):** Dough shaping or coloring.")
-            st.markdown("⏱️ **[01:10 - 01:15] Cozy Reflection Circle (5 mins):** Calm closing routine.")
+            st.write("Step-by-step guidance designed for small home spaces in Pakistan:")
+            st.markdown("⏱️ **[00:00 - 00:15] 👁️ Visual & Sensory Setup:** Displaying pictorial cards and holding household objects.")
+            st.markdown(f"⏱️ **[00:15 - 00:45] ✋ Kinesthetic & Aural Action ({sub_unit}):** Finger tracing, chanting letter sounds **{en_focus}** / **{ur_focus}**, and counting **{math_focus}** items.")
+            st.markdown("⏱️ **[00:45 - 01:15] 🎨 Creative Wrap-Up:** Playdough molding and calming reflection circle.")
 
         with tab3:
-            st.markdown("### Pre-Writing, Finger-Tracing & Art Integration")
-            st.markdown(f"- **Sensory Pre-Writing Stroke:** {stroke_focus}")
-            st.markdown(f"- **Letter Exposure:** Tracing and recognizing **'{en_focus}'** and **'{ur_focus}'**.")
-            st.markdown(f"- **Number Exposure:** Counting and interacting with quantity **{math_focus}**.")
-            st.markdown("- **Toddler Art Activity:** Rolling playdough or safe finger painting.")
+            st.markdown("### 📄 Print-Ready Visual & Tactile Worksheets")
+            st.write("Pictorial worksheets formatted for instant printing or tablet viewing:")
+            
+            with st.container(border=True):
+                st.markdown(f"#### 📄 Worksheet A: ✋ Kinesthetic Stroke Practice")
+                st.markdown(f"*Pictorial Instruction: Trace the dotted lines using a thick crayon or finger.*")
+                st.info(f"**Stroke Focus:** {stroke_focus} [ 🖍️ ======= (Dotted Practice Lines) ======= ]")
 
-        with tab4:
-            st.markdown("### Downloadable Ages 3-4 Lesson Plan")
-            st.write("Click below to download the complete 75-minute toddler lesson plan file:")
+            with st.container(border=True):
+                st.markdown(f"#### 📄 Worksheet B: 👁️ & 👂 Phonics Tracing Box")
+                st.markdown(f"*Pictorial Instruction: Look at the picture, say the sound, and trace.*")
+                st.markdown(f"🔤 English: **{en_focus}** &nbsp;&nbsp;|&nbsp;&nbsp; Urdu: **{ur_focus}** &nbsp;&nbsp; [ 🔤 Tracing Grid ]")
+
+            with st.container(border=True):
+                st.markdown(f"#### 📄 Worksheet C: 🔢 Pictorial Math Counting")
+                st.markdown(f"*Pictorial Instruction: Count the icons and trace the numeral.*")
+                st.markdown(f"🔢 Target Number: **{math_focus}** &nbsp;&nbsp; [ 🔢 Trace: {math_focus} ]")
+
             st.download_button(
-                label=f"📥 Download Unit {unit_number} (Ages 3-4) Plan",
-                data=lesson_text,
-                file_name=f"EFALL_Ages3-4_Unit_{unit_number}.txt",
+                label=f"📥 Download Complete Multi-Sensory Package ({sub_unit})",
+                data=complete_package,
+                file_name=f"EFALL_Unit_{unit_number}_SubUnit.txt",
                 mime="text/plain",
                 use_container_width=True
             )
 
+        with tab4:
+            st.markdown("### 🎨 Teaching Aids & Multi-Sensory Art Activity")
+            st.markdown(f"- **👁️ Visual & ✋ Kinesthetic Aids:** Shallow salt/flour tray, pictorial flashcards for **{en_focus}** and **{ur_focus}**.")
+            st.markdown(f"- **Art Activity:** Rolling playdough snakes to form letter **{en_focus}** and number **{math_focus}**.")
+
         with tab5:
-            st.markdown("### Adult Observation Checklist (Ages 3-4)")
-            st.markdown(f"1. Did the toddler actively participate in sensory pre-writing (*{stroke_focus}*)?")
-            st.markdown(f"2. Did they show familiarity with sound **{en_focus}** / **{ur_focus}** and count to **{math_focus}**?")
-            st.radio("Observation Result:", ["Engaged & Enjoyed", "Needed Gentle Guidance", "Needs More Playful Repetition"], key=f"assess_{unit_number}")
+            st.markdown("### 🎮 Multi-Sensory Observation Checklist")
+            st.markdown(f"1. **👁️ Visual:** Did the child recognize the flashcard pictures?")
+            st.markdown(f"2. **👂 Aural:** Did they repeat the phonics sound (**{en_focus}** / **{ur_focus}**) aloud?")
+            st.markdown(f"3. **✋ Kinesthetic:** Did they actively trace in salt or mold playdough?")
+            st.radio("Observation Result:", ["Fully Engaged (All 3 Senses)", "Needed Gentle Guidance", "Needs More Playful Repetition"], key=f"assess_{unit_number}")
 
         with tab6:
-            st.markdown("### Adult Reflection & Feedback")
-            feedback_notes = st.text_area("How did the toddler respond to this 75-minute session?", key=f"fb_{unit_number}")
-            if st.button("Save Feedback to Cloud Hub", key=f"save_{unit_number}"):
-                st.success("Feedback recorded successfully!")
+            st.markdown("### 💬 Adult Reflection & Feedback")
+            st.text_area("Notes:", key=f"fb_{unit_number}")
+
+    else:
+        # Urdu Interface Version
+        st.subheader("📚 تمام 50 یونٹس اور ملٹی سنصری ذیلی یونٹس")
+        st.write("یونٹ کا انتخاب کریں اور بصری، سمعی اور حرکی مواد حاصل کریں۔")
+        if st.button("⬅️ ڈیش بورڈ پر واپس جائیں"):
+            st.session_state.current_page = "Teacher/Parent Dashboard"
+            st.rerun()
 
 elif st.session_state.current_page == "Student View":
-    st.subheader("👧👦 Synchronized Student Portal (Ages 3-4)")
-    st.write("Child-friendly interactive games, audio stories, and visual prompts synced directly with the active Unit generator.")
+    if st.session_state.lang == "English":
+        st.subheader("👧👦 Synchronized Student Portal (Ages 3-4)")
+        st.write("Child-friendly interactive games, audio stories, and visual prompts synced directly with the active Unit generator.")
+    else:
+        st.subheader("👧👦 طلباء کا صفحہ (عمر 3-4 سال)")
+        st.write("بچوں کے لیے تفریحی کہانیاں اور سرگرمیاں۔")
