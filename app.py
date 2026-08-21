@@ -4,7 +4,7 @@ from datetime import date
 
 # Page Configuration
 st.set_page_config(
-    page_title="EFALL Comprehensive Portal | آسان تعلیمی پورٹل",
+    page_title="EFALL Master Hub | آسان تعلیمی پورٹل",
     page_icon="🌟",
     layout="wide"
 )
@@ -14,258 +14,165 @@ if "lang" not in st.session_state:
     st.session_state.lang = "English"
 if "current_page" not in st.session_state:
     st.session_state.current_page = "Home"
-if "selected_unit" not in st.session_state:
-    st.session_state.selected_unit = 1
-if "age_tier" not in st.session_state:
-    st.session_state.age_tier = "Ages 3–5 (Early Years)"
 if "reflection_logs" not in st.session_state:
     st.session_state.reflection_logs = []
-
-# --- LARGE VISUAL SIDEBAR ---
-st.sidebar.title("🌟 EFALL مکمل ہب")
-st.sidebar.caption("Educated Mother Education Nation")
-
-# Language Switcher
-lang_choice = st.sidebar.radio(
-    "Select Language / زبان منتخب کریں", 
-    ["English", "اردو"], 
-    index=0 if st.session_state.lang == "English" else 1
-)
-st.session_state.lang = lang_choice
-
-st.sidebar.markdown("---")
-st.sidebar.subheader("👶 عمر کا انتخاب / Age Group")
-age_tier = st.sidebar.radio(
-    "Select Age:",
-    [
-        "Ages 3–5 (Early Years)", 
-        "Ages 6–8 (Lower Primary)", 
-        "Ages 9–10 (Upper Primary)"
-    ],
-    index=["Ages 3–5 (Early Years)", "Ages 6–8 (Lower Primary)", "Ages 9–10 (Upper Primary)"].index(st.session_state.age_tier)
-)
-st.session_state.age_tier = age_tier
-
-st.sidebar.markdown("---")
-st.sidebar.subheader("📍 Menu / مینو")
-
-if st.sidebar.button("🏠 Home / مین صفحہ", use_container_width=True):
-    st.session_state.current_page = "Home"
-    st.rerun()
-if st.sidebar.button("📚 50 Units Library / اسباق کی لائبریری", use_container_width=True):
-    st.session_state.current_page = "Unit Library"
-    st.rerun()
-if st.sidebar.button("📝 My Diary / میری ڈائری", use_container_width=True):
-    st.session_state.current_page = "Reflection Log"
-    st.rerun()
-
-# --- BACKEND MASTER CURRICULUM ENGINE (IB PYP Themes) ---
-def get_unit_curriculum(unit_num):
-    curriculum_database = [
-        # Who We Are (Units 1-8)
-        ("Who We Are", "My Feelings and Me", "Face / چہرہ", "A, B", "الف، ب", "0, 1", "Circular & Curve Loops", "Inquiring into emotional awareness and personal identity", "Empathize"),
-        ("Who We Are", "Emotions & Smiles", "Smile / مسکان", "C, D", "پ، ت", "2, 3", "Sleeping horizontal lines", "Investigating personal expressions and reactions", "Empathize"),
-        ("Who We Are", "Eyes & Vision", "Eyes / آنکھیں", "E, F", "ٹ، ث", "4, 5", "Slanting diagonal lines", "Exploring sensory perception and vision", "Define"),
-        ("Who We Are", "Heart & Feelings", "Heart / دل", "G, H", "ج، چ", "6, 7", "Circular and curve loops", "Connecting heartbeats, feelings, and empathy", "Define"),
-        ("Who We Are", "Family Bonds", "Family / خاندان", "I, J", "ح، خ", "8, 9", "Zig-zag tactile patterns", "Recognizing family roles and cooperative relationships", "Ideate"),
-        ("Who We Are", "Hands & Touch", "Hands / ہاتھ", "K, L", "د، ڈ", "10, 11", "Standing vertical lines", "Fine motor coordination and tactile feedback", "Ideate"),
-        ("Who We Are", "Voice & Sound", "Voice / آواز", "M, N", "ذ، ر", "12, 13", "Sleeping horizontal lines", "Auditory discovery and vocal expression", "Prototype"),
-        ("Who We Are", "My Body", "Me / میں", "O, P", "ڑ، ز", "14, 15", "Slanting diagonal lines", "Body awareness and self-identity mapping", "Test"),
-        
-        # Where We Are in Place and Time (Units 9-16)
-        ("Where We Are in Place and Time", "Doorways & Entry", "Door / دروازہ", "Q, R", "ژ، س", "16, 17", "Circular loops", "Navigating physical spaces and boundary lines", "Empathize"),
-        ("Where We Are in Place and Time", "Windows & Light", "Window / کھڑکی", "S, T", "ش، ص", "18, 19", "Zig-zag patterns", "Exploring natural light and indoor viewpoints", "Empathize"),
-        ("Where We Are in Place and Time", "Tables & Classroom", "Table / میز", "U, V", "ض، ط", "1, 2", "Standing lines", "Arranging classroom furniture and cooperative layout", "Define"),
-        ("Where We Are in Place and Time", "Chairs & Seating", "Chair / کرسی", "W, X", "ظ، ع", "3, 4", "Sleeping lines", "Understanding seating order and body posture", "Define"),
-        ("Where We Are in Place and Time", "Floors & Walking", "Floor / فرش", "Y, Z", "غ، ف", "5, 6", "Slanting lines", "Exploring textures underfoot and surface gradients", "Ideate"),
-        ("Where We Are in Place and Time", "Walls & Structure", "Wall / دیوار", "A, B", "ق، ک", "7, 8", "Curve loops", "Building structural boundaries and spatial barriers", "Ideate"),
-        ("Where We Are in Place and Time", "Mats & Seating", "Mat / چٹائی", "C, D", "گ، ل", "9, 10", "Tactile zig-zag", "Personal space organization on floor mats", "Prototype"),
-        ("Where We Are in Place and Time", "Beds & Rest", "Bed / بستر", "E, F", "م، ن", "11, 12", "Vertical lines", "Routine management and restorative resting cycles", "Test"),
-        
-        # How We Express Ourselves (Units 17-25)
-        ("How We Express Ourselves", "Colors & Paint", "Paint / رنگ", "G, H", "و، ہ", "13, 14", "Horizontal lines", "Color mixing and emotional representation through hues", "Empathize"),
-        ("How We Express Ourselves", "Brushes & Strokes", "Brush / برش", "I, J", "ھ، ء", "15, 16", "Slanting lines", "Brush stroke control and pre-writing linear mastery", "Empathize"),
-        ("How We Express Ourselves", "Clay & Molding", "Clay / مٹی", "K, L", "ی، ے", "17, 18", "Curve loops", "Tactile 3D molding and geometric shape creation", "Define"),
-        ("How We Express Ourselves", "Songs & Rhymes", "Song / گیت", "M, N", "ب، پ", "19, 20", "Zig-zag patterns", "Aural pattern recognition and rhythmic expression", "Define"),
-        ("How We Express Ourselves", "Stories & Tales", "Story / کہانی", "O, P", "ت، ٹ", "1, 2", "Vertical lines", "Narrative creation and logical sequence understanding", "Ideate"),
-        ("How We Express Ourselves", "Smiles & Joy", "Smile / مسکرانا", "Q, R", "ث، ج", "3, 4", "Horizontal lines", "Expressing joy through collaborative art and movement", "Ideate"),
-        ("How We Express Ourselves", "Laughter & Fun", "Laugh / ہنسنا", "S, T", "چ، ح", "5, 6", "Slanting lines", "Social bonding through shared cooperative team building", "Prototype"),
-        ("How We Express Ourselves", "Dance & Movement", "Dance / ناچ", "U, V", "خ، د", "7, 8", "Curve loops", "Gross motor coordination and expressive physical motion", "Prototype"),
-        ("How We Express Ourselves", "Art & Hues", "Color / رنگ", "W, X", "ڈ، ذ", "9, 10", "Tactile zig-zag", "Aesthetic appreciation of color gradients and contrast", "Test"),
-        
-        # How the World Works (Units 26-33)
-        ("How the World Works", "Water & Rivers", "Water / پانی", "Y, Z", "ر، ڑ", "11, 12", "Vertical lines", "Properties of liquids and observation of flow dynamics", "Empathize"),
-        ("How the World Works", "Leaves & Foliage", "Leaf / پتا", "A, B", "ز، ژ", "13, 14", "Horizontal lines", "Botanical shapes, symmetry, and vein pattern inquiry", "Empathize"),
-        ("How the World Works", "Sunlight & Warmth", "Sun / سورج", "C, D", "س، ش", "15, 16", "Slanting lines", "Observing solar warmth, shadows, and light sources", "Define"),
-        ("How the World Works", "Clouds & Sky", "Cloud / بادل", "E, F", "ص، ض", "17, 18", "Curve loops", "Weather observation and atmospheric shifts", "Define"),
-        ("How the World Works", "Rain & Showers", "Rain / بارش", "G, H", "ط، ظ", "19, 20", "Vertical lines", "Precipitation tracking and droplet motion testing", "Ideate"),
-        ("How the World Works", "Stones & Earth", "Stone / پتھر", "I, J", "ع، غ", "1, 2", "Horizontal lines", "Investigating weight, texture, and density of natural objects", "Ideate"),
-        ("How the World Works", "Wind & Breeze", "Wind / ہوا", "K, L", "ف، ق", "3, 4", "Slanting lines", "Air movement, resistance, and kinetic inquiry", "Prototype"),
-        ("How the World Works", "Trees & Timber", "Tree / درخت", "M, N", "ک، گ", "5, 6", "Curve loops", "Plant anatomy and structural strength analysis", "Test"),
-        
-        # How We Organize Ourselves (Units 34-41)
-        ("How We Organize Ourselves", "Baskets & Storage", "Basket / ٹوکری", "O, P", "ل، م", "7, 8", "Zig-zag patterns", "Sorting, classifying, and container management systems", "Empathize"),
-        ("How We Organize Ourselves", "Toys & Play", "Toy / کھلونا", "Q, R", "ن، و", "9, 10", "Vertical lines", "Inventory management and cooperative sharing protocols", "Empathize"),
-        ("How We Organize Ourselves", "Shelves & Books", "Shelf / الماری", "S, T", "ہ، ی", "11, 12", "Horizontal lines", "Library organization and categorization systems", "Define"),
-        ("How We Organize Ourselves", "Boxes & Packing", "Box / ڈبہ", "U, V", "ء، ے", "13, 14", "Slanting lines", "Volume analysis, spatial packing, and geometry", "Define"),
-        ("How We Organize Ourselves", "Cleaning & Tidying", "Clean / صاف", "W, X", "الف، ب", "15, 16", "Curve loops", "Responsibility routines and environmental care habits", "Ideate"),
-        ("How We Organize Ourselves", "Order & Arrangement", "Tidy / درست", "Y, Z", "پ، ت", "17, 18", "Zig-zag patterns", "Pattern sequencing and symmetrical arrangement design", "Ideate"),
-        ("How We Organize Ourselves", "Helping Hands", "Help / مدد", "A, B", "ٹ، ث", "19, 20", "Vertical lines", "Community collaboration and shared task execution", "Prototype"),
-        ("How We Organize Ourselves", "Sorting Objects", "Sort / ترتیب", "C, D", "ج، چ", "1, 2", "Horizontal lines", "Logical categorization based on physical attributes", "Test"),
-        
-        # Sharing the Planet (Units 42-50)
-        ("Sharing the Planet", "Seeds & Planting", "Seed / بیج", "E, F", "ح، خ", "3, 4", "Slanting lines", "Life cycles and seed germination inquiry", "Empathize"),
-        ("Sharing the Planet", "Soil & Ground", "Soil / مٹی", "G, H", "د، ڈ", "5, 6", "Curve loops", "Earth layers and plant growth foundations", "Empathize"),
-        ("Sharing the Planet", "Growing Plants", "Plant / پودا", "I, J", "ذ، ر", "7, 8", "Vertical lines", "Water, nutrient, and sunlight requirements for growth", "Define"),
-        ("Sharing the Planet", "Flowers & Blossoms", "Flower / پھول", "K, L", "ڑ، ز", "9, 10", "Horizontal lines", "Aesthetic plant parts and basic pollination inquiry", "Define"),
-        ("Sharing the Planet", "Birds & Feathers", "Bird / پرندہ", "M, N", "ژ، س", "11, 12", "Slanting lines", "Animal habitats and avian environmental adaptation", "Ideate"),
-        ("Sharing the Planet", "Cats & Paws", "Cat / بلی", "O, P", "ش، ص", "13, 14", "Curve loops", "Mammal characteristics, needs, and careful interaction", "Ideate"),
-        ("Sharing the Planet", "Dogs & Canines", "Dog / کتا", "Q, R", "ض، ط", "15, 16", "Zig-zag patterns", "Animal behavior, communication, and loyalty concepts", "Prototype"),
-        ("Sharing the Planet", "Plant Growth", "Growth / بڑھوتری", "S, T", "ظ، ع", "17, 18", "Vertical lines", "Long-term tracking and measurement of living organisms", "Prototype"),
-        ("Sharing the Planet", "Nature Care", "Care / دیکھ بھال", "U, V", "غ، ف", "19, 20", "Horizontal lines", "Environmental stewardship and ecological responsibility", "Test")
-    ]
-    
-    domain, category, vocab, en, ur, math, stroke, inquiry_focus, design_phase = curriculum_database[unit_num - 1]
-    theme_name = f"Unit {unit_num}: {category}"
-    return theme_name, vocab, en, ur, str(math), stroke, domain, inquiry_focus, design_phase
 
 def create_download_button(content, filename, label):
     b64 = base64.b64encode(content.encode('utf-8')).decode('utf-8')
     return f'<a href="data:text/plain;charset=utf-8;base64,{b64}" download="{filename}" style="text-decoration:none;"><div style="background:#2e7d32;color:white;padding:12px;text-align:center;border-radius:8px;font-weight:bold;font-size:16px;margin-top:10px;">📥 {label}</div></a>'
 
+# --- NAVIGATION SIDEBAR ---
+st.sidebar.title("🌟 EFALL آسان ہب")
+st.sidebar.caption("Educated Mother Education Nation")
+
+if st.sidebar.button("🏠 Home / مین صفحہ", use_container_width=True):
+    st.session_state.current_page = "Home"
+    st.rerun()
+if st.sidebar.button("🛠️ Force & Engineering Lesson / فورس کا سبق", use_container_width=True):
+    st.session_state.current_page = "Force Lesson"
+    st.rerun()
+if st.sidebar.button("📝 My Diary / میری ڈائری", use_container_width=True):
+    st.session_state.current_page = "Reflection Log"
+    st.rerun()
 
 # --- HOME PAGE ---
 if st.session_state.current_page == "Home":
-    st.title("🌟 EFALL مکمل تعلیمی ہب / Complete Educational Hub")
-    st.markdown("### 🎯 Select a PYP Theme Box below to open full lesson plans, visual aids, and worksheets:")
+    st.title("🌟 Welcome to EFALL Simple Teaching Hub")
+    st.markdown("### 🎯 Tap below to open your step-by-step teaching module:")
     
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("🧩 Box 1: Who We Are\n(ہم کون ہیں)", use_container_width=True, key="h1"):
-            st.session_state.selected_unit = 1
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-        if st.button("🎨 Box 3: How We Express\n(ہم کیسے اظہار کرتے ہیں)", use_container_width=True, key="h3"):
-            st.session_state.selected_unit = 17
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-        if st.button("🧹 Box 5: How We Organize\n(ہم خود کو کیسے منظم کرتے ہیں)", use_container_width=True, key="h5"):
-            st.session_state.selected_unit = 34
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-    with col2:
-        if st.button("🏡 Box 2: Where We Are\n(ہم کہاں ہیں وقت اور جگہ میں)", use_container_width=True, key="h2"):
-            st.session_state.selected_unit = 9
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-        if st.button("💧 Box 4: How World Works\n(دنیا کیسے کام کرتی ہے)", use_container_width=True, key="h4"):
-            st.session_state.selected_unit = 26
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-        if st.button("🌿 Box 6: Sharing Planet\n(سیارے کی مشترکہ دیکھ بھال)", use_container_width=True, key="h6"):
-            st.session_state.selected_unit = 42
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-
+    if st.button("🚪 Unit: Force, Friction & Sound (فورس اور آواز کا سبق)", use_container_width=True):
+        st.session_state.current_page = "Force Lesson"
+        st.rerun()
+        
     st.markdown("---")
-    if st.button("📝 Click here to open My Diary (میری ڈائری)", use_container_width=True):
+    if st.button("📝 Open My Teaching Diary (میری ڈائری)", use_container_width=True):
         st.session_state.current_page = "Reflection Log"
         st.rerun()
 
-# --- UNIT LIBRARY & DETAILED LESSON PLAN WITH WORKBOOK ---
-elif st.session_state.current_page == "Unit Library":
+# --- STEP-BY-STEP CHRONOLOGICAL LESSON COACH ---
+elif st.session_state.current_page == "Force Lesson":
     if st.button("⬅️ Back / واپس جائیں"):
         st.session_state.current_page = "Home"
         st.rerun()
 
-    st.title("📚 اسباق کی تفصیلی لائبریری / Full Unit Library")
-    
-    unit_number = st.selectbox("Select Unit Number (1 to 50) / یونٹ نمبر منتخب کریں:", list(range(1, 51)), index=st.session_state.selected_unit - 1, format_func=lambda x: f"Unit {x}: {get_unit_curriculum(x)[0]}")
-    
-    theme_name, vocab_theme, en_focus, ur_focus, math_focus, stroke_focus, domain_name, inquiry_focus, design_phase = get_unit_curriculum(unit_number)
+    st.title("🛠️ Step-by-Step Teaching Guide: Force & Silencer Challenge")
+    st.info("🌐 **IB Theme:** How the World Works &nbsp;|&nbsp; 👩‍🏫 **Teacher Coaching Mode:** Chronological Flow for Small Classrooms")
 
-    st.markdown("---")
-    st.markdown(f"## 📋 {theme_name}")
-    st.info(f"🌐 **IB Theme:** {domain_name} &nbsp;|&nbsp; 💡 **Inquiry Focus:** {inquiry_focus} &nbsp;|&nbsp; 🛠️ **Design Phase:** {design_phase}")
-
-    # SIMPLIFIED 3-STEP FACILITATION CARD (FOR NON-TECH / LOW-LITERACY TEACHERS)
-    st.markdown("### 👩‍🏫 Quick Facilitation Guide (آسان تدریسی رہنمائی)")
+    # --- TOP 3-STEP VISUAL SUMMARY ---
+    st.markdown("### 📌 Quick Overview Card")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.markdown(f"""
-        <div style="background: #e8f8f5; border: 2px solid #1abc9c; padding: 12px; border-radius: 10px; text-align: center;">
-            <h4 style="color: #16a085; margin:0;">1️⃣ Show / دکھائیں</h4>
-            <p style="font-size: 13px; margin-top: 8px;">Show real object or flashcard of <b>{vocab_theme}</b>.</p>
+        st.markdown("""
+        <div style="background: #e8f8f5; border: 2px solid #1abc9c; padding: 10px; border-radius: 8px; text-align: center;">
+            <h4 style="color: #16a085; margin:0;">1️⃣ Step 1: Open</h4>
+            <p style="font-size: 12px; margin-top: 5px;">Move furniture, create sound anomalies, do 'Imagine If' circle talk.</p>
         </div>
         """, unsafe_allow_html=True)
     with c2:
-        st.markdown(f"""
-        <div style="background: #fdf2e9; border: 2px solid #f39c12; padding: 12px; border-radius: 10px; text-align: center;">
-            <h4 style="color: #d35400; margin:0;">2️⃣ Ask / پوچھیں</h4>
-            <p style="font-size: 13px; margin-top: 8px;"><b>🔊 سنیے / Ask:</b><br>"What do you see? آپ کو کیا دکھتا ہے؟"</p>
+        st.markdown("""
+        <div style="background: #fdf2e9; border: 2px solid #f39c12; padding: 10px; border-radius: 8px; text-align: center;">
+            <h4 style="color: #d35400; margin:0;">2️⃣ Step 2: Build</h4>
+            <p style="font-size: 12px; margin-top: 5px;">Measure with fingers, tally counts, build door/chair silencers.</p>
         </div>
         """, unsafe_allow_html=True)
     with c3:
-        st.markdown(f"""
-        <div style="background: #ebf5fb; border: 2px solid #3498db; padding: 12px; border-radius: 10px; text-align: center;">
-            <h4 style="color: #2980b9; margin:0;">3️⃣ Do / کریں</h4>
-            <p style="font-size: 13px; margin-top: 8px;">Practice <b>{en_focus} / {ur_focus}</b> & count to <b>{math_focus}</b>.</p>
+        st.markdown("""
+        <div style="background: #ebf5fb; border: 2px solid #3498db; padding: 10px; border-radius: 8px; text-align: center;">
+            <h4 style="color: #2980b9; margin:0;">3️⃣ Step 3: Reflect</h4>
+            <p style="font-size: 12px; margin-top: 5px;">Post on boards, take Polaroid pictures, discuss caring classroom.</p>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("---")
-    
-    # DETAILED LESSON SECTIONS RESTORED
-    tab1, tab2, tab3, tab4 = st.tabs(["📖 Detailed Lesson Plan", "🎨 Visual Aids & GIFs", "📝 Downloadable Worksheet", "⚙️ Small Space Setup"])
-    
-    with tab1:
-        st.subheader("Detailed Inquiry Lesson Plan")
-        st.write(f"**Central Idea Connection:** Exploring core concepts in '{domain_name}' through '{vocab_theme}'.")
-        st.markdown(f"""
-        * **Phase 1: Tune In (Warm-up):** Gather children in a small circle. Introduce the word **{vocab_theme}**. Use real props or tactile objects.
-        * **Phase 2: Finding Out (Inquiry):** Ask open-ended questions corresponding to Harvard Project Zero routines (*"What makes you say that?"*). 
-        * **Phase 3: Sorting & Phonics:** Practice writing English letters **{en_focus}** and Urdu letters **{ur_focus}**. Count objects up to **{math_focus}**.
-        * **Phase 4: Reflection:** Review what was learned using finger-painting or emotion check-ins.
-        """)
+    st.subheader("⏱️ Chronological Teacher Script & Action Timeline")
+    st.write("Follow these exact chronological steps in your classroom from start to finish:")
 
-    with tab2:
-        st.subheader("Visual Aids & Animations (GIFs)")
-        st.info("💡 Tip for Teachers: Show these visual concepts or animated GIFs on your tablet or smartphone screen.")
-        col_v1, col_v2 = st.columns(2)
-        with col_v1:
-            st.markdown(f"**Visual Aid Concept:** {vocab_theme}")
-            st.image("https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400", caption=f"Visual Reference for {vocab_theme}", use_container_width=True)
-        with col_v2:
-            st.markdown(f"**Stroke Pattern Practice:** {stroke_focus}")
-            st.success(f"Trace motion: Follow the line pattern for **{stroke_focus}** using fingers in the air or sand trays.")
+    # CHRONOLOGICAL TABS
+    t1, t2, t3, t4 = st.tabs([
+        "🕒 Phase 1: Setup & Start (0-10 mins)", 
+        "🕒 Phase 2: The Inquiry Tour (10-20 mins)", 
+        "🕒 Phase 3: The Challenge & Worksheet (20-40 mins)", 
+        "🕒 Phase 4: Wrap-up & Reflection (40-60 mins)"
+    ])
 
-    with tab3:
-        st.subheader("Printable Worksheets & Student Sheets")
-        st.write("Download ready-to-print activity sheets for this specific unit:")
-        worksheet_content = f"""EFALL WORKBOOK SHEET - UNIT {unit_number}
-Theme: {theme_name}
-Vocabulary Focus: {vocab_theme}
-English Phonics: {en_focus}
-Urdu Phonics: {ur_focus}
-Math Counting: {math_focus}
-Stroke Practice: {stroke_focus}
-
-Student Name: _______________________ Date: ____________
-
-1. Trace the letters: {en_focus} | {ur_focus}
-2. Draw or paste a picture of: {vocab_theme}
-3. Count and circle {math_focus} objects.
-"""
-        st.markdown(create_download_button(worksheet_content, f"Unit_{unit_number}_Worksheet.txt", "Download Student Worksheet (.txt)"), unsafe_allow_html=True)
-
-    with tab4:
-        st.subheader("Small Classroom / Limited Furniture Adaptation")
-        st.warning("⚠️ Tailored for compact spaces with limited furniture:")
+    with t1:
+        st.markdown("### Step-by-Step Instructions: Opening & Provocation")
         st.markdown("""
-        * **Floor Circle Seating:** Use sitting mats arranged in a compact semicircle so every child can see and touch props.
-        * **Vertical Wall Display:** Use classroom walls or small pinboards for hanging student artwork without cluttering floor space.
-        * **Rotation Stations:** Rotate small groups of 3 children at a time between tactile tracing and object exploration.
+        * **1. Before Students Arrive (Room Setup):** 
+          * Push your few pieces of classroom furniture to the sides to maximize center floor space.
+          * Deliberately leave the door slightly misaligned so it makes a screeching noise, pull a table out so its legs scrape loudly, and place the supplies bin right in the middle of the circle carpet.
+          * Set up toy tracks on your desk with a car and ball.
+        * **2. Gathering the Children:** 
+          * Bring children to the floor carpet in groups of 5.
+        * **3. What to Say Out Loud (Teacher Script):** 
+          * *"Hello little engineers! Today we are going to look at how things move and make sounds using Push and Pull."*
+        * **4. Introduce the Thinking Routine:** 
+          * Ask the class: **'Imagine if'** our classroom door and chairs are always this loud and noisy every time we move. How will that affect our ears and our learning? How will fixing it make us kinder to each other?
         """)
+
+    with t2:
+        st.markdown("### Step-by-Step Instructions: Class Tour & Sensory Exploration")
+        st.markdown("""
+        * **1. What to Do:** 
+          * Take your groups on a quick interactive walk around the small classroom. Have them touch the screeching door and slide the chairs.
+        * **2. What to Ask (Scaffolding Questions):** 
+          * *“Did I just hear a funny noise when pulling that?”*
+          * *“Is it hard to push this table? Why do you think it feels rough?”*
+        * **3. Action Task:** 
+          * Hand out sticky notes. Let students paste sticky notes directly onto the objects that are making noise or are out of order.
+        """)
+
+    with t3:
+        st.markdown("### Step-by-Step Instructions: The Engineering Challenge & Worksheet")
+        st.markdown("""
+        * **1. Introduce the Challenge (When to start):** 
+          * Tell students: *"Now you are engineers! Let's build a 'silencer' using felt, foam strips, and glue from our material basket."*
+        * **2. When to Use the Worksheet & Measurements:** 
+          * Have students use **finger units** to measure the space under the doorway and the bottom of the chair legs.
+          * Hand out the **Tally Mark Graph Worksheet**. Have children draw tally marks to record their measurements.
+        * **3. Building & Testing:** 
+          * Students sketch a simple 2D blueprint, stick foam/felt to their object, and test whether pushing or pulling reduces the noise and friction.
+        * **4. Peer Sharing ('Teach-Ok' Strategy):** 
+          * Pair groups together. Have one student explain to a partner *why* and *how* their material choice reduced the screeching sound.
+        """)
+
+    with t4:
+        st.markdown("### Step-by-Step Instructions: Reflection, Boards & Closing")
+        st.markdown("""
+        * **1. Documenting on the Boards:** 
+          * Take photos with a Polaroid camera. Help students stick their photos, vocabulary word cards, blueprints, and tally worksheets onto the **Force Lab Board**.
+          * Add a collective class tally chart showing before-and-after noise levels.
+        * **2. Responsibility Board:** 
+          * Have groups pin up pictures of their final prototypes alongside themselves, discussing how reducing noise creates a peaceful, caring classroom environment.
+        * **3. Closing Bridge (*Imagine if*):** 
+          * End the session by planting a seed for the next lesson: *(i) Imagine if our school had mud floors like villages, how would that change your design? (ii) Imagine if we needed to move something heavier faster instead of quieter, what would we do?*
+        """)
+
+    st.markdown("---")
+    st.subheader("📥 Download This Step-by-Step Guide")
+    lesson_bundle = """EFALL STEP-BY-STEP TEACHING GUIDE - FORCE & FRICTION
+======================================================
+PHASE 1: SETUP & OPENING (0-10m)
+- Clear furniture, set up door/table noise anomalies.
+- Gather students in groups of 5 on the carpet.
+- Run 'Imagine if' routine regarding classroom noise.
+
+PHASE 2: CLASS TOUR & INQUIRY (10-20m)
+- Walk around, touch doors and chairs.
+- Ask scaffolding questions about push, pull, and friction.
+- Hand out sticky notes for students to mark noisy objects.
+
+PHASE 3: ENGINEERING & WORKSHEET (20-40m)
+- Hand out material baskets (foam, felt, glue).
+- Use finger units to measure gaps; record data using tally mark worksheets.
+- Build prototypes and use 'Teach-Ok' peer sharing.
+
+PHASE 4: REFLECTION & BOARDS (40-60m)
+- Post Polaroid pictures, blueprints, and tally charts on the Force Lab Board.
+- Mount final prototypes on the Responsibility Board.
+- Close with advanced 'Imagine if' prompts for the next session.
+"""
+    st.markdown(create_download_button(lesson_bundle, "Step_By_Step_Force_Lesson.txt", "Download Master Teacher Script (.txt)"), unsafe_allow_html=True)
 
 # --- REFLECTION LOG ---
 elif st.session_state.current_page == "Reflection Log":
@@ -312,8 +219,3 @@ elif st.session_state.current_page == "Reflection Log":
                 st.write(f"Status: {entry['mood']}")
                 if entry['note']:
                     st.write(f"Note: {entry['note']}")
-        
-        diary_download = "EFALL TEACHER DIARY LOGS\n====================\n\n"
-        for idx, entry in enumerate(st.session_state.reflection_logs):
-            diary_download += f"Entry #{idx+1} ({entry['date']}) - {entry['name']}\nMood: {entry['mood']}\nNote: {entry['note']}\n--------------------\n"
-        st.markdown(create_download_button(diary_download, "My_Teaching_Diary.txt", "Download Diary Logs"), unsafe_allow_html=True)
