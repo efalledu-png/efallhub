@@ -112,7 +112,7 @@ def create_download_file_button(content, filename, label):
 if st.session_state.current_page == "Teacher/Parent Dashboard":
     if st.session_state.lang == "English":
         st.title("👩‍🏫 EFALL Teacher & Parent Training Hub")
-        st.write("Welcome to your interactive curriculum portal. Explore our 6 progressive theme boxes designed for small classrooms and toddlers aged 3-4.")
+        st.write("Welcome to your professional curriculum portal. Explore our 6 progressive theme boxes designed for small classrooms and toddlers aged 3-4.")
         
         st.markdown("---")
         st.subheader("📦 Explore Curriculum by 6 Progressive Theme Boxes")
@@ -164,8 +164,8 @@ if st.session_state.current_page == "Teacher/Parent Dashboard":
 
 elif st.session_state.current_page == "Unit Library":
     if st.session_state.lang == "English":
-        st.subheader("📚 Ages 3-4: Interactive Book Lesson Library")
-        st.write("Select a unit below to open your step-by-step interactive lesson book, complete with matching media, downloadable worksheets, and guided scripts.")
+        st.subheader("📚 Ages 3-4: Master Unit Library & Lesson Plan Hub")
+        st.write("Select any unit below to access your professional, structured lesson plan format featuring detailed teacher spoken scripts, action steps, embedded media, and Twinkl-style printable worksheets.")
         
         if st.button("⬅️ Back to Theme Boxes Dashboard"):
             st.session_state.current_page = "Teacher/Parent Dashboard"
@@ -177,250 +177,247 @@ elif st.session_state.current_page == "Unit Library":
 
         st.markdown(f"---")
         
-        # --- INTERACTIVE BOOK HEADER ---
-        st.markdown(f"# 📖 Interactive Lesson Book: {theme_name}")
+        # --- PROFESSIONAL LESSON PLAN HEADER BLOCK ---
+        st.markdown(f"# 📋 Professional Lesson Plan: {theme_name}")
         st.success(f"🎯 **Skill Stage:** {skill_stage} &nbsp;&nbsp;|&nbsp;&nbsp; 🔑 **Vocabulary Theme:** {vocab_theme}")
         st.warning(f"🔤 **Dual Phonics:** English **'{en_focus}'** & Urdu **'{ur_focus}'** &nbsp;&nbsp;|&nbsp;&nbsp; 🔢 **Math Numeral:** **{math_focus}** &nbsp;&nbsp;|&nbsp;&nbsp; ✍️ **Stroke:** {stroke_focus}")
 
-        # Tab Navigation styled as Book Chapters
-        book_tab1, book_tab2, book_tab3, book_tab4, book_tab5, book_tab6 = st.tabs([
-            "📖 Book Chapter 1: Provocation", 
-            "📖 Book Chapter 2: Tactile Tracing", 
-            "📖 Book Chapter 3: Dual Phonics", 
-            "📖 Book Chapter 4: Numeracy Logic", 
-            "📖 Book Chapter 5: Celebration & Play", 
-            "🖨️ Master Resource & Worksheet Hub"
+        # Standard Tabbed Structure
+        tab1, tab2, tab3, tab4, tab5 = st.tabs([
+            "📝 Detailed 70-Min Lesson Plan", 
+            "🎬 Training & Videos", 
+            "📄 Twinkl-Style Worksheets", 
+            "✂️ Extra Worksheet Generator",
+            "💬 Assessment & Feedback"
         ])
 
-        # CHAPTER 1
-        with book_tab1:
-            st.markdown("## Chapter 1: Provocation & Visual Hook (00:00 - 00:15)")
-            st.write("Set the stage in your small classroom with a captivating visual hook and guided inquiry.")
+        # TAB 1: DETAILED LESSON PLAN
+        with tab1:
+            st.markdown("### 🕒 70-Minute Step-by-Step Lesson Plan")
+            st.write("Structured format featuring precise teacher scripts, action movements, and in-line resources.")
             
-            col_text1, col_media1 = st.columns([3, 2])
-            with col_text1:
-                st.markdown("### 👁️ Classroom Setup & Dialogue")
-                st.markdown("* **Physical Setup:** Gather children in a cozy semi-circle on floor mats. Keep the center clear.")
-                st.info(f'🗣️ **Exact Teacher Spoken Script:**\n> *"Good morning, my little explorers! Look closely at what I have hidden in my hands today. What do you see here that reminds us of **{vocab_theme}**?"*')
-                st.markdown("---")
-                st.markdown("📄 **Integrated Worksheet 1:** Visual Memory & Picture Hook")
-                ws1_text = f"""==================================================
-EFALL EARLY YEARS EDUCATIONAL PORTAL
-WORKSHEET 1: VISUAL MEMORY & PICTURE HOOK
-==================================================
-Unit: {unit_number} | Theme: {theme_name}
-Vocabulary Focus: {vocab_theme}
-Target Letters: English '{en_focus}' | Urdu '{ur_focus}'
+            # Phase 1
+            with st.container(border=True):
+                st.markdown("#### Phase 1: Provocation & Visual Hook (00:00 - 00:15)")
+                col_p1_text, col_p1_media = st.columns([3, 2])
+                with col_p1_text:
+                    st.markdown("👁️ **Classroom Action:** Gather children in a cozy semi-circle on floor mats. Keep physical space clear.")
+                    st.info(f'🗣️ **Teacher Spoken Script:**\n> *"Good morning, my little explorers! Look closely at what I have hidden in my hands today. What do you see here that reminds us of **{vocab_theme}**?"*')
+                    ws1_content = f"""======================================================================
+🌟 EFALL EARLY YEARS LEARNING RESOURCE | TWINKL-STYLE ACTIVITY SHEET 🌟
+======================================================================
+UNIT {unit_number}: {theme_name.upper()}
+TOPIC: {vocab_theme} | FOCUS: English '{en_focus}' & Urdu '{ur_focus}'
+NAME: _______________________________   DATE: _________________
+----------------------------------------------------------------------
+INSTRUCTIONS: Look at the pictures below. Point to each item, say the 
+vocabulary word '{vocab_theme}', and circle the correct matching card!
 
-INSTRUCTIONS FOR TEACHER/PARENT:
-1. Show the children real objects or picture cards related to '{vocab_theme}'.
-2. Ask students to identify items starting with phonics '{en_focus}' and '{ur_focus}'.
-3. Have students circle or point to the correct picture below.
+[ 🎨 PICTURE CARD A: {vocab_theme} ]     [ ❌ DISTRACTOR ITEM ]
+   (Circle this correct card!)             (Do not circle)
 
-STUDENT ACTIVITY EXERCISE:
-[O] Picture A: {vocab_theme} (Match & Circle)
-[  ] Picture B: Distractor item
-[  ] Picture C: Distractor item
+TRACING PRACTICE ZONE:
+Trace the starting letters below with your finger or crayon:
+English: {en_focus}   {en_focus}   {en_focus}   {en_focus}   {en_focus}
+Urdu:    {ur_focus}   {ur_focus}   {ur_focus}   {ur_focus}   {ur_focus}
 
-Tracing Practice Area:
-Trace English '{en_focus}' -> {en_focus}  {en_focus}  {en_focus}
-Trace Urdu '{ur_focus}'     -> {ur_focus}  {ur_focus}  {ur_focus}
-==================================================
+⭐️⭐️⭐️ Teacher's Star Stamp Box: [       ] ⭐️⭐️⭐️
+======================================================================
 """
-                st.markdown(create_download_file_button(ws1_text, f"Unit_{unit_number}_Worksheet_1.txt", "Download Worksheet 1"), unsafe_allow_html=True)
-            with col_media1:
-                st.image("https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&auto=format&fit=crop&q=80", caption=f"Visual Hook: {vocab_theme}")
-                st.markdown("📺 **Curated Video Support:**")
+                    st.markdown(create_download_file_button(ws1_content, f"Unit_{unit_number}_Worksheet_1_VisualHook.txt", "Download Worksheet 1"), unsafe_allow_html=True)
+                with col_p1_media:
+                    st.image("https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&auto=format&fit=crop&q=80", caption=f"Visual Hook: {vocab_theme}")
+                    st.video("https://www.youtube.com/watch?v=BELlZKpi1Zs")
+
+            # Phase 2
+            with st.container(border=True):
+                st.markdown("#### Phase 2: Tactile Probe & Salt Tray Tracing (00:15 - 00:30)")
+                col_p2_text, col_p2_media = st.columns([3, 2])
+                with col_p2_text:
+                    st.markdown("✋ **Classroom Action:** Place shallow salt/flour trays in front of each child on floor mats.")
+                    st.info(f'🗣️ **Teacher Spoken Script:**\n> *"Now, let\'s get ready for our magic writing sand. First, watch my index finger slide across the air: **{stroke_focus}**. Gently dip your finger and trace your sheet!"*')
+                    ws2_content = f"""======================================================================
+🌟 EFALL EARLY YEARS LEARNING RESOURCE | TWINKL-STYLE ACTIVITY SHEET 🌟
+======================================================================
+UNIT {unit_number}: {theme_name.upper()}
+TACTILE STROKE PRACTICE: {stroke_focus}
+NAME: _______________________________   DATE: _________________
+----------------------------------------------------------------------
+INSTRUCTIONS: First, practice tracing the pattern in your salt/flour tray.
+Then, use your favorite crayon to trace along the dotted lines below!
+
+SALT TRAY STATUS: [ Ready for Finger Tracing 🖐️ ]
+
+PENCIL CONTROL TRACK:
+Line 1: . . . . . . . . . . ➔ ({stroke_focus})
+Line 2: . . . . . . . . . . ➔ ({stroke_focus})
+Line 3: _________________________________________
+
+⭐️⭐️⭐️ Teacher's Star Stamp Box: [       ] ⭐️⭐️⭐️
+======================================================================
+"""
+                    st.markdown(create_download_file_button(ws2_content, f"Unit_{unit_number}_Worksheet_2_TactileTracing.txt", "Download Worksheet 2"), unsafe_allow_html=True)
+                with col_p2_media:
+                    st.image("https://images.unsplash.com/photo-1588072432836-e10032774350?w=400&auto=format&fit=crop&q=80", caption=f"Stroke Focus: {stroke_focus}")
+                    st.video("https://www.youtube.com/watch?v=Uj6_Knct8AE")
+
+            # Phase 3
+            with st.container(border=True):
+                st.markdown("#### Phase 3: Dual Aural Phonics & Sound Chants (00:30 - 00:50)")
+                col_p3_text, col_p3_media = st.columns([3, 2])
+                with col_p3_text:
+                    st.markdown("👂 **Classroom Action:** Hold up dual alphabet flashcards in front of the semi-circle.")
+                    st.info(f'🗣️ **Teacher Spoken Script:**\n> *"Friends, open your ears wide! Let\'s say English **\'{en_focus}\'** and Urdu **\'{ur_focus}\'**. Now let\'s clap our hands exactly **{math_focus}** times!"*')
+                    ws3_content = f"""======================================================================
+🌟 EFALL EARLY YEARS LEARNING RESOURCE | TWINKL-STYLE ACTIVITY SHEET 🌟
+======================================================================
+UNIT {unit_number}: {theme_name.upper()}
+DUAL PHONICS & RHYTHM MATCHING
+NAME: _______________________________   DATE: _________________
+----------------------------------------------------------------------
+INSTRUCTIONS: Say the English sound '{en_focus}' and Urdu sound '{ur_focus}' 
+out loud with your teacher. Draw a line to connect them!
+
+LETTER MATCHING:
+[ English: {en_focus} ]  =========>  [ Urdu: {ur_focus} ]
+
+CLAPPING RHYTHM COUNT: {math_focus} Claps
+Color exactly {math_focus} star shapes below:
+🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 🌟 (Color up to {math_focus})
+
+⭐️⭐️⭐️ Teacher's Star Stamp Box: [       ] ⭐️⭐️⭐️
+======================================================================
+"""
+                    st.markdown(create_download_file_button(ws3_content, f"Unit_{unit_number}_Worksheet_3_Phonics.txt", "Download Worksheet 3"), unsafe_allow_html=True)
+                with col_p3_media:
+                    st.image("https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?w=400&auto=format&fit=crop&q=80", caption=f"Phonics: '{en_focus}' & '{ur_focus}'")
+                    st.video("https://www.youtube.com/watch?v=Z19zFlPah-o")
+
+            # Phase 4
+            with st.container(border=True):
+                st.markdown("#### Phase 4: Cognitive Logic & Numeracy Games (00:50 - 01:05)")
+                col_p4_text, col_p4_media = st.columns([3, 2])
+                with col_p4_text:
+                    st.markdown("🧠 **Classroom Action:** Distribute mental logic sheets and counting cards.")
+                    st.info(f'🗣️ **Teacher Spoken Script:**\n> *"Let\'s put our thinking caps on! Find which **{vocab_theme}** item doesn\'t belong on Worksheet 4, and count treasure stars up to **{math_focus}** on Worksheet 5!"*')
+                    ws4_content = f"""======================================================================
+🌟 EFALL EARLY YEARS LEARNING RESOURCE | TWINKL-STYLE ACTIVITY SHEET 🌟
+======================================================================
+UNIT {unit_number}: {theme_name.upper()}
+LOGIC SORTING & NUMERACY TARGET: {math_focus}
+NAME: _______________________________   DATE: _________________
+----------------------------------------------------------------------
+INSTRUCTIONS PART 1 (LOGIC): Look at the three item boxes below. Cross 
+out (X) the one that does not belong to the '{vocab_theme}' category!
+[ 📦 Item A: {vocab_theme} ]   [ 📦 Item B: {vocab_theme} ]   [ ❌ Odd One Out ]
+
+INSTRUCTIONS PART 2 (NUMERACY): Count the objects and practice writing 
+numeral {math_focus} along the dotted tracing track below.
+Trace Number [{math_focus}]:  {math_focus}   {math_focus}   {math_focus}   {math_focus}   {math_focus}
+
+⭐️⭐️⭐️ Teacher's Star Stamp Box: [       ] ⭐️⭐️⭐️
+======================================================================
+"""
+                    st.markdown(create_download_file_button(ws4_content, f"Unit_{unit_number}_Worksheets_4_5_Logic.txt", "Download Worksheets 4 & 5"), unsafe_allow_html=True)
+                with col_p4_media:
+                    st.image("https://images.unsplash.com/photo-1596464019183-2947119ff342?w=400&auto=format&fit=crop&q=80", caption=f"Numeracy Target: {math_focus}")
+                    st.video("https://www.youtube.com/watch?v=jNQXAC9IVRw")
+
+            # Phase 5
+            with st.container(border=True):
+                st.markdown("#### Phase 5: Reflection & Celebration (01:05 - 01:10)")
+                st.markdown("🌟 **Classroom Action:** Hand out small lumps of playdough on floor mats.")
+                st.info(f'🗣️ **Teacher Spoken Script:**\n> *"Shape your playdough into letter **\'{en_focus}\'** and **\'{ur_focus}\'**. High-fives all around for completing Unit {unit_number}!"*')
+                st.success("🏆 Certificate of Unit Completion earned!")
+
+        # TAB 2: TRAINING & VIDEOS
+        with tab2:
+            st.markdown("### 🎬 Teacher Training & Instructional Videos")
+            st.write("Master pronunciation, classroom pacing, and small-space management before teaching:")
+            col_t1, col_t2 = st.columns(2)
+            with col_t1:
+                st.markdown("#### 🎥 Phonics Articulation Masterclass")
+                st.info(f"Focus: Mouth positioning for English '{en_focus}' and Urdu '{ur_focus}'.")
                 st.video("https://www.youtube.com/watch?v=BELlZKpi1Zs")
-
-        # CHAPTER 2
-        with book_tab2:
-            st.markdown("## Chapter 2: Tactile Probe & Salt Tray Tracing (00:15 - 00:30)")
-            st.write("Transition toddlers into kinesthetic motor skill practice using shallow trays.")
-            
-            col_text2, col_media2 = st.columns([3, 2])
-            with col_text2:
-                st.markdown("### ✋ Classroom Setup & Dialogue")
-                st.markdown("* **Physical Setup:** Place shallow salt/flour trays in front of each child on floor mats.")
-                st.info(f'🗣️ **Exact Teacher Spoken Script:**\n> *"Now, let\'s get ready for our magic writing sand. First, watch my index finger slide across the air: **{stroke_focus}**. Gently dip your finger and trace your sheet!"*')
-                st.markdown("---")
-                st.markdown("📄 **Integrated Worksheet 2:** Tactile Pre-Writing Stroke Tracing")
-                ws2_text = f"""==================================================
-EFALL EARLY YEARS EDUCATIONAL PORTAL
-WORKSHEET 2: TACTILE STROKE TRACING
-==================================================
-Unit: {unit_number} | Theme: {theme_name}
-Stroke Pattern: {stroke_focus}
-
-INSTRUCTIONS FOR TEACHER/PARENT:
-1. Distribute shallow trays filled with salt, sand, or flour.
-2. Demonstrate tracing motion: {stroke_focus}.
-3. Have children trace the pattern in the tray first, then on this printed sheet using thick crayons.
-
-STUDENT ACTIVITY EXERCISE:
-Finger Tracing Zone: [Salt Tray Ready]
-Pencil / Crayon Tracing Track:
-. . . . . -> (Trace along the {stroke_focus})
-. . . . . -> (Trace along the {stroke_focus})
-
-Self-Assessment Star Box: [  ] Give yourself a star!
-==================================================
-"""
-                st.markdown(create_download_file_button(ws2_text, f"Unit_{unit_number}_Worksheet_2.txt", "Download Worksheet 2"), unsafe_allow_html=True)
-            with col_media2:
-                st.image("https://images.unsplash.com/photo-1588072432836-e10032774350?w=400&auto=format&fit=crop&q=80", caption=f"Stroke Focus: {stroke_focus}")
-                st.markdown("📺 **Curated Video Support:**")
+            with col_t2:
+                st.markdown("#### 🎥 Small-Space Kinesthetic Management")
+                st.info(f"Focus: Managing salt trays for '{stroke_focus}' in compact rooms.")
                 st.video("https://www.youtube.com/watch?v=Uj6_Knct8AE")
 
-        # CHAPTER 3
-        with book_tab3:
-            st.markdown("## Chapter 3: Dual Aural Phonics & Sound Chants (00:30 - 00:50)")
-            st.write("Engage auditory learners with bilingual letter sounds and rhythmic clapping.")
-            
-            col_text3, col_media3 = st.columns([3, 2])
-            with col_text3:
-                st.markdown("### 👂 Classroom Setup & Dialogue")
-                st.markdown("* **Physical Setup:** Hold up dual alphabet flashcards in front of the semi-circle.")
-                st.info(f'🗣️ **Exact Teacher Spoken Script:**\n> *"Friends, open your ears wide! Let\'s say English **\'{en_focus}\'** and Urdu **\'{ur_focus}\'**. Now let\'s clap our hands exactly **{math_focus}** times!"*')
-                st.markdown("---")
-                st.markdown("📄 **Integrated Worksheet 3:** Dual Phonics & Alphabet Matching")
-                ws3_text = f"""==================================================
-EFALL EARLY YEARS EDUCATIONAL PORTAL
-WORKSHEET 3: DUAL PHONICS & SOUND MATCHING
-==================================================
-Unit: {unit_number} | Theme: {theme_name}
-English Phonics Focus: '{en_focus}'
-Urdu Phonics Focus: '{ur_focus}'
-Rhythm Clapping Count: {math_focus} Claps
-
-INSTRUCTIONS FOR TEACHER/PARENT:
-1. Pronounce '{en_focus}' and '{ur_focus}' together clearly.
-2. Have students repeat the sounds 3 times.
-3. Clap hands {math_focus} times synchronously with students.
-
-STUDENT ACTIVITY EXERCISE:
-Match the Letters:
-[ {en_focus} ]  =======>  [ {ur_focus} ]
-
-Coloring Task: Color the {math_focus} star shapes below!
-🌟 🌟 🌟 🌟 🌟 (Color up to {math_focus})
-==================================================
-"""
-                st.markdown(create_download_file_button(ws3_text, f"Unit_{unit_number}_Worksheet_3.txt", "Download Worksheet 3"), unsafe_allow_html=True)
-            with col_media3:
-                st.image("https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?w=400&auto=format&fit=crop&q=80", caption=f"Phonics: '{en_focus}' & Urdu '{ur_focus}'")
-                st.markdown("📺 **Curated Video Support:**")
-                st.video("https://www.youtube.com/watch?v=Z19zFlPah-o")
-
-        # CHAPTER 4
-        with book_tab4:
-            st.markdown("## Chapter 4: Cognitive Logic & Numeracy Games (00:50 - 01:05)")
-            st.write("Develop early problem-solving skills through sorting and counting.")
-            
-            col_text4, col_media4 = st.columns([3, 2])
-            with col_text4:
-                st.markdown("### 🧠 Classroom Setup & Dialogue")
-                st.markdown("* **Physical Setup:** Distribute mental logic sheets and counting cards.")
-                st.info(f'🗣️ **Exact Teacher Spoken Script:**\n> *"Let\'s put our thinking caps on! Find which **{vocab_theme}** item doesn\'t belong on Worksheet 4, and count treasure stars up to **{math_focus}** on Worksheet 5!"*')
-                st.markdown("---")
-                st.markdown("📄 **Integrated Worksheets 4 & 5:** Logic Sorting & Numeracy")
-                ws4_text = f"""==================================================
-EFALL EARLY YEARS EDUCATIONAL PORTAL
-WORKSHEETS 4 & 5: COGNITIVE LOGIC & NUMERACY
-==================================================
-Unit: {unit_number} | Theme: {theme_name}
-Target Numeral: {math_focus}
-Vocabulary Context: {vocab_theme}
-
-INSTRUCTIONS FOR TEACHER/PARENT:
-1. Ask students to identify which picture card does not fit the '{vocab_theme}' category.
-2. Guide students to count items up to numeral {math_focus}.
-3. Practice tracing number {math_focus} with a pencil or finger.
-
-STUDENT ACTIVITY EXERCISE:
-Logic Sorting Puzzle:
-[Item A: {vocab_theme}]   [Item B: {vocab_theme}]   [Item X: Odd One Out]
-(Circle the odd one out!)
-
-Numeracy Practice:
-Target Number: {math_focus}
-Trace Number [{math_focus}]:  {math_focus}  {math_focus}  {math_focus}  {math_focus}
-==================================================
-"""
-                st.markdown(create_download_file_button(ws4_text, f"Unit_{unit_number}_Worksheets_4_5.txt", "Download Worksheets 4 & 5"), unsafe_allow_html=True)
-            with col_media4:
-                st.image("https://images.unsplash.com/photo-1596464019183-2947119ff342?w=400&auto=format&fit=crop&q=80", caption=f"Numeracy Target: {math_focus}")
-                st.markdown("📺 **Curated Video Support:**")
-                st.video("https://www.youtube.com/watch?v=jNQXAC9IVRw")
-
-        # CHAPTER 5
-        with book_tab5:
-            st.markdown("## Chapter 5: Celebration & Playdough Sculpture (01:05 - 01:10)")
-            st.write("Reinforce learning with tactile playdough modeling and positive reinforcement.")
-            
-            col_text5, col_media5 = st.columns([3, 2])
-            with col_text5:
-                st.markdown("### 🌟 Classroom Setup & Dialogue")
-                st.markdown("* **Physical Setup:** Hand out small lumps of playdough on floor mats.")
-                st.info(f'🗣️ **Exact Teacher Spoken Script:**\n> *"Shape your playdough into letter **\'{en_focus}\'** and **\'{ur_focus}\'**. High-fives all around for completing Unit {unit_number}!"*')
-                st.markdown("---")
-                st.markdown("🏆 **Unit Celebration & Reflection Badge**")
-                st.success(f"Certificate of Completion for Unit {unit_number} ({theme_name}) earned!")
-            with col_media5:
-                st.image("https://images.unsplash.com/photo-1560582861-45fe48c8246f?w=400&auto=format&fit=crop&q=80", caption="Playdough & Celebration")
-
-        # MASTER HUB
-        with book_tab6:
-            st.markdown("## 🖨️ Master Resource & Extra Worksheet Generator")
-            st.write("Download complete bundles or generate custom practice sheets on demand.")
-            
-            full_unit_bundle = f"""==================================================
-EFALL EDUCATIONAL PORTAL - MASTER UNIT PACKAGE
-==================================================
+        # TAB 3: DOWNLOADABLE WORKSHEETS
+        with tab3:
+            st.markdown("### 📄 Complete Twinkl-Style Worksheet Packet")
+            st.write("Download all exercises for this unit packed into a beautifully structured printable workbook:")
+            full_packet = f"""======================================================================
+🌟 EFALL EDUCATIONAL PORTAL - COMPLETE TWINKL-STYLE WORKBOOK 🌟
+======================================================================
 Unit Number: {unit_number}
 Theme Name: {theme_name}
-Skill Focus: {skill_stage}
-Dual Phonics: English '{en_focus}' & Urdu '{ur_focus}'
-Target Numeral: {math_focus}
-Stroke Pattern: {stroke_focus}
 Vocabulary Theme: {vocab_theme}
+Dual Phonics Focus: English '{en_focus}' & Urdu '{ur_focus}'
+Target Numeral: {math_focus}
+Pre-Writing Stroke: {stroke_focus}
 
---------------------------------------------------
-COMPLETE 70-MINUTE LESSON SCRIPT SUMMARY:
-- Phase 1 (00:00-00:15): Visual Hook & Provocation about {vocab_theme}.
-- Phase 2 (00:15-00:30): Salt Tray & Pre-writing stroke tracing ({stroke_focus}).
-- Phase 3 (00:30-00:50): Dual Aural Phonics ('{en_focus}' / '{ur_focus}') & {math_focus} claps.
-- Phase 4 (00:50-01:05): Cognitive logic sorting & numeral counting up to {math_focus}.
-- Phase 5 (01:05-01:10): Playdough letter sculpture & high-fives celebration.
---------------------------------------------------
-Ready for direct classroom printing and presentation.
+----------------------------------------------------------------------
+[ACTIVITY 1: VISUAL MEMORY & PICTURE HOOK]
+- Objective: Circle pictures matching '{vocab_theme}'.
+- Tracing: Practice writing '{en_focus}' and '{ur_focus}'.
+
+[ACTIVITY 2: TACTILE STROKE TRACING]
+- Objective: Finger trace salt tray, then complete {stroke_focus} line tracing.
+
+[ACTIVITY 3: DUAL PHONICS & SOUND MATCHING]
+- Objective: Match English '{en_focus}' to Urdu '{ur_focus}'. Color {math_focus} stars.
+
+[ACTIVITY 4 & 5: LOGIC SORTING & NUMERACY]
+- Objective: Find odd-one-out for {vocab_theme}; trace numeral {math_focus}.
+----------------------------------------------------------------------
+Designed for Ages 3-4 | Early Years Foundation & IB PYP Framework
+======================================================================
 """
-            st.markdown(create_download_file_button(full_unit_bundle, f"Unit_{unit_number}_Complete_Master_Package.txt", "Download Complete Unit Master Package (TXT/PDF)"), unsafe_allow_html=True)
-            
-            st.markdown("---")
-            st.subheader("✂️ Extra Custom Worksheet Generator")
+            st.markdown(create_download_file_button(full_packet, f"Unit_{unit_number}_Complete_Twinkl_Workbook.txt", "Download Complete Workbook Packet"), unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown(full_packet)
+
+        # TAB 4: EXTRA WORKSHEET GENERATOR
+        with tab4:
+            st.markdown("### ✂️ Twinkl-Style Custom Worksheet Generator")
+            st.write("Need extra practice sheets for specific topics? Generate custom printable exercises on demand:")
             custom_topic = st.text_input("Custom Topic / Focus:", value=vocab_theme)
             custom_qty = st.slider("Number of Practice Items:", 1, 10, 5)
             if st.button("Generate Custom Practice Sheet"):
-                custom_export = f"""==================================================
-EFALL CUSTOM GENERATED PRACTICE SHEET
-==================================================
+                custom_export = f"""======================================================================
+🌟 EFALL CUSTOM GENERATED TWINKL-STYLE PRACTICE SHEET 🌟
+======================================================================
 Custom Topic: {custom_topic}
 Practice Items Quantity: {custom_qty}
 Target Age Group: 3-4 Years (Senior Kindergarten / Early Years)
+NAME: _______________________________   DATE: _________________
 
 INSTRUCTIONS FOR TEACHER:
-1. Distribute this custom practice sheet to students needing extra reinforcement on {custom_topic}.
-2. Guide students through the {custom_qty} interactive tracing and drawing prompts below.
+1. Distribute this custom practice sheet to students needing reinforcement on {custom_topic}.
+2. Guide students through the {custom_topic} interactive tracing and drawing prompts below.
 
 PRACTICE EXERCISES:
 """
                 for i in range(1, custom_qty + 1):
-                    custom_export += f"Item {i}: Trace and say '{custom_topic}' _____________\n"
-                custom_export += "=================================================="
-                
+                    custom_export += f"({i}) Draw & Trace [{custom_topic}]:  ___________________________  [⭐️]\n"
+                custom_export += f"""
+----------------------------------------------------------------------
+⭐️⭐️⭐️ Teacher's Star Stamp & Sticker Box: [       ] ⭐️⭐️⭐️
+======================================================================
+"""
                 st.success(f"Custom worksheet for **{custom_topic}** generated successfully!")
-                st.markdown(create_download_file_button(custom_export, f"Custom_{custom_topic}_Worksheet.txt", "Download Custom Worksheet"), unsafe_allow_html=True)
+                st.markdown(create_download_file_button(custom_export, f"Custom_{custom_topic}_Twinkl_Worksheet.txt", "Download Custom Worksheet"), unsafe_allow_html=True)
+
+        # TAB 5: ASSESSMENT
+        with tab5:
+            st.markdown("### 💬 Assessment & Teacher Reflection")
+            st.markdown(f"1. **Engagement:** Did children connect with the **{vocab_theme}** provocation?")
+            st.markdown(f"2. **Bilingual Articulation:** Did they articulate English **'{en_focus}'** and Urdu **'{ur_focus}'**?")
+            st.markdown(f"3. **Motor Skills:** Did they successfully trace **{stroke_focus}**?")
+            st.radio("Observation Result:", ["Fully Engaged", "Needed Guidance", "Needs More Practice"], key=f"assess_{unit_number}")
+            st.text_area("Teacher Reflection Notes:", key=f"fb_{unit_number}")
 
     else:
         st.subheader("📚 تمام 50 یونٹس اور اسباق")
