@@ -157,4 +157,3 @@ elif st.session_state.current_page == "Student View":
     st.subheader("👧👦 Synchronized Student Portal (Ages 3-10)")
     st.write("This side syncs directly with the teacher/parent units, offering interactive child-friendly activities, stories, and guided inquiry games.")
     st.info("✨ Connected to active generated units. Select a unit from the Teacher Hub to populate interactive student tasks here!")
-
