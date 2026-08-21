@@ -1,9 +1,10 @@
 import streamlit as st
 import base64
+from datetime import date
 
 # Page Configuration
 st.set_page_config(
-    page_title="EFALL Portal | Unified Dynamic Experience (Ages 3-4)",
+    page_title="EFALL Simple Hub | آسان تعلیمی پورٹل",
     page_icon="🌟",
     layout="wide"
 )
@@ -12,301 +13,264 @@ st.set_page_config(
 if "lang" not in st.session_state:
     st.session_state.lang = "English"
 if "current_page" not in st.session_state:
-    st.session_state.current_page = "Teacher/Parent Dashboard"
+    st.session_state.current_page = "Home"
 if "selected_unit" not in st.session_state:
     st.session_state.selected_unit = 1
+if "age_tier" not in st.session_state:
+    st.session_state.age_tier = "Ages 3–5 (Early Years)"
+if "reflection_logs" not in st.session_state:
+    st.session_state.reflection_logs = []
 
-# --- SIDEBAR NAVIGATION ---
-st.sidebar.title("🌟 EFALL Portal")
+# --- LARGE VISUAL SIDEBAR ---
+st.sidebar.title("🌟 EFALL آسان ہب")
 st.sidebar.caption("Educated Mother Education Nation")
-st.sidebar.info("🎯 **Framework:** IB PYP, Inquiry & Design Thinking | **Ages:** 3-4 | **Experience:** 1 Unified Dynamic Engine")
 
 # Language Switcher
 lang_choice = st.sidebar.radio(
-    "Language / زبان", 
+    "Select Language / زبان منتخب کریں", 
     ["English", "اردو"], 
     index=0 if st.session_state.lang == "English" else 1
 )
 st.session_state.lang = lang_choice
 
 st.sidebar.markdown("---")
-st.sidebar.subheader("Navigation")
+st.sidebar.subheader("👶 عمر کا انتخاب / Age Group")
+age_tier = st.sidebar.radio(
+    "Select Age:",
+    [
+        "Ages 3–5 (Early Years)", 
+        "Ages 6–8 (Lower Primary)", 
+        "Ages 9–10 (Upper Primary)"
+    ],
+    index=["Ages 3–5 (Early Years)", "Ages 6–8 (Lower Primary)", "Ages 9–10 (Upper Primary)"].index(st.session_state.age_tier)
+)
+st.session_state.age_tier = age_tier
 
-if st.sidebar.button("👩‍🏫 Teacher & Parent Training Hub" if lang_choice == "English" else "👩‍🏫 استاد اور والدین کا پورٹل", use_container_width=True):
-    st.session_state.current_page = "Teacher/Parent Dashboard"
-if st.sidebar.button("📚 50-Unit Progressive Master Library" if lang_choice == "English" else "📚 تمام 50 یونٹس کی ماسٹر لائبریری", use_container_width=True):
+st.sidebar.markdown("---")
+st.sidebar.subheader("📍 Menu / مینو")
+
+if st.sidebar.button("🏠 Home / مین صفحہ", use_container_width=True):
+    st.session_state.current_page = "Home"
+    st.rerun()
+if st.sidebar.button("📚 50 Units / اسسباق کی کتاب", use_container_width=True):
     st.session_state.current_page = "Unit Library"
-if st.sidebar.button("👧👦 Synchronized Student View" if lang_choice == "English" else "👧👦 طلباء کا صفحہ", use_container_width=True):
-    st.session_state.current_page = "Student View"
+    st.rerun()
+if st.sidebar.button("📝 My Diary / میری ڈائری", use_container_width=True):
+    st.session_state.current_page = "Reflection Log"
+    st.rerun()
 
-# --- 1. MASTER CURRICULUM GENERATOR (50 Units Grounded in IB PYP Themes) ---
+# --- BACKEND MASTER CURRICULUM ENGINE (IB PYP Themes) ---
 def get_unit_curriculum(unit_num):
-    pyp_themes = [
-        ("Who We Are", "Identity & Self", "Face / چہرہ", "A", "الف", "1", "Standing vertical lines"),
-        ("Who We Are", "Emotions & Smiles", "Smile / مسکان", "B", "ب", "2", "Sleeping horizontal lines"),
-        ("Who We Are", "Eyes & Vision", "Eyes / آنکھیں", "C", "پ", "3", "Slanting diagonal lines"),
-        ("Who We Are", "Heart & Feelings", "Heart / دل", "D", "ت", "4", "Circular and curve loops"),
-        ("Who We Are", "Family Bonds", "Family / خاندان", "E", "ٹ", "5", "Zig-zag tactile patterns"),
-        ("Who We Are", "Hands & Touch", "Hands / ہاتھ", "F", "ث", "6", "Standing vertical lines"),
-        ("Who We Are", "Voice & Sound", "Voice / آواز", "G", "ج", "7", "Sleeping horizontal lines"),
-        ("Who We Are", "My Body", "Me / میں", "H", "چ", "8", "Slanting diagonal lines"),
+    curriculum_database = [
+        # Who We Are (Units 1-8)
+        ("Who We Are", "My Feelings and Me", "Face / چہرہ", "A, B", "الف، ب", "0, 1", "Circular & Curve Loops", "Inquiring into emotional awareness and personal identity", "Empathize"),
+        ("Who We Are", "Emotions & Smiles", "Smile / مسکان", "C, D", "پ، ت", "2, 3", "Sleeping horizontal lines", "Investigating personal expressions and reactions", "Empathize"),
+        ("Who We Are", "Eyes & Vision", "Eyes / آنکھیں", "E, F", "ٹ، ث", "4, 5", "Slanting diagonal lines", "Exploring sensory perception and vision", "Define"),
+        ("Who We Are", "Heart & Feelings", "Heart / دل", "G, H", "ج، چ", "6, 7", "Circular and curve loops", "Connecting heartbeats, feelings, and empathy", "Define"),
+        ("Who We Are", "Family Bonds", "Family / خاندان", "I, J", "ح، خ", "8, 9", "Zig-zag tactile patterns", "Recognizing family roles and cooperative relationships", "Ideate"),
+        ("Who We Are", "Hands & Touch", "Hands / ہاتھ", "K, L", "د، ڈ", "10, 11", "Standing vertical lines", "Fine motor coordination and tactile feedback", "Ideate"),
+        ("Who We Are", "Voice & Sound", "Voice / آواز", "M, N", "ذ، ر", "12, 13", "Sleeping horizontal lines", "Auditory discovery and vocal expression", "Prototype"),
+        ("Who We Are", "My Body", "Me / میں", "O, P", "ڑ، ز", "14, 15", "Slanting diagonal lines", "Body awareness and self-identity mapping", "Test"),
         
-        ("Where We Are in Place and Time", "Doorways & Entry", "Door / دروازہ", "I", "ح", "9", "Circular and curve loops"),
-        ("Where We Are in Place and Time", "Windows & Light", "Window / کھڑکی", "J", "خ", "10", "Zig-zag tactile patterns"),
-        ("Where We Are in Place and Time", "Tables & Classroom", "Table / میز", "K", "د", "11", "Standing vertical lines"),
-        ("Where We Are in Place and Time", "Chairs & Seating", "Chair / کرسی", "L", "ڈ", "12", "Sleeping horizontal lines"),
-        ("Where We Are in Place and Time", "Floors & Walking", "Floor / فرش", "M", "ذ", "13", "Slanting diagonal lines"),
-        ("Where We Are in Place and Time", "Walls & Structure", "Wall / دیوار", "N", "ر", "14", "Circular and curve loops"),
-        ("Where We Are in Place and Time", "Mats & Seating", "Mat / چٹائی", "O", "ڑ", "15", "Zig-zag tactile patterns"),
-        ("Where We Are in Place and Time", "Beds & Rest", "Bed / بستر", "P", "ز", "16", "Standing vertical lines"),
+        # Where We Are in Place and Time (Units 9-16)
+        ("Where We Are in Place and Time", "Doorways & Entry", "Door / دروازہ", "Q, R", "ژ، س", "16, 17", "Circular loops", "Navigating physical spaces and boundary lines", "Empathize"),
+        ("Where We Are in Place and Time", "Windows & Light", "Window / کھڑکی", "S, T", "ش، ص", "18, 19", "Zig-zag patterns", "Exploring natural light and indoor viewpoints", "Empathize"),
+        ("Where We Are in Place and Time", "Tables & Classroom", "Table / میز", "U, V", "ض، ط", "1, 2", "Standing lines", "Arranging classroom furniture and cooperative layout", "Define"),
+        ("Where We Are in Place and Time", "Chairs & Seating", "Chair / کرسی", "W, X", "ظ، ع", "3, 4", "Sleeping lines", "Understanding seating order and body posture", "Define"),
+        ("Where We Are in Place and Time", "Floors & Walking", "Floor / فرش", "Y, Z", "غ، ف", "5, 6", "Slanting lines", "Exploring textures underfoot and surface gradients", "Ideate"),
+        ("Where We Are in Place and Time", "Walls & Structure", "Wall / دیوار", "A, B", "ق، ک", "7, 8", "Curve loops", "Building structural boundaries and spatial barriers", "Ideate"),
+        ("Where We Are in Place and Time", "Mats & Seating", "Mat / چٹائی", "C, D", "گ، ل", "9, 10", "Tactile zig-zag", "Personal space organization on floor mats", "Prototype"),
+        ("Where We Are in Place and Time", "Beds & Rest", "Bed / بستر", "E, F", "م، ن", "11, 12", "Vertical lines", "Routine management and restorative resting cycles", "Test"),
         
-        ("How We Express Ourselves", "Colors & Paint", "Paint / رنگ", "Q", "ژ", "17", "Sleeping horizontal lines"),
-        ("How We Express Ourselves", "Brushes & Strokes", "Brush / برش", "R", "س", "18", "Slanting diagonal lines"),
-        ("How We Express Ourselves", "Clay & Molding", "Clay / مٹی", "S", "ش", "19", "Circular and curve loops"),
-        ("How We Express Ourselves", "Songs & Rhymes", "Song / گیت", "T", "ص", "20", "Zig-zag tactile patterns"),
-        ("How We Express Ourselves", "Stories & Tales", "Story / کہانی", "U", "ض", "1", "Standing vertical lines"),
-        ("How We Express Ourselves", "Smiles & Joy", "Smile / مسکرانا", "V", "ط", "2", "Sleeping horizontal lines"),
-        ("How We Express Ourselves", "Laughter & Fun", "Laugh / ہنسنا", "W", "ظ", "3", "Slanting diagonal lines"),
-        ("How We Express Ourselves", "Dance & Movement", "Dance / ناچ", "X", "ع", "4", "Circular and curve loops"),
-        ("How We Express Ourselves", "Art & Hues", "Color / رنگ", "Y", "غ", "5", "Zig-zag tactile patterns"),
+        # How We Express Ourselves (Units 17-25)
+        ("How We Express Ourselves", "Colors & Paint", "Paint / رنگ", "G, H", "و، ہ", "13, 14", "Horizontal lines", "Color mixing and emotional representation through hues", "Empathize"),
+        ("How We Express Ourselves", "Brushes & Strokes", "Brush / برش", "I, J", "ھ، ء", "15, 16", "Slanting lines", "Brush stroke control and pre-writing linear mastery", "Empathize"),
+        ("How We Express Ourselves", "Clay & Molding", "Clay / مٹی", "K, L", "ی، ے", "17, 18", "Curve loops", "Tactile 3D molding and geometric shape creation", "Define"),
+        ("How We Express Ourselves", "Songs & Rhymes", "Song / گیت", "M, N", "ب، پ", "19, 20", "Zig-zag patterns", "Aural pattern recognition and rhythmic expression", "Define"),
+        ("How We Express Ourselves", "Stories & Tales", "Story / کہانی", "O, P", "ت، ٹ", "1, 2", "Vertical lines", "Narrative creation and logical sequence understanding", "Ideate"),
+        ("How We Express Ourselves", "Smiles & Joy", "Smile / مسکرانا", "Q, R", "ث، ج", "3, 4", "Horizontal lines", "Expressing joy through collaborative art and movement", "Ideate"),
+        ("How We Express Ourselves", "Laughter & Fun", "Laugh / ہنسنا", "S, T", "چ، ح", "5, 6", "Slanting lines", "Social bonding through shared cooperative team building", "Prototype"),
+        ("How We Express Ourselves", "Dance & Movement", "Dance / ناچ", "U, V", "خ، د", "7, 8", "Curve loops", "Gross motor coordination and expressive physical motion", "Prototype"),
+        ("How We Express Ourselves", "Art & Hues", "Color / رنگ", "W, X", "ڈ، ذ", "9, 10", "Tactile zig-zag", "Aesthetic appreciation of color gradients and contrast", "Test"),
         
-        ("How the World Works", "Water & Rivers", "Water / پانی", "Z", "ف", "6", "Standing vertical lines"),
-        ("How the World Works", "Leaves & Foliage", "Leaf / پتا", "A", "ق", "7", "Sleeping horizontal lines"),
-        ("How the World Works", "Sunlight & Warmth", "Sun / سورج", "B", "ک", "8", "Slanting diagonal lines"),
-        ("How the World Works", "Clouds & Sky", "Cloud / بادل", "C", "گ", "9", "Circular and curve loops"),
-        ("How the World Works", "Rain & Showers", "Rain / بارش", "D", "ل", "10", "Zig-zag tactile patterns"),
-        ("How the World Works", "Stones & Earth", "Stone / پتھر", "E", "م", "11", "Standing vertical lines"),
-        ("How the World Works", "Wind & Breeze", "Wind / ہوا", "F", "ن", "12", "Sleeping horizontal lines"),
-        ("How the World Works", "Trees & Timber", "Tree / درخت", "G", "و", "13", "Slanting diagonal lines"),
+        # How the World Works (Units 26-33)
+        ("How the World Works", "Water & Rivers", "Water / پانی", "Y, Z", "ر، ڑ", "11, 12", "Vertical lines", "Properties of liquids and observation of flow dynamics", "Empathize"),
+        ("How the World Works", "Leaves & Foliage", "Leaf / پتا", "A, B", "ز، ژ", "13, 14", "Horizontal lines", "Botanical shapes, symmetry, and vein pattern inquiry", "Empathize"),
+        ("How the World Works", "Sunlight & Warmth", "Sun / سورج", "C, D", "س، ش", "15, 16", "Slanting lines", "Observing solar warmth, shadows, and light sources", "Define"),
+        ("How the World Works", "Clouds & Sky", "Cloud / بادل", "E, F", "ص، ض", "17, 18", "Curve loops", "Weather observation and atmospheric shifts", "Define"),
+        ("How the World Works", "Rain & Showers", "Rain / بارش", "G, H", "ط، ظ", "19, 20", "Vertical lines", "Precipitation tracking and droplet motion testing", "Ideate"),
+        ("How the World Works", "Stones & Earth", "Stone / پتھر", "I, J", "ع، غ", "1, 2", "Horizontal lines", "Investigating weight, texture, and density of natural objects", "Ideate"),
+        ("How the World Works", "Wind & Breeze", "Wind / ہوا", "K, L", "ف، ق", "3, 4", "Slanting lines", "Air movement, resistance, and kinetic inquiry", "Prototype"),
+        ("How the World Works", "Trees & Timber", "Tree / درخت", "M, N", "ک، گ", "5, 6", "Curve loops", "Plant anatomy and structural strength analysis", "Test"),
         
-        ("How We Organize Ourselves", "Baskets & Storage", "Basket / ٹوکری", "H", "ہ", "14", "Circular and curve loops"),
-        ("How We Organize Ourselves", "Toys & Play", "Toy / کھلونا", "I", "ھ", "15", "Zig-zag tactile patterns"),
-        ("How We Organize Ourselves", "Shelves & Books", "Shelf / الماری", "J", "ء", "16", "Standing vertical lines"),
-        ("How We Organize Ourselves", "Boxes & Packing", "Box / ڈبہ", "K", "ی", "17", "Sleeping horizontal lines"),
-        ("How We Organize Ourselves", "Cleaning & Tidying", "Clean / صاف", "L", "ے", "18", "Slanting diagonal lines"),
-        ("How We Organize Ourselves", "Order & Arrangement", "Tidy / درست", "M", "الف", "19", "Circular and curve loops"),
-        ("How We Organize Ourselves", "Helping Hands", "Help / مدد", "N", "ب", "20", "Zig-zag tactile patterns"),
-        ("How We Organize Ourselves", "Sorting Objects", "Sort / ترتیب", "O", "پ", "1", "Standing vertical lines"),
+        # How We Organize Ourselves (Units 34-41)
+        ("How We Organize Ourselves", "Baskets & Storage", "Basket / ٹوکری", "O, P", "ل، م", "7, 8", "Zig-zag patterns", "Sorting, classifying, and container management systems", "Empathize"),
+        ("How We Organize Ourselves", "Toys & Play", "Toy / کھلونا", "Q, R", "ن، و", "9, 10", "Vertical lines", "Inventory management and cooperative sharing protocols", "Empathize"),
+        ("How We Organize Ourselves", "Shelves & Books", "Shelf / الماری", "S, T", "ہ، ی", "11, 12", "Horizontal lines", "Library organization and categorization systems", "Define"),
+        ("How We Organize Ourselves", "Boxes & Packing", "Box / ڈبہ", "U, V", "ء، ے", "13, 14", "Slanting lines", "Volume analysis, spatial packing, and geometry", "Define"),
+        ("How We Organize Ourselves", "Cleaning & Tidying", "Clean / صاف", "W, X", "الف، ب", "15, 16", "Curve loops", "Responsibility routines and environmental care habits", "Ideate"),
+        ("How We Organize Ourselves", "Order & Arrangement", "Tidy / درست", "Y, Z", "پ، ت", "17, 18", "Zig-zag patterns", "Pattern sequencing and symmetrical arrangement design", "Ideate"),
+        ("How We Organize Ourselves", "Helping Hands", "Help / مدد", "A, B", "ٹ، ث", "19, 20", "Vertical lines", "Community collaboration and shared task execution", "Prototype"),
+        ("How We Organize Ourselves", "Sorting Objects", "Sort / ترتیب", "C, D", "ج، چ", "1, 2", "Horizontal lines", "Logical categorization based on physical attributes", "Test"),
         
-        ("Sharing the Planet", "Seeds & Planting", "Seed / بیج", "P", "ت", "2", "Sleeping horizontal lines"),
-        ("Sharing the Planet", "Soil & Ground", "Soil / مٹی", "Q", "ٹ", "3", "Slanting diagonal lines"),
-        ("Sharing the Planet", "Growing Plants", "Plant / پودا", "R", "ث", "4", "Circular and curve loops"),
-        ("Sharing the Planet", "Flowers & Blossoms", "Flower / پھول", "S", "ج", "5", "Zig-zag tactile patterns"),
-        ("Sharing the Planet", "Birds & Feathers", "Bird / پرندہ", "T", "چ", "6", "Standing vertical lines"),
-        ("Sharing the Planet", "Cats & Paws", "Cat / بلی", "U", "ح", "7", "Sleeping horizontal lines"),
-        ("Sharing the Planet", "Dogs & Canines", "Dog / کتا", "V", "خ", "8", "Slanting diagonal lines"),
-        ("Sharing the Planet", "Plant Growth", "Growth / بڑھوتری", "W", "د", "9", "Circular and curve loops"),
-        ("Sharing the Planet", "Nature Care", "Care / دیکھ بھال", "X", "ڈ", "10", "Zig-zag tactile patterns")
+        # Sharing the Planet (Units 42-50)
+        ("Sharing the Planet", "Seeds & Planting", "Seed / بیج", "E, F", "ح، خ", "3, 4", "Slanting lines", "Life cycles and seed germination inquiry", "Empathize"),
+        ("Sharing the Planet", "Soil & Ground", "Soil / مٹی", "G, H", "د، ڈ", "5, 6", "Curve loops", "Earth layers and plant growth foundations", "Empathize"),
+        ("Sharing the Planet", "Growing Plants", "Plant / پودا", "I, J", "ذ، ر", "7, 8", "Vertical lines", "Water, nutrient, and sunlight requirements for growth", "Define"),
+        ("Sharing the Planet", "Flowers & Blossoms", "Flower / پھول", "K, L", "ڑ، ز", "9, 10", "Horizontal lines", "Aesthetic plant parts and basic pollination inquiry", "Define"),
+        ("Sharing the Planet", "Birds & Feathers", "Bird / پرندہ", "M, N", "ژ، س", "11, 12", "Slanting lines", "Animal habitats and avian environmental adaptation", "Ideate"),
+        ("Sharing the Planet", "Cats & Paws", "Cat / بلی", "O, P", "ش، ص", "13, 14", "Curve loops", "Mammal characteristics, needs, and careful interaction", "Ideate"),
+        ("Sharing the Planet", "Dogs & Canines", "Dog / کتا", "Q, R", "ض، ط", "15, 16", "Zig-zag patterns", "Animal behavior, communication, and loyalty concepts", "Prototype"),
+        ("Sharing the Planet", "Plant Growth", "Growth / بڑھوتری", "S, T", "ظ، ع", "17, 18", "Vertical lines", "Long-term tracking and measurement of living organisms", "Prototype"),
+        ("Sharing the Planet", "Nature Care", "Care / دیکھ بھال", "U, V", "غ، ف", "19, 20", "Horizontal lines", "Environmental stewardship and ecological responsibility", "Test")
     ]
     
-    pyp_theme, theme_category, vocab, en, ur, math, stroke = pyp_themes[unit_num - 1]
-    theme_name = f"Unit {unit_num} [{pyp_theme}]: {theme_category}"
-    skill_stage = f"Inquiry & Design Thinking for {vocab}"
-    return theme_name, skill_stage, en, ur, int(math), stroke, vocab, pyp_theme
+    domain, category, vocab, en, ur, math, stroke, inquiry_focus, design_phase = curriculum_database[unit_num - 1]
+    theme_name = f"Unit {unit_num}: {category}"
+    return theme_name, vocab, en, ur, str(math), stroke, domain, inquiry_focus, design_phase
 
 def create_download_button(content, filename, label):
     b64 = base64.b64encode(content.encode('utf-8')).decode('utf-8')
-    return f'<a href="data:text/plain;charset=utf-8;base64,{b64}" download="{filename}" style="text-decoration:none;"><div style="background:#2e7d32;color:white;padding:10px;text-align:center;border-radius:6px;font-weight:bold;margin-top:5px;">📥 {label}</div></a>'
+    return f'<a href="data:text/plain;charset=utf-8;base64,{b64}" download="{filename}" style="text-decoration:none;"><div style="background:#2e7d32;color:white;padding:12px;text-align:center;border-radius:8px;font-weight:bold;font-size:16px;margin-top:10px;">📥 {label}</div></a>'
 
 
-# --- MAIN INTERFACE VIEWS ---
-if st.session_state.current_page == "Teacher/Parent Dashboard":
-    if st.session_state.lang == "English":
-        st.title("👩‍🏫 EFALL Teacher & Parent Training Hub")
-        st.write("Welcome to your unified dynamic curriculum portal. Select a theme box below to launch the complete multi-engine learning experience.")
-        
-        st.markdown("---")
-        st.subheader("📦 Explore Curriculum by 6 Progressive IB PYP Theme Boxes")
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            with st.container(border=True):
-                st.markdown("### 🧩 Box 1: Who We Are (Units 1-8)")
-                if st.button("Open Box 1 (Units 1-8)", key="box1"):
-                    st.session_state.selected_unit = 1
-                    st.session_state.current_page = "Unit Library"
-                    st.rerun()
-            with st.container(border=True):
-                st.markdown("### 🏡 Box 2: Where We Are in Place and Time (Units 9-16)")
-                if st.button("Open Box 2 (Units 9-16)", key="box2"):
-                    st.session_state.selected_unit = 9
-                    st.session_state.current_page = "Unit Library"
-                    st.rerun()
-            with st.container(border=True):
-                st.markdown("### 🎨 Box 3: How We Express Ourselves (Units 17-25)")
-                if st.button("Open Box 3 (Units 17-25)", key="box3"):
-                    st.session_state.selected_unit = 17
-                    st.session_state.current_page = "Unit Library"
-                    st.rerun()
-        with col2:
-            with st.container(border=True):
-                st.markdown("### 💧 Box 4: How the World Works (Units 26-33)")
-                if st.button("Open Box 4 (Units 26-33)", key="box4"):
-                    st.session_state.selected_unit = 26
-                    st.session_state.current_page = "Unit Library"
-                    st.rerun()
-            with st.container(border=True):
-                st.markdown("### 🧹 Box 5: How We Organize Ourselves (Units 34-41)")
-                if st.button("Open Box 5 (Units 34-41)", key="box5"):
-                    st.session_state.selected_unit = 34
-                    st.session_state.current_page = "Unit Library"
-                    st.rerun()
-            with st.container(border=True):
-                st.markdown("### 🌿 Box 6: Sharing the Planet (Units 42-50)")
-                if st.button("Open Box 6 (Units 42-50)", key="box6"):
-                    st.session_state.selected_unit = 42
-                    st.session_state.current_page = "Unit Library"
-                    st.rerun()
-    else:
-        st.title("👩‍🏫 استاد اور والدین کا پورٹل")
-        if st.button("تمام یونٹس کی لائبریری کھولیں", use_container_width=True):
+# --- HOME PAGE (Visual Big-Button Dashboard) ---
+if st.session_state.current_page == "Home":
+    st.title("🌟 EFALL آسان اسباق اور سکھانے کا طریقہ")
+    st.markdown("### 🎯 Tap any box below to start teaching through inquiry and play!")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🧩 Box 1: Who We Are\n(ہم کون ہیں)", use_container_width=True, key="h1"):
+            st.session_state.selected_unit = 1
+            st.session_state.current_page = "Unit Library"
+            st.rerun()
+        if st.button("🎨 Box 3: How We Express\n(ہم کیسے اظہار کرتے ہیں)", use_container_width=True, key="h3"):
+            st.session_state.selected_unit = 17
+            st.session_state.current_page = "Unit Library"
+            st.rerun()
+        if st.button("🧹 Box 5: How We Organize\n(ہم خود کو کیسے منظم کرتے ہیں)", use_container_width=True, key="h5"):
+            st.session_state.selected_unit = 34
+            st.session_state.current_page = "Unit Library"
+            st.rerun()
+    with col2:
+        if st.button("🏡 Box 2: Where We Are\n(ہم کہاں ہیں وقت اور جگہ میں)", use_container_width=True, key="h2"):
+            st.session_state.selected_unit = 9
+            st.session_state.current_page = "Unit Library"
+            st.rerun()
+        if st.button("💧 Box 4: How World Works\n(دنیا کیسے کام کرتی ہے)", use_container_width=True, key="h4"):
+            st.session_state.selected_unit = 26
+            st.session_state.current_page = "Unit Library"
+            st.rerun()
+        if st.button("🌿 Box 6: Sharing Planet\n(سیارے کی مشترکہ دیکھ بھال)", use_container_width=True, key="h6"):
+            st.session_state.selected_unit = 42
             st.session_state.current_page = "Unit Library"
             st.rerun()
 
+    st.markdown("---")
+    if st.button("📝 Click here to open My Diary (میری ڈائری)", use_container_width=True):
+        st.session_state.current_page = "Reflection Log"
+        st.rerun()
+
+# --- UNIT LIBRARY & SIMPLE 3-STEP GUIDE ---
 elif st.session_state.current_page == "Unit Library":
-    if st.session_state.lang == "English":
-        st.subheader("📚 Ages 3-4: Unified Dynamic Learning Experience")
-        st.write("Each unit seamlessly synthesizes your Lesson Plan, Activity Guide, Intelligent GIF, Visual/Video Creators, Worksheet Layout, and PDF Export into one synchronized flow.")
-        
-        if st.button("⬅️ Back to Theme Boxes Dashboard"):
-            st.session_state.current_page = "Teacher/Parent Dashboard"
-            st.rerun()
+    if st.button("⬅️ Back / واپس جائیں"):
+        st.session_state.current_page = "Home"
+        st.rerun()
 
-        unit_number = st.selectbox("Select Unit Number (1 to 50):", list(range(1, 51)), index=st.session_state.selected_unit - 1, format_func=lambda x: f"Unit {x}: {get_unit_curriculum(x)[0]}")
-        
-        theme_name, skill_stage, en_focus, ur_focus, math_focus, stroke_focus, vocab_theme, pyp_theme = get_unit_curriculum(unit_number)
+    st.title("📚 اسباق کی لائبریری / Unit Library")
+    
+    unit_number = st.selectbox("Select Unit Number (1 to 50) / یونٹ نمبر منتخب کریں:", list(range(1, 51)), index=st.session_state.selected_unit - 1, format_func=lambda x: f"Unit {x}: {get_unit_curriculum(x)[0]}")
+    
+    theme_name, vocab_theme, en_focus, ur_focus, math_focus, stroke_focus, domain_name, inquiry_focus, design_phase = get_unit_curriculum(unit_number)
 
-        st.markdown(f"---")
-        
-        # --- UNIFIED EXPERIENCE HEADER ---
-        st.markdown(f"# 📋 Unified Dynamic Curriculum: {theme_name}")
-        st.success(f"🌐 **PYP Theme:** {pyp_theme} &nbsp;&nbsp;|&nbsp;&nbsp; 🎯 **Inquiry Focus:** {vocab_theme}")
-        st.warning(f"🔤 **Dual Phonics:** English **'{en_focus}'** & Urdu **'{ur_focus}'** &nbsp;&nbsp;|&nbsp;&nbsp; 🔢 **Math Numeral:** **{math_focus}** &nbsp;&nbsp;|&nbsp;&nbsp; ✍️ **Stroke:** {stroke_focus}")
+    st.markdown("---")
+    st.markdown(f"## 📋 {theme_name}")
+    st.info(f"🌐 **Theme:** {domain_name} &nbsp;|&nbsp; 💡 **Action Phase:** {design_phase}")
 
-        # --- SINGLE FLUID EXPERIENCE DISPLAY ---
-        st.markdown("---")
-        st.markdown("## 🌟 1. Dynamic Lesson Plan & Inquiry Flow")
-        lesson_text = f"""[PHASE 1: PROVOCATION & EMPATHY (Harvard Project Zero 'See, Think, Wonder')]
-- Gather children on floor mats. Present **{vocab_theme}**.
-- Script: "Look closely at **{vocab_theme}**. What do you notice?"
-
-[PHASE 2: DESIGN THINKING IDEATION & TACTILE TRACING]
-- Model motion in salt tray: **{stroke_focus}**.
-- Script: "Dip your index finger and slide across the sand with me!"
-
-[PHASE 3: DUAL AURAL PHONICS & SOUND CHANTS]
-- Recite English **'{en_focus}'** and Urdu **'{ur_focus}'**. Clap **{math_focus}** times.
-
-[PHASE 4: PROTOTYPE & COGNITIVE LOGIC]
-- Form letters with playdough and sort items related to **{vocab_theme}**.
-
-[PHASE 5: REFLECTION & CELEBRATION]
-- High-fives all around for completing Unit {unit_number}!"""
-        
-        with st.container(border=True):
-            st.markdown(lesson_text)
-
-        st.markdown("---")
-        st.markdown("## 🌟 2. Intelligent GIF Animation & Visual Guides")
-        col_g1, col_g2 = st.columns(2)
-        with col_g1:
-            st.markdown(f"""
-            <div style="border: 2px dashed #ff9800; padding: 15px; border-radius: 8px; background: #fff8e1; text-align: center;">
-                <h4 style="color: #e65100; margin: 0 0 5px 0;">🎬 Dynamic GIF Animation Engine</h4>
-                <p style="font-size: 13px; color: #333;">Tracing <b>{vocab_theme}</b> using <em>{stroke_focus}</em></p>
-                <div style="font-size: 20px; font-weight: bold; color: #d84315; margin: 10px 0; padding: 8px; background: #fff; border-radius: 6px;">
-                    👉 [ ✍️ <b>{en_char := en_focus}</b> & <b>{ur_char := ur_focus}</b> via {stroke_focus} ] 👈
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        with col_g2:
-            st.markdown(f"""
-            <div style="border: 2px dashed #2196f3; padding: 15px; border-radius: 8px; background: #e3f2fd; text-align: center;">
-                <h4 style="color: #0d47a1; margin: 0 0 5px 0;">🖼️ & 🎬 Visual & Video Engine Prompts</h4>
-                <p style="font-size: 13px; color: #333;"><b>Anchor Image:</b> High-contrast vector of {vocab_theme}</p>
-                <p style="font-size: 13px; color: #333;"><b>Storyboard Video:</b> 50-sec classroom walkthrough</p>
-            </div>
-            """, unsafe_allow_html=True)
-
-        st.markdown("---")
-        st.markdown("## 🌟 3. Intelligent Worksheet Layout & Live Preview")
-        worksheet_html = f"""
-        <div style="border: 3px solid #2e7d32; padding: 20px; border-radius: 10px; background-color: #fafafa; font-family: monospace; color: #000;">
-            <h3 style="text-align: center; color: #2e7d32; margin-top: 0;">★ EFALL UNIFIED DYNAMIC WORKSHEET ★</h3>
-            <hr style="border: 1px dashed #2e7d32;">
-            <p><b>UNIT {unit_number} [{pyp_theme}]:</b> {theme_name}</p>
-            <p><b>TOPIC:</b> {vocab_theme} &nbsp;&nbsp;|&nbsp;&nbsp; <b>DATE:</b> _______________</p>
-            <br>
-            <div style="border: 2px dashed #666; padding: 15px; background: #fff; text-align: center; border-radius: 6px;">
-                <span style="font-size: 18px; font-weight: bold;">[ TARGET VISUAL: {vocab_theme} ]</span><br><br>
-                <span style="font-size: 14px;">Bilingual Phonics: English <b>'{en_focus}'</b> &nbsp;⚡&nbsp; Urdu <b>'{ur_focus}'</b></span>
-            </div>
-            <br>
-            <p><b>TACTILE STROKE PRACTICE ({stroke_focus}):</b></p>
-            <div style="background: #eee; padding: 8px; border-radius: 4px; text-align: center; letter-spacing: 3px;">
-                Start ➔ . . . . . {stroke_focus} . . . . . ➔ End
-            </div>
-            <br>
-            <p><b>NUMERACY COUNT ({math_focus}):</b> ⭐ (Target: {math_focus})</p>
-            <div style="float: right; border: 2px solid #333; padding: 6px 12px; text-align: center; background: #fff;">
-                <b>Teacher Stamp</b><br>[ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ]
-            </div>
-            <div style="clear: both;"></div>
+    # SIMPLIFIED 3-STEP PICTURE CARDS FOR TEACHING
+    st.markdown("### 👩‍🏫 سکھانے کا آسان طریقہ / 3-Step Teaching Guide")
+    
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.markdown("""
+        <div style="background: #e8f8f5; border: 2px solid #1abc9c; padding: 15px; border-radius: 10px; text-align: center;">
+            <h3 style="color: #16a085; margin:0;">1️⃣ Show / دکھائیں</h3>
+            <p style="font-size: 14px; margin-top: 10px;">Bring a real object or picture of <b>'{}'</b>. Let children touch and look at it.</p>
         </div>
-        """
-        st.markdown(worksheet_html, unsafe_allow_html=True)
+        """.format(vocab_theme), unsafe_allow_html=True)
+    with c2:
+        st.markdown("""
+        <div style="background: #fdf2e9; border: 2px solid #f39c12; padding: 15px; border-radius: 10px; text-align: center;">
+            <h3 style="color: #d35400; margin:0;">2️⃣ Ask / پوچھیں</h3>
+            <p style="font-size: 14px; margin-top: 10px;"><b>🔊 سنیے / Listen & Ask:</b><br>"What do you see? آپ کو کیا دکھتا ہے؟"</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with c3:
+        st.markdown("""
+        <div style="background: #ebf5fb; border: 2px solid #3498db; padding: 15px; border-radius: 10px; text-align: center;">
+            <h3 style="color: #2980b9; margin:0;">3️⃣ Do / کریں</h3>
+            <p style="font-size: 14px; margin-top: 10px;">Practice letters <b>'{0}' / '{1}'</b> and count up to <b>{2}</b> together!</p>
+        </div>
+        """.format(en_focus, ur_focus, math_focus), unsafe_allow_html=True)
+
+    st.markdown("---")
+    st.markdown("### 🖨️ Download Teaching Pack / ڈاؤن لوڈ کریں")
+    download_text = f"""EFALL SIMPLE TEACHING GUIDE - {theme_name}
+- Vocabulary: {vocab_theme}
+- English/Urdu Phonics: {en_focus} / {ur_focus}
+- Math Count: {math_focus}
+- 3 Steps: 1. Show object. 2. Ask what they notice. 3. Build & trace.
+"""
+    st.markdown(create_download_button(download_text, f"Unit_{unit_number}_Guide.txt", "Download Unit Guide"), unsafe_allow_html=True)
+
+# --- REFLECTION LOG (One-Tap Emoji Diary) ---
+elif st.session_state.current_page == "Reflection Log":
+    if st.button("⬅️ Back / واپس جائیں"):
+        st.session_state.current_page = "Home"
+        st.rerun()
+
+    st.title("📝 میری ڈائری / My Teaching Diary")
+    st.markdown("Tap your feelings or progress today! / آج آپ کا دن کیسا رہا؟")
+    
+    with st.form("simple_diary"):
+        user_name = st.text_input("Your Name / آپ کا نام:")
         
-        raw_ws_text = f"""======================================================================
-EFALL UNIFIED WORKSHEET: UNIT {unit_number} [{pyp_theme}]
-THEME: {theme_name} | TOPIC: {vocab_theme}
-DUAL PHONICS: English '{en_focus}' & Urdu '{ur_focus}' | NUMERAL: {math_focus}
-----------------------------------------------------------------------
-[VISUAL BLOCK]: {vocab_theme}
-[TRACING TRACK]: Start ➔ . . . . {stroke_focus} . . . . ➔ End
-[NUMERACY]: Target Count = {math_focus}
-Teacher Stamp Box: [      ]                 Score: ________
-======================================================================
-"""
+        st.markdown("### Select how today went / آج کا تاثر منتخب کریں:")
+        emoji_choice = st.radio("Choose One:", [
+            "🌟 Very Good / بہت اچھا دن رہا", 
+            "💡 Learned Something New / کچھ نیا سیکھا", 
+            "🌱 Need More Practice / مزید مشق کی ضرورت ہے"
+        ])
+        
+        note_text = st.text_area("Write or speak a short note / کوئی خاص بات لکھیں:")
+        
+        save_btn = st.form_submit_button("💾 Save / محفوظ کریں")
+        if save_btn:
+            if user_name.strip() == "":
+                st.warning("Please enter your name. / براہ کرم نام درج کریں۔")
+            else:
+                st.session_state.reflection_logs.append({
+                    "name": user_name,
+                    "date": str(date.today()),
+                    "mood": emoji_choice,
+                    "note": note_text
+                })
+                st.success("Saved successfully! / کامیابی سے محفوظ ہو گیا!")
 
-        st.markdown("---")
-        st.markdown("## 🌟 4. PDF Export Engine Package")
-        pdf_package = f"""======================================================================
-EFALL UNIFIED DYNAMIC CURRICULUM PACKAGE - UNIT {unit_number}
-PYP Transdisciplinary Theme: {pyp_theme}
-======================================================================
-
-{lesson_text}
-
-----------------------------------------------------------------------
-WORKSHEET SPECIFICATION:
-----------------------------------------------------------------------
-{raw_ws_text}
-
-======================================================================
-Certified for IB PYP Early Years Education (Ages 3-4)
-======================================================================
-"""
-        col_dl1, col_dl2 = st.columns(2)
-        with col_dl1:
-            st.markdown(create_download_button(pdf_package, f"Unit_{unit_number}_Unified_Lesson.txt", "Download Text Format"), unsafe_allow_html=True)
-        with col_dl2:
-            st.markdown(create_download_button(pdf_package, f"Unit_{unit_number}_Unified_Package.pdf", "Download PDF Package"), unsafe_allow_html=True)
-
-        st.markdown("---")
-        st.markdown("## 💬 Assessment & Reflection")
-        st.radio("Observation Result:", ["Fully Engaged", "Needed Guidance", "Needs More Practice"], key=f"assess_{unit_number}")
-        st.text_area("Teacher Reflection Notes:", key=f"fb_{unit_number}")
-
+    st.markdown("---")
+    st.subheader("📖 Saved Diary Entries / محفوظ شدہ ڈائری")
+    if len(st.session_state.reflection_logs) == 0:
+        st.info("No entries yet. / ابھی تک کوئی ڈائری درج نہیں ہوئی۔")
     else:
-        st.subheader("📚 تمام 50 یونٹس اور اسباق")
-        if st.button("⬅️ ڈیش بورڈ پر واپس جائیں"):
-            st.session_state.current_page = "Teacher/Parent Dashboard"
-            st.rerun()
-
-elif st.session_state.current_page == "Student View":
-    if st.session_state.lang == "English":
-        st.subheader("👧👦 Synchronized Student Portal (Ages 3-4)")
-        st.write("Child-friendly bilingual activities synced with active units.")
-    else:
-        st.subheader("👧👦 طلباء کا صفحہ (عمر 3-4 سال)")
-        st.write("بچوں کے لیے دو لسانی تفریحی سرگرمیاں۔")
+        for idx, entry in enumerate(st.session_state.reflection_logs):
+            with st.container(border=True):
+                st.write(f"**#{idx+1} | {entry['date']} | {entry['name']}**")
+                st.write(f"Status: {entry['mood']}")
+                if entry['note']:
+                    st.write(f"Note: {entry['note']}")
+        
+        diary_download = "EFALL TEACHER DIARY LOGS\n====================\n\n"
+        for idx, entry in enumerate(st.session_state.reflection_logs):
+            diary_download += f"Entry #{idx+1} ({entry['date']}) - {entry['name']}\nMood: {entry['mood']}\nNote: {entry['note']}\n--------------------\n"
+        st.markdown(create_download_button(diary_download, "My_Teaching_Diary.txt", "Download Diary Logs"), unsafe_allow_html=True)
