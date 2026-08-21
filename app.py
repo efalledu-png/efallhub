@@ -39,63 +39,80 @@ if st.sidebar.button("📚 50-Unit Progressive Master Library" if lang_choice ==
 if st.sidebar.button("👧👦 Synchronized Student View" if lang_choice == "English" else "👧👦 طلباء کا صفحہ", use_container_width=True):
     st.session_state.current_page = "Student View"
 
-# --- INTELLIGENT 50-UNIT CURRICULUM GENERATOR ---
+# --- UNIQUE 50-UNIT CURRICULUM GENERATOR ---
 def get_unit_curriculum(unit_num):
-    if unit_num <= 8:
-        theme_name = f"Theme 1: Identity, Emotions, & Sound Introduction (Unit {unit_num})"
-        skill_stage = "Sound & Number Introduction (Sensory awareness of basic bilingual phonics and numerals 1-3)"
-        vocab_theme = ["Face / چہرہ", "Smile / مسکان", "Eyes / آنکھیں", "Heart / دل", "Family / خاندان", "Hands / ہاتھ", "Voice / آواز", "Me / میں"][unit_num - 1]
-    elif unit_num <= 16:
-        theme_name = f"Theme 2: Local Environment & Pre-Writing Stems (Unit {unit_num})"
-        skill_stage = "Pre-Writing Stems (Vertical & horizontal lines, bilingual tactile finger tracing)"
-        vocab_theme = ["Door / دروازہ", "Window / کھڑکی", "Table / میز", "Chair / کرسی", "Floor / فرش", "Wall / دیوار", "Mat / چٹائی", "Bed / بستر"][unit_num - 9]
-    elif unit_num <= 25:
-        theme_name = f"Theme 3: Expression, Art, & Early Letter Formation (Unit {unit_num})"
-        skill_stage = "Early Letter Formation (Tracing first set of English/Urdu letters and numbers 4-7)"
-        vocab_theme = ["Paint / رنگ", "Brush / برش", "Clay / مٹی", "Song / گیت", "Story / کہانی", "Smile / مسکرانا", "Laugh / ہنسنا", "Dance / ناچ", "Color / رنگ"][unit_num - 17]
-    elif unit_num <= 33:
-        theme_name = f"Theme 4: Nature, Science, & Slanting Strokes (Unit {unit_num})"
-        skill_stage = "Slanting & Curve Mastery (Diagonal lines, loops, and numbers 8-12)"
-        vocab_theme = ["Water / پانی", "Leaf / پتا", "Sun / سورج", "Cloud / بادل", "Rain / بارش", "Stone / پتھر", "Wind / ہوا", "Tree / درخت"][unit_num - 26]
-    elif unit_num <= 41:
-        theme_name = f"Theme 5: Home Organization & Letter Writing (Unit {unit_num})"
-        skill_stage = "Independent Writing (Writing bilingual letters and numbers 13-16 with minimal guidance)"
-        vocab_theme = ["Basket / ٹوکری", "Toy / کھلونا", "Shelf / الماری", "Box / ڈبہ", "Clean / صاف", "Tidy / درست", "Help / مدد", "Sort / ترتیب"][unit_num - 34]
-    else:
-        theme_name = f"Theme 6: Plants, Animals, & Mastery Writing (Unit {unit_num})"
-        skill_stage = "Mastery & Combination (Full bilingual alphabet tracing, numbers 17-20, and creative expression)"
-        vocab_theme = ["Seed / بیج", "Soil / مٹی", "Plant / پودا", "Flower / پھول", "Bird / پرندہ", "Cat / بلی", "Dog / کتا", "Growth / بڑھوتری", "Care / دیکھ بھال"][unit_num - 42]
-
-    letters_en = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
-    letters_ur = ["الف", "ب", "پ", "ت", "ٹ", "ث", "ج", "چ", "ح", "خ", "د", "ڈ", "ذ", "ر", "ڑ", "ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف"]
-    
-    pre_writing_strokes = [
-        "Standing vertical lines (Pulling down from top to bottom ⬇️)",
-        "Sleeping horizontal lines (Sliding smoothly from left to right ➡)",
-        "Slanting diagonal lines (Tilting across from corner to corner ↗️)",
-        "Circular and curve loops (Drawing smooth round shapes 🔄)",
-        "Zig-zag tactile patterns (Sharply alternating peaks and valleys ⚡)"
+    themes = [
+        ("Identity & Self", "Face / چہرہ", "A", "الف", "1", "Standing vertical lines"),
+        ("Emotions & Smiles", "Smile / مسکان", "B", "ب", "2", "Sleeping horizontal lines"),
+        ("Eyes & Vision", "Eyes / آنکھیں", "C", "پ", "3", "Slanting diagonal lines"),
+        ("Heart & Feelings", "Heart / دل", "D", "ت", "4", "Circular and curve loops"),
+        ("Family Bonds", "Family / خاندان", "E", "ٹ", "5", "Zig-zag tactile patterns"),
+        ("Hands & Touch", "Hands / ہاتھ", "F", "ث", "6", "Standing vertical lines"),
+        ("Voice & Sound", "Voice / آواز", "G", "ج", "7", "Sleeping horizontal lines"),
+        ("My Body", "Me / میں", "H", "چ", "8", "Slanting diagonal lines"),
+        
+        ("Doorways & Entry", "Door / دروازہ", "I", "ح", "9", "Circular and curve loops"),
+        ("Windows & Light", "Window / کھڑکی", "J", "خ", "10", "Zig-zag tactile patterns"),
+        ("Tables & Classroom", "Table / میز", "K", "د", "11", "Standing vertical lines"),
+        ("Chairs & Seating", "Chair / کرسی", "L", "ڈ", "12", "Sleeping horizontal lines"),
+        ("Floors & Walking", "Floor / فرش", "M", "ذ", "13", "Slanting diagonal lines"),
+        ("Walls & Structure", "Wall / دیوار", "N", "ر", "14", "Circular and curve loops"),
+        ("Mats & Seating", "Mat / چٹائی", "O", "ڑ", "15", "Zig-zag tactile patterns"),
+        ("Beds & Rest", "Bed / بستر", "P", "ز", "16", "Standing vertical lines"),
+        
+        ("Colors & Paint", "Paint / رنگ", "Q", "ژ", "17", "Sleeping horizontal lines"),
+        ("Brushes & Strokes", "Brush / برش", "R", "س", "18", "Slanting diagonal lines"),
+        ("Clay & Molding", "Clay / مٹی", "S", "ش", "19", "Circular and curve loops"),
+        ("Songs & Rhymes", "Song / گیت", "T", "ص", "20", "Zig-zag tactile patterns"),
+        ("Stories & Tales", "Story / کہانی", "U", "ض", "1", "Standing vertical lines"),
+        ("Smiles & Joy", "Smile / مسکرانا", "V", "ط", "2", "Sleeping horizontal lines"),
+        ("Laughter & Fun", "Laugh / ہنسنا", "W", "ظ", "3", "Slanting diagonal lines"),
+        ("Dance & Movement", "Dance / ناچ", "X", "ع", "4", "Circular and curve loops"),
+        ("Art & Hues", "Color / رنگ", "Y", "غ", "5", "Zig-zag tactile patterns"),
+        
+        ("Water & Rivers", "Water / پانی", "Z", "ف", "6", "Standing vertical lines"),
+        ("Leaves & Foliage", "Leaf / پتا", "A", "ق", "7", "Sleeping horizontal lines"),
+        ("Sunlight & Warmth", "Sun / سورج", "B", "ک", "8", "Slanting diagonal lines"),
+        ("Clouds & Sky", "Cloud / بادل", "C", "گ", "9", "Circular and curve loops"),
+        ("Rain & Showers", "Rain / بارش", "D", "ل", "10", "Zig-zag tactile patterns"),
+        ("Stones & Earth", "Stone / پتھر", "E", "م", "11", "Standing vertical lines"),
+        ("Wind & Breeze", "Wind / ہوا", "F", "ن", "12", "Sleeping horizontal lines"),
+        ("Trees & Timber", "Tree / درخت", "G", "و", "13", "Slanting diagonal lines"),
+        
+        ("Baskets & Storage", "Basket / ٹوکری", "H", "ہ", "14", "Circular and curve loops"),
+        ("Toys & Play", "Toy / کھلونا", "I", "ھ", "15", "Zig-zag tactile patterns"),
+        ("Shelves & Books", "Shelf / الماری", "J", "ء", "16", "Standing vertical lines"),
+        ("Boxes & Packing", "Box / ڈبہ", "K", "ی", "17", "Sleeping horizontal lines"),
+        ("Cleaning & Tidying", "Clean / صاف", "L", "ے", "18", "Slanting diagonal lines"),
+        ("Order & Arrangement", "Tidy / درست", "M", "الف", "19", "Circular and curve loops"),
+        ("Helping Hands", "Help / مدد", "N", "ب", "20", "Zig-zag tactile patterns"),
+        ("Sorting Objects", "Sort / ترتیب", "O", "پ", "1", "Standing vertical lines"),
+        
+        ("Seeds & Planting", "Seed / بیج", "P", "ت", "2", "Sleeping horizontal lines"),
+        ("Soil & Ground", "Soil / مٹی", "Q", "ٹ", "3", "Slanting diagonal lines"),
+        ("Growing Plants", "Plant / پودا", "R", "ث", "4", "Circular and curve loops"),
+        ("Flowers & Blossoms", "Flower / پھول", "S", "ج", "5", "Zig-zag tactile patterns"),
+        ("Birds & Feathers", "Bird / پرندہ", "T", "چ", "6", "Standing vertical lines"),
+        ("Cats & Paws", "Cat / بلی", "U", "ح", "7", "Sleeping horizontal lines"),
+        ("Dogs & Canines", "Dog / کتا", "V", "خ", "8", "Slanting diagonal lines"),
+        ("Plant Growth", "Growth / بڑھوتری", "W", "د", "9", "Circular and curve loops"),
+        ("Nature Care", "Care / دیکھ بھال", "X", "ڈ", "10", "Zig-zag tactile patterns")
     ]
     
-    idx = (unit_num - 1) % len(letters_en)
-    en_focus = letters_en[idx]
-    ur_focus = letters_ur[idx]
-    math_focus = (unit_num % 20) + 1  
-    stroke_focus = pre_writing_strokes[(unit_num - 1) % len(pre_writing_strokes)]
+    theme_category, vocab, en, ur, math, stroke = themes[unit_num - 1]
+    theme_name = f"Unit {unit_num}: {theme_category}"
+    skill_stage = f"Inquiry & Multi-Sensory Exploration for {vocab}"
+    return theme_name, skill_stage, en, ur, int(math), stroke, vocab
 
-    return theme_name, skill_stage, en_focus, ur_focus, math_focus, stroke_focus, vocab_theme
-
-def create_download_link(content, filename, label):
+def create_download_file_button(content, filename, label):
     b64 = base64.b64encode(content.encode('utf-8')).decode('utf-8')
-    return f'<a href="data:text/plain;base64,{b64}" download="{filename}" style="text-decoration:none;"><div style="background:#ff4b4b;color:white;padding:12px;text-align:center;border-radius:6px;font-weight:bold;margin-top:10px;">📥 {label} (TXT/PDF Download)</div></a>'
+    return f'<a href="data:text/plain;charset=utf-8;base64,{b64}" download="{filename}" style="text-decoration:none;"><div style="background:#2e7d32;color:white;padding:10px;text-align:center;border-radius:6px;font-weight:bold;margin-top:5px;">📥 {label}</div></a>'
 
 # --- MAIN VIEWS ---
 if st.session_state.current_page == "Teacher/Parent Dashboard":
     if st.session_state.lang == "English":
         st.title("👩‍🏫 EFALL Teacher & Parent Training Hub")
-        st.write("Welcome! This portal acts as your expert co-teacher, providing readable word-for-word 70-minute lesson scripts, embedded YouTube instructional videos, in-line worksheet links, and supporting visual aids designed for compact classrooms.")
-        
-        st.info("💡 **Master Curriculum Hub:** Select any Theme Box below. All 50 units feature fully detailed, narrative teacher scripts.")
+        st.write("Welcome to your interactive curriculum portal. Explore our 6 progressive theme boxes designed for small classrooms and toddlers aged 3-4.")
         
         st.markdown("---")
         st.subheader("📦 Explore Curriculum by 6 Progressive Theme Boxes")
@@ -147,8 +164,8 @@ if st.session_state.current_page == "Teacher/Parent Dashboard":
 
 elif st.session_state.current_page == "Unit Library":
     if st.session_state.lang == "English":
-        st.subheader("📚 Ages 3-4: Master Unit Library & Expert Teacher Guide")
-        st.write("Select any unit below to access your clear 70-minute lesson script, embedded videos, in-line worksheet links, and custom generator.")
+        st.subheader("📚 Ages 3-4: Interactive Book Lesson Library")
+        st.write("Select a unit below to open your step-by-step interactive lesson book, complete with matching media, downloadable worksheets, and guided scripts.")
         
         if st.button("⬅️ Back to Theme Boxes Dashboard"):
             st.session_state.current_page = "Teacher/Parent Dashboard"
@@ -159,213 +176,251 @@ elif st.session_state.current_page == "Unit Library":
         theme_name, skill_stage, en_focus, ur_focus, math_focus, stroke_focus, vocab_theme = get_unit_curriculum(unit_number)
 
         st.markdown(f"---")
-        st.markdown(f"## 🌟 Unit {unit_number} Master Teacher Command Center")
-        st.success(f"**Theme & Stage:** {theme_name}")
-        st.info(f"🎯 **Skill Focus:** {skill_stage} | 🔑 **Vocabulary:** {vocab_theme}")
-        st.warning(f"🔤 **Dual Phonics:** English **'{en_focus}'** & Urdu **'{ur_focus}'** &nbsp;&nbsp;|&nbsp;&nbsp; 🔢 **Math:** **{math_focus}** &nbsp;&nbsp;|&nbsp;&nbsp; ✍️ **Stroke:** {stroke_focus}")
+        
+        # --- INTERACTIVE BOOK HEADER ---
+        st.markdown(f"# 📖 Interactive Lesson Book: {theme_name}")
+        st.success(f"🎯 **Skill Stage:** {skill_stage} &nbsp;&nbsp;|&nbsp;&nbsp; 🔑 **Vocabulary Theme:** {vocab_theme}")
+        st.warning(f"🔤 **Dual Phonics:** English **'{en_focus}'** & Urdu **'{ur_focus}'** &nbsp;&nbsp;|&nbsp;&nbsp; 🔢 **Math Numeral:** **{math_focus}** &nbsp;&nbsp;|&nbsp;&nbsp; ✍️ **Stroke:** {stroke_focus}")
 
-        # Comprehensive text content for downloads
-        full_lesson_export = f"""
-EFALL EXPERT TEACHER LESSON PLAN - UNIT {unit_number}
-Theme: {theme_name}
-Skill Focus: {skill_stage}
-Dual Phonics: English '{en_focus}' & Urdu '{ur_focus}'
-Target Numeral: {math_focus} | Stroke: {stroke_focus}
-Vocabulary Theme: {vocab_theme}
-
-[PHASE 1: PROVOCATION & VISUAL HOOK (00:00 - 00:15)]
-- Setup: Semi-circle on floor mats.
-- Spoken Script: "Good morning, my little explorers! Look closely at what I have hidden in my hands today. What do you see here that reminds us of {vocab_theme}?"
-- Worksheet 1 Link: Visual Memory & Picture Hook Sheet.
-
-[PHASE 2: TACTILE PROBE & SALT TRAY TRACING (00:15 - 00:30)]
-- Setup: Salt/flour trays distributed.
-- Spoken Script: "Now, let's get ready for our magic writing sand. First, watch my index finger slide across the air: {stroke_focus}. Gently dip your finger and trace Worksheet 2."
-- Worksheet 2 Link: Tactile Pre-Writing Stroke Tracing Sheet.
-
-[PHASE 3: DUAL AURAL PHONICS & SOUND CHANTS (00:30 - 00:50)]
-- Setup: Flashcards displayed.
-- Spoken Script: "Friends, open your ears wide! Let's say English '{en_focus}' and Urdu '{ur_focus}'. Clap our hands {math_focus} times!"
-- Worksheet 3 Link: Dual Phonics & Alphabet Matching Sheet.
-
-[PHASE 4: COGNITIVE LOGIC & NUMERACY GAMES (00:50 - 01:05)]
-- Setup: Puzzle & counting grids.
-- Spoken Script: "Let's put our thinking caps on! Find which {vocab_theme} item doesn't belong on Worksheet 4, and count treasure stars up to {math_focus} on Worksheet 5."
-- Worksheet 4 & 5 Links: Mental Logic Sorting & Game-Alike Counting Sheets.
-
-[PHASE 5: REFLECTION & CELEBRATION (01:05 - 01:10)]
-- Setup: Playdough snakes.
-- Spoken Script: "Shape your playdough into '{en_focus}' and '{ur_focus}'. High-fives all around for completing Unit {unit_number}!"
-"""
-
-        tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-            "🎬 1. Teacher Training & Videos", 
-            "📝 2. Detailed 70-Min Lesson Script", 
-            "📄 3. In-Line Worksheets & Preview", 
-            "✂️ 4. Extra Worksheet Generator", 
-            "🖐️ 5. AI Salt Tray Animation",
-            "💬 6. Assessment & Feedback"
+        # Tab Navigation styled as Book Chapters
+        book_tab1, book_tab2, book_tab3, book_tab4, book_tab5, book_tab6 = st.tabs([
+            "📖 Book Chapter 1: Provocation", 
+            "📖 Book Chapter 2: Tactile Tracing", 
+            "📖 Book Chapter 3: Dual Phonics", 
+            "📖 Book Chapter 4: Numeracy Logic", 
+            "📖 Book Chapter 5: Celebration & Play", 
+            "🖨️ Master Resource & Worksheet Hub"
         ])
 
-        with tab1:
-            st.markdown(f"### 🎬 Teacher Training & Embedded Instructional Videos (Unit {unit_number})")
-            st.write("Watch these curated instructional videos to master articulation, room pacing, and small-space management before class:")
+        # CHAPTER 1
+        with book_tab1:
+            st.markdown("## Chapter 1: Provocation & Visual Hook (00:00 - 00:15)")
+            st.write("Set the stage in your small classroom with a captivating visual hook and guided inquiry.")
             
-            col_vid1, col_vid2 = st.columns(2)
-            with col_vid1:
-                st.markdown("#### 🎥 1. EFALL Phonics Articulation Masterclass")
-                st.info(f"**Focus:** Close-up mouth positioning for English **'{en_focus}'** and Urdu **'{ur_focus}'**.")
-                # Embedded working YouTube video player (General Early Years Phonics/Articulation guide)
+            col_text1, col_media1 = st.columns([3, 2])
+            with col_text1:
+                st.markdown("### 👁️ Classroom Setup & Dialogue")
+                st.markdown("* **Physical Setup:** Gather children in a cozy semi-circle on floor mats. Keep the center clear.")
+                st.info(f'🗣️ **Exact Teacher Spoken Script:**\n> *"Good morning, my little explorers! Look closely at what I have hidden in my hands today. What do you see here that reminds us of **{vocab_theme}**?"*')
+                st.markdown("---")
+                st.markdown("📄 **Integrated Worksheet 1:** Visual Memory & Picture Hook")
+                ws1_text = f"""==================================================
+EFALL EARLY YEARS EDUCATIONAL PORTAL
+WORKSHEET 1: VISUAL MEMORY & PICTURE HOOK
+==================================================
+Unit: {unit_number} | Theme: {theme_name}
+Vocabulary Focus: {vocab_theme}
+Target Letters: English '{en_focus}' | Urdu '{ur_focus}'
+
+INSTRUCTIONS FOR TEACHER/PARENT:
+1. Show the children real objects or picture cards related to '{vocab_theme}'.
+2. Ask students to identify items starting with phonics '{en_focus}' and '{ur_focus}'.
+3. Have students circle or point to the correct picture below.
+
+STUDENT ACTIVITY EXERCISE:
+[O] Picture A: {vocab_theme} (Match & Circle)
+[  ] Picture B: Distractor item
+[  ] Picture C: Distractor item
+
+Tracing Practice Area:
+Trace English '{en_focus}' -> {en_focus}  {en_focus}  {en_focus}
+Trace Urdu '{ur_focus}'     -> {ur_focus}  {ur_focus}  {ur_focus}
+==================================================
+"""
+                st.markdown(create_download_file_button(ws1_text, f"Unit_{unit_number}_Worksheet_1.txt", "Download Worksheet 1"), unsafe_allow_html=True)
+            with col_media1:
+                st.image("https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&auto=format&fit=crop&q=80", caption=f"Visual Hook: {vocab_theme}")
+                st.markdown("📺 **Curated Video Support:**")
                 st.video("https://www.youtube.com/watch?v=BELlZKpi1Zs")
-                st.caption("✨ *Tip:* Practice pronouncing both sounds clearly in front of a mirror before class.")
 
-            with col_vid2:
-                st.markdown("#### 🎥 2. Small-Space Kinesthetic Guidance")
-                st.info(f"**Focus:** Managing salt trays and hand-on-hand tracing for **{stroke_focus}** in limited furniture setups.")
-                # Embedded working YouTube video player (Kinesthetic Pre-Writing)
-                st.video("https://www.youtube.com/watch?v=Uj6_Knct8AE")
-                st.caption("✨ *Tip:* Keep trays stable on low floor mats to prevent spills.")
-
-        with tab2:
-            st.markdown(f"### 📝 Detailed 70-Minute Narrative Teacher Lesson Script")
-            st.write("Follow this clear, step-by-step readable lesson plan featuring exact spoken dialogues, embedded student videos, and in-line worksheet buttons.")
+        # CHAPTER 2
+        with book_tab2:
+            st.markdown("## Chapter 2: Tactile Probe & Salt Tray Tracing (00:15 - 00:30)")
+            st.write("Transition toddlers into kinesthetic motor skill practice using shallow trays.")
             
-            st.markdown(create_download_link(full_lesson_export, f"Unit_{unit_number}_Detailed_Lesson_Script.txt", "Download Complete 70-Min Lesson Plan Text/PDF"), unsafe_allow_html=True)
-            st.markdown("---")
+            col_text2, col_media2 = st.columns([3, 2])
+            with col_text2:
+                st.markdown("### ✋ Classroom Setup & Dialogue")
+                st.markdown("* **Physical Setup:** Place shallow salt/flour trays in front of each child on floor mats.")
+                st.info(f'🗣️ **Exact Teacher Spoken Script:**\n> *"Now, let\'s get ready for our magic writing sand. First, watch my index finger slide across the air: **{stroke_focus}**. Gently dip your finger and trace your sheet!"*')
+                st.markdown("---")
+                st.markdown("📄 **Integrated Worksheet 2:** Tactile Pre-Writing Stroke Tracing")
+                ws2_text = f"""==================================================
+EFALL EARLY YEARS EDUCATIONAL PORTAL
+WORKSHEET 2: TACTILE STROKE TRACING
+==================================================
+Unit: {unit_number} | Theme: {theme_name}
+Stroke Pattern: {stroke_focus}
 
-            # Readable structured layout with images/icons and embedded student videos
-            with st.container(border=True):
-                st.markdown(f"## 🕒 Phase 1: Provocation & Visual Hook (00:00 - 00:15)")
-                st.markdown("👁️ **Classroom Setup:** Gather children in a cozy semi-circle on floor mats. Keep physical room clear of clutter.")
-                st.info('🗣️ **Exact Spoken Teacher Dialogue:**\n> *"Good morning, my little explorers! Look closely at what I have hidden in my hands today. What do you see here that reminds us of **' + vocab_theme + '**?"*')
-                
-                # In-line clickable worksheet button / preview box
-                col_w1, col_img1 = st.columns([2, 1])
-                with col_w1:
-                    st.markdown("📄 **Linked Worksheet:** [Worksheet 1: Visual Memory & Picture Hook](#)")
-                    st.caption("Task: Circle the picture card that matches our theme.")
-                with col_img1:
-                    st.image("https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=200&auto=format&fit=crop&q=80", caption="Visual Hook Aid")
+INSTRUCTIONS FOR TEACHER/PARENT:
+1. Distribute shallow trays filled with salt, sand, or flour.
+2. Demonstrate tracing motion: {stroke_focus}.
+3. Have children trace the pattern in the tray first, then on this printed sheet using thick crayons.
 
-                st.markdown("📺 **Student Video to Play Now:**")
-                st.video("https://www.youtube.com/watch?v=dQw4w9WgXcQ" if unit_number % 2 == 0 else "https://www.youtube.com/watch?v=y6120QOlsfU")
+STUDENT ACTIVITY EXERCISE:
+Finger Tracing Zone: [Salt Tray Ready]
+Pencil / Crayon Tracing Track:
+. . . . . -> (Trace along the {stroke_focus})
+. . . . . -> (Trace along the {stroke_focus})
 
-            st.markdown("---")
-            with st.container(border=True):
-                st.markdown(f"## 🕒 Phase 2: Tactile Probe & Salt Tray Tracing (00:15 - 00:30)")
-                st.markdown("✋ **Classroom Setup:** Pass out shallow salt or flour trays to each child on floor mats.")
-                st.info(f'🗣️ **Exact Spoken Teacher Dialogue:**\n> *"Now, let\'s get ready for our magic writing sand. First, watch my index finger slide across the air: **{stroke_focus}**. Gently dip your finger and trace your sheet!"*')
-                
-                col_w2, col_img2 = st.columns([2, 1])
-                with col_w2:
-                    st.markdown("📄 **Linked Worksheet:** [Worksheet 2: Tactile Pre-Writing Stroke Tracing](#)")
-                    st.caption(f"Task: Finger trace and pencil trace **{stroke_focus}**.")
-                with col_img2:
-                    st.image("https://images.unsplash.com/photo-1588072432836-e10032774350?w=200&auto=format&fit=crop&q=80", caption="Tactile Tracing Aid")
+Self-Assessment Star Box: [  ] Give yourself a star!
+==================================================
+"""
+                st.markdown(create_download_file_button(ws2_text, f"Unit_{unit_number}_Worksheet_2.txt", "Download Worksheet 2"), unsafe_allow_html=True)
+            with col_media2:
+                st.image("https://images.unsplash.com/photo-1588072432836-e10032774350?w=400&auto=format&fit=crop&q=80", caption=f"Stroke Focus: {stroke_focus}")
+                st.markdown("📺 **Curated Video Support:**")
+                st.video("https://www.youtube.com/watch?v=Uj6_Knct8AE")
 
-                st.markdown("📺 **Student Video to Play Now:**")
+        # CHAPTER 3
+        with book_tab3:
+            st.markdown("## Chapter 3: Dual Aural Phonics & Sound Chants (00:30 - 00:50)")
+            st.write("Engage auditory learners with bilingual letter sounds and rhythmic clapping.")
+            
+            col_text3, col_media3 = st.columns([3, 2])
+            with col_text3:
+                st.markdown("### 👂 Classroom Setup & Dialogue")
+                st.markdown("* **Physical Setup:** Hold up dual alphabet flashcards in front of the semi-circle.")
+                st.info(f'🗣️ **Exact Teacher Spoken Script:**\n> *"Friends, open your ears wide! Let\'s say English **\'{en_focus}\'** and Urdu **\'{ur_focus}\'**. Now let\'s clap our hands exactly **{math_focus}** times!"*')
+                st.markdown("---")
+                st.markdown("📄 **Integrated Worksheet 3:** Dual Phonics & Alphabet Matching")
+                ws3_text = f"""==================================================
+EFALL EARLY YEARS EDUCATIONAL PORTAL
+WORKSHEET 3: DUAL PHONICS & SOUND MATCHING
+==================================================
+Unit: {unit_number} | Theme: {theme_name}
+English Phonics Focus: '{en_focus}'
+Urdu Phonics Focus: '{ur_focus}'
+Rhythm Clapping Count: {math_focus} Claps
+
+INSTRUCTIONS FOR TEACHER/PARENT:
+1. Pronounce '{en_focus}' and '{ur_focus}' together clearly.
+2. Have students repeat the sounds 3 times.
+3. Clap hands {math_focus} times synchronously with students.
+
+STUDENT ACTIVITY EXERCISE:
+Match the Letters:
+[ {en_focus} ]  =======>  [ {ur_focus} ]
+
+Coloring Task: Color the {math_focus} star shapes below!
+🌟 🌟 🌟 🌟 🌟 (Color up to {math_focus})
+==================================================
+"""
+                st.markdown(create_download_file_button(ws3_text, f"Unit_{unit_number}_Worksheet_3.txt", "Download Worksheet 3"), unsafe_allow_html=True)
+            with col_media3:
+                st.image("https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?w=400&auto=format&fit=crop&q=80", caption=f"Phonics: '{en_focus}' & Urdu '{ur_focus}'")
+                st.markdown("📺 **Curated Video Support:**")
+                st.video("https://www.youtube.com/watch?v=Z19zFlPah-o")
+
+        # CHAPTER 4
+        with book_tab4:
+            st.markdown("## Chapter 4: Cognitive Logic & Numeracy Games (00:50 - 01:05)")
+            st.write("Develop early problem-solving skills through sorting and counting.")
+            
+            col_text4, col_media4 = st.columns([3, 2])
+            with col_text4:
+                st.markdown("### 🧠 Classroom Setup & Dialogue")
+                st.markdown("* **Physical Setup:** Distribute mental logic sheets and counting cards.")
+                st.info(f'🗣️ **Exact Teacher Spoken Script:**\n> *"Let\'s put our thinking caps on! Find which **{vocab_theme}** item doesn\'t belong on Worksheet 4, and count treasure stars up to **{math_focus}** on Worksheet 5!"*')
+                st.markdown("---")
+                st.markdown("📄 **Integrated Worksheets 4 & 5:** Logic Sorting & Numeracy")
+                ws4_text = f"""==================================================
+EFALL EARLY YEARS EDUCATIONAL PORTAL
+WORKSHEETS 4 & 5: COGNITIVE LOGIC & NUMERACY
+==================================================
+Unit: {unit_number} | Theme: {theme_name}
+Target Numeral: {math_focus}
+Vocabulary Context: {vocab_theme}
+
+INSTRUCTIONS FOR TEACHER/PARENT:
+1. Ask students to identify which picture card does not fit the '{vocab_theme}' category.
+2. Guide students to count items up to numeral {math_focus}.
+3. Practice tracing number {math_focus} with a pencil or finger.
+
+STUDENT ACTIVITY EXERCISE:
+Logic Sorting Puzzle:
+[Item A: {vocab_theme}]   [Item B: {vocab_theme}]   [Item X: Odd One Out]
+(Circle the odd one out!)
+
+Numeracy Practice:
+Target Number: {math_focus}
+Trace Number [{math_focus}]:  {math_focus}  {math_focus}  {math_focus}  {math_focus}
+==================================================
+"""
+                st.markdown(create_download_file_button(ws4_text, f"Unit_{unit_number}_Worksheets_4_5.txt", "Download Worksheets 4 & 5"), unsafe_allow_html=True)
+            with col_media4:
+                st.image("https://images.unsplash.com/photo-1596464019183-2947119ff342?w=400&auto=format&fit=crop&q=80", caption=f"Numeracy Target: {math_focus}")
+                st.markdown("📺 **Curated Video Support:**")
                 st.video("https://www.youtube.com/watch?v=jNQXAC9IVRw")
 
-            st.markdown("---")
-            with st.container(border=True):
-                st.markdown(f"## 🕒 Phase 3: Dual Aural Phonics & Sound Chants (00:30 - 00:50)")
-                st.markdown("👂 **Classroom Setup:** Hold up dual alphabet flashcards in front of the semi-circle.")
-                st.info(f'🗣️ **Exact Spoken Teacher Dialogue:**\n> *"Friends, open your ears wide! Let\'s say English **\'{en_focus}\'** and Urdu **\'{ur_focus}\'**. Now let\'s clap our hands exactly **{math_focus}** times!"*')
-                
-                col_w3, col_img3 = st.columns([2, 1])
-                with col_w3:
-                    st.markdown("📄 **Linked Worksheet:** [Worksheet 3: Dual Phonics & Alphabet Matching](#)")
-                    st.caption(f"Task: Match English '{en_focus}' with Urdu '{ur_focus}'.")
-                with col_img3:
-                    st.image("https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?w=200&auto=format&fit=crop&q=80", caption="Phonics Card Aid")
-
-                st.markdown("📺 **Student Video to Play Now:**")
-                st.video("https://www.youtube.com/watch?v=xyz123abcde" if False else "https://www.youtube.com/watch?v=Z19zFlPah-o")
-
-            st.markdown("---")
-            with st.container(border=True):
-                st.markdown(f"## 🕒 Phase 4: Cognitive Logic & Numeracy Games (00:50 - 01:05)")
-                st.markdown("🧠 **Classroom Setup:** Distribute mental logic sheets and counting cards.")
-                st.info(f'🗣️ **Exact Spoken Teacher Dialogue:**\n> *"Let\'s put our thinking caps on! Find which **{vocab_theme}** item doesn\'t belong on Worksheet 4, and count treasure stars up to **{math_focus}** on Worksheet 5!"*')
-                
-                col_w4, col_img4 = st.columns([2, 1])
-                with col_w4:
-                    st.markdown("📄 **Linked Worksheets:** [Worksheet 4: Mental Logic](#) | [Worksheet 5: Counting & Numerals](#)")
-                    st.caption(f"Task: Sort category pairs and trace number {math_focus}.")
-                with col_img4:
-                    st.image("https://images.unsplash.com/photo-1596464019183-2947119ff342?w=200&auto=format&fit=crop&q=80", caption="Numeracy Logic Aid")
-
-            st.markdown("---")
-            with st.container(border=True):
-                st.markdown(f"## 🕒 Phase 5: Reflection & Celebration (01:05 - 01:10)")
-                st.markdown("🌟 **Classroom Setup:** Hand out small lumps of playdough for sculpture.")
-                st.info(f'🗣️ **Exact Spoken Teacher Dialogue:**\n> *"Shape your playdough into letter **\'{en_focus}\'** and **\'{ur_focus}\'**. High-fives all around for completing Unit {unit_number}!"*')
-
-        with tab3:
-            st.markdown("### 📄 In-Line Worksheets & Live Previews")
-            st.write(f"All 5 standard worksheets for **Unit {unit_number}** are listed below with direct export options:")
+        # CHAPTER 5
+        with book_tab5:
+            st.markdown("## Chapter 5: Celebration & Playdough Sculpture (01:05 - 01:10)")
+            st.write("Reinforce learning with tactile playdough modeling and positive reinforcement.")
             
-            ws_packet_content = f"""
-EFALL EDUCATIONAL PORTAL - COMPLETE 5-PART WORKSHEET PACKET
-UNIT {unit_number}: {theme_name}
---------------------------------------------------------------------------------
-[WORKSHEET 1: VISUAL MEMORY & PICTURE HOOK]
-Task: Circle items matching '{vocab_theme}'.
+            col_text5, col_media5 = st.columns([3, 2])
+            with col_text5:
+                st.markdown("### 🌟 Classroom Setup & Dialogue")
+                st.markdown("* **Physical Setup:** Hand out small lumps of playdough on floor mats.")
+                st.info(f'🗣️ **Exact Teacher Spoken Script:**\n> *"Shape your playdough into letter **\'{en_focus}\'** and **\'{ur_focus}\'**. High-fives all around for completing Unit {unit_number}!"*')
+                st.markdown("---")
+                st.markdown("🏆 **Unit Celebration & Reflection Badge**")
+                st.success(f"Certificate of Completion for Unit {unit_number} ({theme_name}) earned!")
+            with col_media5:
+                st.image("https://images.unsplash.com/photo-1560582861-45fe48c8246f?w=400&auto=format&fit=crop&q=80", caption="Playdough & Celebration")
 
-[WORKSHEET 2: TACTILE STROKE TRACING]
-Task: Trace {stroke_focus}.
-
-[WORKSHEET 3: DUAL PHONICS MATCHING]
-Task: Match English '{en_focus}' and Urdu '{ur_focus}'. Clap {math_focus} times.
-
-[WORKSHEET 4: MENTAL LOGIC & SORTING]
-Task: Connect matching category pairs for '{vocab_theme}'.
-
-[WORKSHEET 5: COUNTING & NUMERAL FORMATION]
-Task: Count and trace number [{math_focus}].
---------------------------------------------------------------------------------
-            """
-            st.markdown(create_download_link(ws_packet_content, f"Unit_{unit_number}_Worksheets_Packet.txt", "Download Full 5-Part Worksheet Packet"), unsafe_allow_html=True)
+        # MASTER HUB
+        with book_tab6:
+            st.markdown("## 🖨️ Master Resource & Extra Worksheet Generator")
+            st.write("Download complete bundles or generate custom practice sheets on demand.")
             
-            with st.container(border=True):
-                st.markdown(ws_packet_content)
+            full_unit_bundle = f"""==================================================
+EFALL EDUCATIONAL PORTAL - MASTER UNIT PACKAGE
+==================================================
+Unit Number: {unit_number}
+Theme Name: {theme_name}
+Skill Focus: {skill_stage}
+Dual Phonics: English '{en_focus}' & Urdu '{ur_focus}'
+Target Numeral: {math_focus}
+Stroke Pattern: {stroke_focus}
+Vocabulary Theme: {vocab_theme}
 
-        with tab4:
-            st.markdown("### ✂️ Extra Worksheet Generator (Custom Practice)")
-            st.write("Need additional practice sheets for your students? Use this generator to create custom exercises on the fly:")
+--------------------------------------------------
+COMPLETE 70-MINUTE LESSON SCRIPT SUMMARY:
+- Phase 1 (00:00-00:15): Visual Hook & Provocation about {vocab_theme}.
+- Phase 2 (00:15-00:30): Salt Tray & Pre-writing stroke tracing ({stroke_focus}).
+- Phase 3 (00:30-00:50): Dual Aural Phonics ('{en_focus}' / '{ur_focus}') & {math_focus} claps.
+- Phase 4 (00:50-01:05): Cognitive logic sorting & numeral counting up to {math_focus}.
+- Phase 5 (01:05-01:10): Playdough letter sculpture & high-fives celebration.
+--------------------------------------------------
+Ready for direct classroom printing and presentation.
+"""
+            st.markdown(create_download_file_button(full_unit_bundle, f"Unit_{unit_number}_Complete_Master_Package.txt", "Download Complete Unit Master Package (TXT/PDF)"), unsafe_allow_html=True)
+            
+            st.markdown("---")
+            st.subheader("✂️ Extra Custom Worksheet Generator")
             custom_topic = st.text_input("Custom Topic / Focus:", value=vocab_theme)
             custom_qty = st.slider("Number of Practice Items:", 1, 10, 5)
-            if st.button("Generate Custom Worksheet"):
-                st.success(f"Successfully generated custom worksheet for **{custom_topic}** with {custom_qty} items!")
-                st.code(f"""
-    +-------------------------------------------------------+
-    | EFALL CUSTOM PRACTICE SHEET                           |
-    | Topic: {custom_topic}                                 |
-    | Items: {custom_qty} bilingual tracing prompts         |
-    | Status: Ready to print and distribute                 |
-    +-------------------------------------------------------+
-                """, language="text")
+            if st.button("Generate Custom Practice Sheet"):
+                custom_export = f"""==================================================
+EFALL CUSTOM GENERATED PRACTICE SHEET
+==================================================
+Custom Topic: {custom_topic}
+Practice Items Quantity: {custom_qty}
+Target Age Group: 3-4 Years (Senior Kindergarten / Early Years)
 
-        with tab5:
-            st.markdown(f"### 🖐️ AI Salt Tray Hand-Movement Animation")
-            with st.container(border=True):
-                st.markdown(f"#### 🎥 Hand Movement Mechanics: {stroke_focus}")
-                st.code(f"""
-      +-------------------------------------------------------+
-      |  [BILINGUAL AI HAND MOVEMENT SIMULATION]              |
-      |     (1) Start Position: [●] Top Left                  |
-      |     (2) Finger Motion:  ===> Moving across...         |
-      |     (3) Dual Focus:     English '{en_focus}' & Urdu '{ur_focus}'     |
-      +-------------------------------------------------------+
-                """, language="text")
+INSTRUCTIONS FOR TEACHER:
+1. Distribute this custom practice sheet to students needing extra reinforcement on {custom_topic}.
+2. Guide students through the {custom_qty} interactive tracing and drawing prompts below.
 
-        with tab6:
-            st.markdown("### 💬 Assessment & Teacher Feedback")
-            st.markdown(f"1. **Provocation & Engagement:** Did students respond well to the **{vocab_theme}** hook?")
-            st.markdown(f"2. **Dual Phonics:** Did they articulate English **'{en_focus}'** and Urdu **'{ur_focus}'**?")
-            st.markdown(f"3. **Kinesthetic Mastery:** Did they successfully trace **{stroke_focus}**?")
-            st.radio("Observation Result:", ["Fully Engaged", "Needed Guidance", "Needs More Practice"], key=f"assess_{unit_number}")
-            st.text_area("Teacher Reflection Notes:", key=f"fb_{unit_number}")
+PRACTICE EXERCISES:
+"""
+                for i in range(1, custom_qty + 1):
+                    custom_export += f"Item {i}: Trace and say '{custom_topic}' _____________\n"
+                custom_export += "=================================================="
+                
+                st.success(f"Custom worksheet for **{custom_topic}** generated successfully!")
+                st.markdown(create_download_file_button(custom_export, f"Custom_{custom_topic}_Worksheet.txt", "Download Custom Worksheet"), unsafe_allow_html=True)
 
     else:
         st.subheader("📚 تمام 50 یونٹس اور اسباق")
