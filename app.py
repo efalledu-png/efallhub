@@ -3,7 +3,7 @@ import base64
 
 # Page Configuration
 st.set_page_config(
-    page_title="EFALL Portal | Teacher & Parent Training Hub (Ages 3-4)",
+    page_title="EFALL Portal | IB PYP & Multi-Sensory Hub (Ages 3-4)",
     page_icon="🌟",
     layout="wide"
 )
@@ -19,7 +19,7 @@ if "selected_unit" not in st.session_state:
 # --- SIDEBAR NAVIGATION ---
 st.sidebar.title("🌟 EFALL Portal")
 st.sidebar.caption("Educated Mother Education Nation")
-st.sidebar.info("🎯 **Target:** Ages 3-4 | **Styles:** Visual 👁️ | Aural 👂 | Kinesthetic ✋")
+st.sidebar.info("🎯 **Framework:** IB PYP & Inquiry | **Ages:** 3-4 | **Styles:** Visual 👁️ | Aural 👂 | Kinesthetic ✋")
 
 # Language Switcher
 lang_choice = st.sidebar.radio(
@@ -43,31 +43,31 @@ if st.sidebar.button("👧👦 Synchronized Student View" if lang_choice == "Eng
 def get_unit_curriculum(unit_num):
     if unit_num <= 8:
         theme_name = "Identity, Emotions, & Self-Discovery (Units 1-8)"
-        theme_desc = "Exploring body parts, basic emotions, and personal traits"
+        central_idea = "Who We Are: Our bodies, feelings, and personal identities help us connect with others."
     elif unit_num <= 16:
         theme_name = "Local Environment & Surroundings (Units 9-16)"
-        theme_desc = "Exploring home spaces, favorite room objects, and local surroundings"
+        central_idea = "Where We Are in Place and Time: Exploring our immediate home spaces and local surroundings."
     elif unit_num <= 25:
         theme_name = "Expression, Art, & Storytelling (Units 17-25)"
-        theme_desc = "Sensory sounds, facial expressions, and simple creative storytelling"
+        central_idea = "How We Express Ourselves: Using sounds, art, facial expressions, and stories to communicate."
     elif unit_num <= 33:
         theme_name = "Nature, Science, & Elements (Units 26-33)"
-        theme_desc = "Water play, light/shadows, and natural outdoor elements"
+        central_idea = "How the World Works: Water play, shadows, and natural outdoor elements around us."
     elif unit_num <= 41:
         theme_name = "Home Organization & Community Helpers (Units 34-41)"
-        theme_desc = "Daily toy cleanup routines and helpful family roles"
+        central_idea = "Sharing the Planet & Communities: Daily routines, toy organization, and family roles."
     else:
         theme_name = "Plants, Animals, & Sustainability (Units 42-50)"
-        theme_desc = "Caring for plants, gentle pet care, and natural appreciation"
+        central_idea = "Sharing the Planet: Caring for growing plants, gentle pet care, and natural appreciation."
 
     letters_en = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     letters_ur = ["الف", "ب", "پ", "ت", "ٹ", "ث", "ج", "چ", "ح", "خ", "د", "ڈ", "ذ", "ر", "ڑ", "ز", "ژ", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف"]
     pre_writing_strokes = [
-        "Standing vertical lines (Salt tray index finger pull down ⬇️)",
-        "Sleeping horizontal lines (Salt tray left-to-right slide ➡)",
-        "Slanting diagonal lines (Salt tray tilt-trace ↗️)",
-        "Circular and curve motions (Salt tray loops 🔄)",
-        "Zig-zag tactile patterns (Salt tray zig-zag peaks ⚡)"
+        "Standing vertical lines (Pulling down from top to bottom ⬇️)",
+        "Sleeping horizontal lines (Sliding smoothly from left to right ➡)",
+        "Slanting diagonal lines (Tilting across from corner to corner ↗️)",
+        "Circular and curve loops (Drawing smooth round shapes 🔄)",
+        "Zig-zag tactile patterns (Sharply alternating peaks and valleys ⚡)"
     ]
     
     idx = (unit_num - 1) % len(letters_en)
@@ -76,7 +76,7 @@ def get_unit_curriculum(unit_num):
     math_focus = (unit_num % 20) + 1  
     stroke_focus = pre_writing_strokes[(unit_num - 1) % len(pre_writing_strokes)]
 
-    return theme_name, theme_desc, en_focus, ur_focus, math_focus, stroke_focus
+    return theme_name, central_idea, en_focus, ur_focus, math_focus, stroke_focus
 
 def create_download_link(content, filename, label):
     b64 = base64.b64encode(content.encode()).decode()
@@ -85,10 +85,10 @@ def create_download_link(content, filename, label):
 # --- MAIN VIEWS ---
 if st.session_state.current_page == "Teacher/Parent Dashboard":
     if st.session_state.lang == "English":
-        st.title("👩‍🏫 EFALL Teacher & Parent Multi-Sensory Hub")
-        st.write("Welcome! This portal trains adults to deliver lessons using **Visual 👁️, Aural 👂, and Kinesthetic ✋** multi-sensory techniques designed for small spaces with minimal furniture.")
+        st.title("👩‍🏫 EFALL Teacher & Parent IB PYP Hub")
+        st.write("Welcome! This portal trains adults to deliver inquiry-based lessons using **Visual 👁️, Aural 👂, and Kinesthetic ✋** multi-sensory techniques designed for small spaces with minimal furniture.")
         
-        st.info("💡 **Interactive Guide:** Select any of the 6 Theme Boxes below to access 50 progressive units packed with AI-generated pedagogical videos, dynamic visual salt-tray generators, printable worksheets, and teaching aids.")
+        st.info("💡 **Interactive Guide:** Select any of the 6 Theme Boxes below to access 50 progressive units packed with EFALL training videos, detailed IB lesson plans, worksheets, and teaching aids.")
         
         st.markdown("---")
         st.subheader("📦 Explore Curriculum by 6 Framed Theme Boxes")
@@ -153,8 +153,8 @@ if st.session_state.current_page == "Teacher/Parent Dashboard":
 
 elif st.session_state.current_page == "Unit Library":
     if st.session_state.lang == "English":
-        st.subheader("📚 Ages 3-4: Multi-Sensory Master Library & Generator")
-        st.write("Select a unit below. Every selection instantly generates linked AI video training, dynamic salt-tray visuals, lesson plans, and print-ready worksheets.")
+        st.subheader("📚 Ages 3-4: IB PYP Master Library & Generator")
+        st.write("Select a unit below. Every unit generates linked AI training videos, inquiry-based lesson plans with sequential steps, rich worksheets, teaching aids, and salt tray guides.")
         
         if st.button("⬅️ Back to Theme Boxes Dashboard"):
             st.session_state.current_page = "Teacher/Parent Dashboard"
@@ -162,161 +162,187 @@ elif st.session_state.current_page == "Unit Library":
 
         unit_number = st.selectbox("Select Unit Number (1 to 50):", list(range(1, 51)), index=st.session_state.selected_unit - 1, format_func=lambda x: f"Unit {x}: {get_unit_curriculum(x)[0]}")
         
-        theme_name, theme_desc, en_focus, ur_focus, math_focus, stroke_focus = get_unit_curriculum(unit_number)
+        theme_name, central_idea, en_focus, ur_focus, math_focus, stroke_focus = get_unit_curriculum(unit_number)
 
         st.markdown(f"---")
         st.markdown(f"## 🌟 Unit {unit_number} Synchronized Generator Hub")
-        st.success(f"**Core Theme:** {theme_name} ({theme_desc})")
-        st.info(f"🔤 **Phonics:** English **'{en_focus}'** | Urdu **'{ur_focus}'** &nbsp;&nbsp;|&nbsp;&nbsp; 🔢 **Math:** **{math_focus}** &nbsp;&nbsp;|&nbsp;&nbsp; ✍️ **Pre-Writing:** {stroke_focus}")
+        st.success(f"**Core Theme:** {theme_name}")
+        st.info(f"💡 **IB Central Idea:** {central_idea}")
+        st.warning(f"🔤 **Phonics Focus:** English **'{en_focus}'** | Urdu **'{ur_focus}'** &nbsp;&nbsp;|&nbsp;&nbsp; 🔢 **Math:** **{math_focus}** &nbsp;&nbsp;|&nbsp;&nbsp; ✍️ **Pre-Writing Stroke:** {stroke_focus}")
 
         # Sub-Unit Selector (A, B, C, D, E)
         sub_unit = st.radio(
-            "Select Sub-Unit Phase (Fully Linked Generator):",
+            "Select Sub-Unit Inquiry Phase:",
             [
-                "Sub-Unit A: 👁️ Visual Provocation & Picture Hook", 
-                "Sub-Unit B: ✋ Kinesthetic Pre-Writing & Fine Motor", 
-                "Sub-Unit C: 👂 Aural Phonics & Letter Sounds", 
-                "Sub-Unit D: 🔢 Pictorial Numeracy & Counting Action", 
-                "Sub-Unit E: 🎨 Creative Art & Sensory Reflection"
+                "Sub-Unit A: 👁️ Tune In (Visual Provocation & Hook)", 
+                "Sub-Unit B: ✋ Find Out (Tactile & Pre-Writing Investigation)", 
+                "Sub-Unit C: 👂 Sorting Out (Aural Phonics & Sound Chants)", 
+                "Sub-Unit D: 🔢 Going Further (Numeracy & Counting Action)", 
+                "Sub-Unit E: 🎨 Reflect & Act (Creative Art & Sharing)"
             ],
             horizontal=False
         )
 
-        # Downloadable Content Packets
+        # Detailed Downloadable Worksheet Text Payload
         worksheet_text = f"""
 ================================================================================
 EFALL PORTAL - UNIT {unit_number} ({sub_unit}) PRINT-READY WORKSHEET
 Theme: {theme_name}
+Central Idea: {central_idea}
 Target Phonics: English '{en_focus}' | Urdu '{ur_focus}'
-Target Numeral: {math_focus} | Stroke: {stroke_focus}
+Target Numeral: {math_focus} | Pre-Writing Stroke: {stroke_focus}
 ================================================================================
 
-[WORKSHEET A: PRE-WRITING STROKE PRACTICE]
-Instructions: Place finger or thick crayon on the starting dot and trace across.
-  ● -----------------------------------------------------> (Trace: {stroke_focus})
+[ACTIVITY 1: PRE-WRITING STROKE TRACING]
+Instructions for Adult/Teacher:
+1. Place child's finger on the starting dot (●).
+2. Guide them to trace the stroke smoothly: {stroke_focus}.
+3. Ask child to say the sound while tracing.
 
-[WORKSHEET B: PHONICS TRACING & SOUND BOX]
-Instructions: Say the sound '{en_focus}' and '{ur_focus}' aloud. Trace inside the bubble.
-  [ English: {en_focus} ]       [ Urdu: {ur_focus} ]
+Trace Area:
+  ● -----------------------------------------------------> [ Finish ]
+  ● -----------------------------------------------------> [ Finish ]
 
-[WORKSHEET C: NUMERAL COUNTING & FORMATION]
-Instructions: Count {math_focus} items and trace numeral {math_focus}.
-  Items: (⭐) * {math_focus}
-  Numeral Box: [ {math_focus} ]
---------------------------------------------------------------------------------
+
+[ACTIVITY 2: PHONICS LETTER & SOUND RECOGNITION]
+Instructions: Point to the English and Urdu letters. Sound them out together.
+  English Focus: [ {en_focus} ]           Urdu Focus: [ {ur_focus} ]
+  
+  [ ] Color the circle if you can find an object starting with '{en_focus}' in your room.
+  [ ] Trace inside the letter bubble with a thick colored crayon.
+
+
+[ACTIVITY 3: NUMERACY & COUNTING PRACTICE]
+Instructions: Count the items aloud together. Trace numeral {math_focus}.
+  Target Number: {math_focus}
+  Visual Items: (⭐) (⭐) (⭐) ... (Total: {math_focus})
+  
+  Trace Numeral Box: [ {math_focus} ]
+================================================================================
         """
 
+        # Detailed Downloadable Teaching Aids Text Payload
         teaching_aids_text = f"""
 ================================================================================
 EFALL PORTAL - UNIT {unit_number} PRINTABLE TEACHING AIDS & FLASHCARDS
 ================================================================================
 
-1. FLASHCARD: ENGLISH & URDU SOUNDS ({en_focus} / {ur_focus})
-+-------------------+     +-------------------+
-|                   |     |                   |
-|        {en_focus}         |     |        {ur_focus}         |
-|   (Object Visual) |     |   (Object Visual) |
-+-------------------+     +-------------------+
+1. FLASHCARDS: ENGLISH '{en_focus}' & URDU '{ur_focus}'
++-----------------------------------+     +-----------------------------------+
+|                                   |     |                                   |
+|               {en_focus}                  |     |               {ur_focus}                  |
+|    (Object: Everyday Local Item)  |     |    (Object: Everyday Local Item)  |
++-----------------------------------+     +-----------------------------------+
 
-2. DYNAMIC SALT TRAY GUIDE FOR UNIT {unit_number}
-- Focus Stroke: {stroke_focus}
-- Container: Shallow tray with salt/flour. Trace pattern with index finger.
+2. COUNTING CARDS FOR NUMBER {math_focus}
+- Display Grid: {math_focus} dot counters for toddler finger-touch counting.
+- Prompt: "Let's touch and count {math_focus} fingers together!"
 
-3. COUNTING CARDS FOR NUMBER {math_focus}
-- Display: {math_focus} visual dots for toddler touch-counting.
+3. TACTILE VOCABULARY WORD STRIP
+- Keyword 1: {en_focus} sound object card
+- Keyword 2: {ur_focus} sound object card
 --------------------------------------------------------------------------------
         """
 
         tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-            "🎬 1. AI Videos & Audio Hub", 
-            "📝 2. Lesson Plan", 
+            "🎬 1. AI Videos & Training Hub", 
+            "📝 2. IB Inquiry Lesson Plan", 
             "📄 3. Printable Worksheets", 
-            "🎨 4. Visual Salt Tray & Aids", 
-            "🎮 5. Assessment", 
-            "💬 6. Teacher Feedback"
+            "✂️ 4. Teaching Aids & Flashcards", 
+            "🖐️ 5. Visual Salt Tray Guide",
+            "💬 6. Assessment & Feedback"
         ])
 
         with tab1:
-            st.markdown(f"### 🎬 EFALL AI Video Generator — Unit {unit_number} ({sub_unit})")
-            st.write(f"Generated specifically for teaching English **'{en_focus}'**, Urdu **'{ur_focus}'**, and **{math_focus}** using lip close-ups and tactile hand guidance.")
+            st.markdown(f"### 🎬 EFALL Video Generator — Unit {unit_number} ({sub_unit})")
+            st.info("📌 *Note on Videos:* EFALL exclusive animated training videos are currently provisioned using compatible high-quality educational references while native exclusive asset rendering builds out.")
             
             col_vid1, col_vid2 = st.columns(2)
             with col_vid1:
-                st.markdown("#### 🎥 1. Student Phonics & Sound Animation")
-                st.info(f"**Generated Focus:** Animated character pronouncing **'{en_focus}'** and **'{ur_focus}'** with mouth shape guides.")
+                st.markdown("#### 🎥 1. EFALL Exclusive Student Phonics & Lip Movement Video")
+                st.write(f"Simulates animated character mouth/lip shaping for English **'{en_focus}'** and Urdu **'{ur_focus}'**.")
                 st.video("https://www.youtube.com/watch?v=4thRB7x-YtY")
-                st.caption(f"✨ *Active Unit Video:* Phonics & sound integration for Unit {unit_number}.")
+                st.caption(f"✨ *Active Module:* Phonics pronunciation close-up for Unit {unit_number}.")
 
             with col_vid2:
                 st.markdown("#### 🎥 2. Adult Facilitator Masterclass Video")
-                st.info(f"**Generated Focus:** Adult step-by-step guidance for **{stroke_focus}** in compact spaces.")
+                st.write(f"Demonstrates how adults should guide tiny hands through **{stroke_focus}** in small spaces.")
                 st.video("https://www.youtube.com/watch?v=hq3yfQnllfQ")
-                st.caption(f"✨ *Active Unit Video:* Tactile facilitation guide for Unit {unit_number}.")
+                st.caption(f"✨ *Active Module:* Tactile guidance & room setup for Unit {unit_number}.")
 
         with tab2:
-            st.markdown(f"### 📝 Detailed 75-Minute Lesson Plan ({sub_unit})")
-            st.markdown(f"- **Active Theme:** {theme_name}")
-            st.markdown(f"- **Core Integration:** English **{en_focus}**, Urdu **{ur_focus}**, Math **{math_focus}**")
-            st.markdown(f"- **Kinesthetic Link:** {stroke_focus}")
+            st.markdown(f"### 📝 Detailed 75-Minute IB PYP Inquiry Lesson Plan ({sub_unit})")
+            st.markdown(f"- **Central Idea:** {central_idea}")
+            st.markdown(f"- **Design Thinking & Inquiry Focus:** {sub_unit}")
             st.markdown("---")
-            st.write("Step-by-step guidance optimized for small home environments:")
-            st.markdown("⏱️ **[00:00 - 00:15] 👁️ Visual Provocation:** Displaying flashcards for letters **{en_focus}** & **{ur_focus}**.")
-            st.markdown(f"⏱️ **[00:15 - 00:45] ✋ Kinesthetic & Aural Action:** Practicing **{stroke_focus}** and counting **{math_focus}** objects.")
-            st.markdown("⏱️ **[00:45 - 01:15] 🎨 Creative Wrap-Up:** Playdough shaping and calming circle.")
+            
+            st.markdown("#### ⏱️ Step-by-Step Sequence & Flow:")
+            st.markdown("1. **First (00:00 - 00:15):** 👁️ **Worksheet Activity (Tune In):** Introduce the unit theme using the printable worksheet picture hook. Do not write yet; just talk about what is seen.")
+            st.markdown(f"2. **Second (00:15 - 00:45):** ✋ **Kinesthetic Practice (Find Out & Sorting Out):** Transition to the tactile salt tray to practice **{stroke_focus}** and review phonics letters **{en_focus}** / **{ur_focus}**.")
+            st.markdown(f"3. **Third (00:45 - 01:15):** 🔢 **Application & Reflection (Going Further):** Count **{math_focus}** objects using teaching aids and complete the playdough shaping.")
+
+            st.markdown("---")
+            st.markdown("#### 🗣️ Essential Socratic Questions to Ask Students:")
+            st.markdown(f"- *\"What do you notice about the letter shape **{en_focus}**?\"*")
+            st.markdown(f"- *\"Can you find anything around our small room that sounds like **{ur_focus}**?\"*")
+            st.markdown(f"- *\"How does your finger feel when tracing in the salt tray?\"*")
+
+            st.markdown("---")
+            st.markdown("#### ✅ Formative Learning Check (How to Check Progress):")
+            st.markdown("- Observe if the child tracks the stroke from top-to-bottom or left-to-right independently.")
+            st.markdown("- Listen to whether the child attempts to produce the phonetic sound when shown the flashcard.")
 
         with tab3:
-            st.markdown("### 📄 Print-Ready Worksheets & Teaching Aids")
-            st.write(f"Instant downloads dynamically generated for **Unit {unit_number}**:")
-            
-            col_dl1, col_dl2 = st.columns(2)
-            with col_dl1:
-                st.markdown("#### 📄 Student Worksheet Packet")
-                st.markdown(create_download_link(worksheet_text, f"Unit_{unit_number}_Worksheet.txt", "Download Worksheet (TXT/PDF)"), unsafe_allow_html=True)
-            with col_dl2:
-                st.markdown("#### ✂️ Printable Teaching Aids & Flashcards")
-                st.markdown(create_download_link(teaching_aids_text, f"Unit_{unit_number}_TeachingAids.txt", "Download Teaching Aids (TXT/PDF)"), unsafe_allow_html=True)
+            st.markdown("### 📄 Print-Ready Worksheets")
+            st.write(f"Download your complete, structured student worksheet for **Unit {unit_number}** below:")
+            st.markdown(create_download_link(worksheet_text, f"Unit_{unit_number}_Student_Worksheet.txt", "Download Student Worksheet (PDF/TXT)"), unsafe_allow_html=True)
 
             st.markdown("---")
             with st.container(border=True):
-                st.markdown(f"**Live Worksheet Preview:**")
-                st.markdown(f"- ✍️ Stroke: {stroke_focus}")
-                st.markdown(f"- 🔤 Phonics: English **{en_focus}** | Urdu **{ur_focus}**")
-                st.markdown(f"- 🔢 Numeral: **{math_focus}**")
+                st.markdown("#### 🔍 Live Worksheet Content Preview:")
+                st.markdown(f"- **Pre-Writing Stroke:** {stroke_focus}")
+                st.markdown(f"- **Phonics Focus:** English **{en_focus}** | Urdu **{ur_focus}**")
+                st.markdown(f"- **Numeracy Count:** {math_focus} items")
 
         with tab4:
-            st.markdown(f"### 🎨 Dynamic Visual Salt Tray Generator — Unit {unit_number}")
-            st.write("This visual simulator updates automatically for every unit to show adults exactly how to set up tactile pre-writing practice:")
+            st.markdown("### ✂️ Printable Teaching Aids & Flashcards")
+            st.write(f"Download printable flashcards and counting aids specifically matched to **Unit {unit_number}**:")
+            st.markdown(create_download_link(teaching_aids_text, f"Unit_{unit_number}_Teaching_Aids.txt", "Download Teaching Aids & Flashcards (PDF/TXT)"), unsafe_allow_html=True)
+
+            st.markdown("---")
+            with st.container(border=True):
+                st.markdown("#### 📌 Teaching Aid Preview:")
+                st.markdown(f"- **Flashcard Set:** English **{en_focus}** & Urdu **{ur_focus}** letter cards.")
+                st.markdown(f"- **Counting Aid:** Number **{math_focus}** dot grid card.")
+
+        with tab5:
+            st.markdown(f"### 🖐️ Visual Salt Tray Demonstration Guide (Unit {unit_number})")
+            st.write("The salt tray is a tactile pre-writing reference tool. Use this visual guide to set up a small tray in your limited classroom/home space:")
             
             with st.container(border=True):
-                st.markdown(f"#### 🖐️ Active Salt Tray Visual Generator (Stroke: {stroke_focus})")
+                st.markdown(f"#### Tactile Setup for: {stroke_focus}")
                 st.code(f"""
       +-------------------------------------------------------+
       |  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  |
-      |  ~ ~ [ TACTILE FOCUS: {stroke_focus.upper()} ] ~ ~  |
-      |  ~ ~ ~ ~ ~ ( INDEX FINGER TRACING: ➔ {en_focus} / {ur_focus} ) ~ ~ ~  |
+      |  ~ ~ [ TACTILE TRAY: {stroke_focus.upper()} ] ~ ~  |
+      |  ~ ~ ~ ~ ~ ( INDEX FINGER TRACE: ➔ {en_focus} / {ur_focus} ) ~ ~ ~  |
       |  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  |
       +-------------------------------------------------------+
                 """, language="text")
-                st.caption(f"💡 *Generated Facilitator Note:* Fill a shallow tray with salt/flour. Guide the child's index finger to practice **{stroke_focus}** while saying sound **{en_focus}** / **{ur_focus}**.")
-
-            st.markdown(f"- **Teaching Aids:** Flashcards for **{en_focus}** and **{ur_focus}** linked above.")
-            st.markdown(f"- **Art Activity:** Rolling playdough snakes to form letter **{en_focus}** and number **{math_focus}**.")
-
-        with tab5:
-            st.markdown("### 🎮 Multi-Sensory Observation Checklist")
-            st.markdown(f"1. **👁️ Visual:** Did the child recognize flashcard **{en_focus}** / **{ur_focus}**?")
-            st.markdown(f"2. **👂 Aural:** Did they repeat sound **{en_focus}** aloud?")
-            st.markdown(f"3. **✋ Kinesthetic:** Did they trace **{stroke_focus}** in the salt tray successfully?")
-            st.radio("Observation Result:", ["Fully Engaged (All 3 Senses)", "Needed Gentle Guidance", "Needs More Playful Repetition"], key=f"assess_{unit_number}")
+                st.caption(f"💡 *Adult Facilitation Tip:* Fill a shallow container with 1/2 inch of table salt or flour. Guide the child's index finger to practice **{stroke_focus}** while producing the sound **{en_focus}** / **{ur_focus}**.")
 
         with tab6:
-            st.markdown("### 💬 Adult Reflection & Feedback")
-            st.text_area("Notes:", key=f"fb_{unit_number}")
+            st.markdown("### 💬 Assessment & Teacher Feedback")
+            st.markdown(f"1. **👁️ Visual Inquiry:** Did the child engage with the picture hook?")
+            st.markdown(f"2. **👂 Aural Phonics:** Did they repeat sound **{en_focus}** / **{ur_focus}**?")
+            st.markdown(f"3. **✋ Kinesthetic Motor:** Did they trace **{stroke_focus}** smoothly?")
+            st.radio("Observation Result:", ["Fully Engaged (All 3 Senses)", "Needed Gentle Guidance", "Needs More Playful Repetition"], key=f"assess_{unit_number}")
+            st.text_area("Adult Reflection Notes:", key=f"fb_{unit_number}")
 
     else:
         # Urdu Interface Version
-        st.subheader("📚 تمام 50 یونٹس اور ملٹی سنصری ذیلی یونٹس")
-        st.write("یونٹ کا انتخاب کریں اور بصری، سمعی اور حرکی مواد حاصل کریں۔")
+        st.subheader("📚 تمام 50 یونٹس اور آئی بی پی وائی پی نصاب")
+        st.write("یونٹ کا انتخاب کریں اور تفصیلی اسباق حاصل کریں۔")
         if st.button("⬅️ ڈیش بورڈ پر واپس جائیں"):
             st.session_state.current_page = "Teacher/Parent Dashboard"
             st.rerun()
