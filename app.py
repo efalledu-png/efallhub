@@ -4,7 +4,7 @@ from datetime import date
 
 # Page Configuration
 st.set_page_config(
-    page_title="EFALL Simple Hub | آسان تعلیمی پورٹل",
+    page_title="EFALL Comprehensive Portal | آسان تعلیمی پورٹل",
     page_icon="🌟",
     layout="wide"
 )
@@ -22,7 +22,7 @@ if "reflection_logs" not in st.session_state:
     st.session_state.reflection_logs = []
 
 # --- LARGE VISUAL SIDEBAR ---
-st.sidebar.title("🌟 EFALL آسان ہب")
+st.sidebar.title("🌟 EFALL مکمل ہب")
 st.sidebar.caption("Educated Mother Education Nation")
 
 # Language Switcher
@@ -52,7 +52,7 @@ st.sidebar.subheader("📍 Menu / مینو")
 if st.sidebar.button("🏠 Home / مین صفحہ", use_container_width=True):
     st.session_state.current_page = "Home"
     st.rerun()
-if st.sidebar.button("📚 50 Units / اسسباق کی کتاب", use_container_width=True):
+if st.sidebar.button("📚 50 Units Library / اسباق کی لائبریری", use_container_width=True):
     st.session_state.current_page = "Unit Library"
     st.rerun()
 if st.sidebar.button("📝 My Diary / میری ڈائری", use_container_width=True):
@@ -134,10 +134,10 @@ def create_download_button(content, filename, label):
     return f'<a href="data:text/plain;charset=utf-8;base64,{b64}" download="{filename}" style="text-decoration:none;"><div style="background:#2e7d32;color:white;padding:12px;text-align:center;border-radius:8px;font-weight:bold;font-size:16px;margin-top:10px;">📥 {label}</div></a>'
 
 
-# --- HOME PAGE (Visual Big-Button Dashboard) ---
+# --- HOME PAGE ---
 if st.session_state.current_page == "Home":
-    st.title("🌟 EFALL آسان اسباق اور سکھانے کا طریقہ")
-    st.markdown("### 🎯 Tap any box below to start teaching through inquiry and play!")
+    st.title("🌟 EFALL مکمل تعلیمی ہب / Complete Educational Hub")
+    st.markdown("### 🎯 Select a PYP Theme Box below to open full lesson plans, visual aids, and worksheets:")
     
     col1, col2 = st.columns(2)
     with col1:
@@ -172,13 +172,13 @@ if st.session_state.current_page == "Home":
         st.session_state.current_page = "Reflection Log"
         st.rerun()
 
-# --- UNIT LIBRARY & SIMPLE 3-STEP GUIDE ---
+# --- UNIT LIBRARY & DETAILED LESSON PLAN WITH WORKBOOK ---
 elif st.session_state.current_page == "Unit Library":
     if st.button("⬅️ Back / واپس جائیں"):
         st.session_state.current_page = "Home"
         st.rerun()
 
-    st.title("📚 اسباق کی لائبریری / Unit Library")
+    st.title("📚 اسباق کی تفصیلی لائبریری / Full Unit Library")
     
     unit_number = st.selectbox("Select Unit Number (1 to 50) / یونٹ نمبر منتخب کریں:", list(range(1, 51)), index=st.session_state.selected_unit - 1, format_func=lambda x: f"Unit {x}: {get_unit_curriculum(x)[0]}")
     
@@ -186,45 +186,88 @@ elif st.session_state.current_page == "Unit Library":
 
     st.markdown("---")
     st.markdown(f"## 📋 {theme_name}")
-    st.info(f"🌐 **Theme:** {domain_name} &nbsp;|&nbsp; 💡 **Action Phase:** {design_phase}")
+    st.info(f"🌐 **IB Theme:** {domain_name} &nbsp;|&nbsp; 💡 **Inquiry Focus:** {inquiry_focus} &nbsp;|&nbsp; 🛠️ **Design Phase:** {design_phase}")
 
-    # SIMPLIFIED 3-STEP PICTURE CARDS FOR TEACHING
-    st.markdown("### 👩‍🏫 سکھانے کا آسان طریقہ / 3-Step Teaching Guide")
-    
+    # SIMPLIFIED 3-STEP FACILITATION CARD (FOR NON-TECH / LOW-LITERACY TEACHERS)
+    st.markdown("### 👩‍🏫 Quick Facilitation Guide (آسان تدریسی رہنمائی)")
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.markdown("""
-        <div style="background: #e8f8f5; border: 2px solid #1abc9c; padding: 15px; border-radius: 10px; text-align: center;">
-            <h3 style="color: #16a085; margin:0;">1️⃣ Show / دکھائیں</h3>
-            <p style="font-size: 14px; margin-top: 10px;">Bring a real object or picture of <b>'{}'</b>. Let children touch and look at it.</p>
+        st.markdown(f"""
+        <div style="background: #e8f8f5; border: 2px solid #1abc9c; padding: 12px; border-radius: 10px; text-align: center;">
+            <h4 style="color: #16a085; margin:0;">1️⃣ Show / دکھائیں</h4>
+            <p style="font-size: 13px; margin-top: 8px;">Show real object or flashcard of <b>{vocab_theme}</b>.</p>
         </div>
-        """.format(vocab_theme), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
     with c2:
-        st.markdown("""
-        <div style="background: #fdf2e9; border: 2px solid #f39c12; padding: 15px; border-radius: 10px; text-align: center;">
-            <h3 style="color: #d35400; margin:0;">2️⃣ Ask / پوچھیں</h3>
-            <p style="font-size: 14px; margin-top: 10px;"><b>🔊 سنیے / Listen & Ask:</b><br>"What do you see? آپ کو کیا دکھتا ہے؟"</p>
+        st.markdown(f"""
+        <div style="background: #fdf2e9; border: 2px solid #f39c12; padding: 12px; border-radius: 10px; text-align: center;">
+            <h4 style="color: #d35400; margin:0;">2️⃣ Ask / پوچھیں</h4>
+            <p style="font-size: 13px; margin-top: 8px;"><b>🔊 سنیے / Ask:</b><br>"What do you see? آپ کو کیا دکھتا ہے؟"</p>
         </div>
         """, unsafe_allow_html=True)
     with c3:
-        st.markdown("""
-        <div style="background: #ebf5fb; border: 2px solid #3498db; padding: 15px; border-radius: 10px; text-align: center;">
-            <h3 style="color: #2980b9; margin:0;">3️⃣ Do / کریں</h3>
-            <p style="font-size: 14px; margin-top: 10px;">Practice letters <b>'{0}' / '{1}'</b> and count up to <b>{2}</b> together!</p>
+        st.markdown(f"""
+        <div style="background: #ebf5fb; border: 2px solid #3498db; padding: 12px; border-radius: 10px; text-align: center;">
+            <h4 style="color: #2980b9; margin:0;">3️⃣ Do / کریں</h4>
+            <p style="font-size: 13px; margin-top: 8px;">Practice <b>{en_focus} / {ur_focus}</b> & count to <b>{math_focus}</b>.</p>
         </div>
-        """.format(en_focus, ur_focus, math_focus), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.markdown("### 🖨️ Download Teaching Pack / ڈاؤن لوڈ کریں")
-    download_text = f"""EFALL SIMPLE TEACHING GUIDE - {theme_name}
-- Vocabulary: {vocab_theme}
-- English/Urdu Phonics: {en_focus} / {ur_focus}
-- Math Count: {math_focus}
-- 3 Steps: 1. Show object. 2. Ask what they notice. 3. Build & trace.
-"""
-    st.markdown(create_download_button(download_text, f"Unit_{unit_number}_Guide.txt", "Download Unit Guide"), unsafe_allow_html=True)
+    
+    # DETAILED LESSON SECTIONS RESTORED
+    tab1, tab2, tab3, tab4 = st.tabs(["📖 Detailed Lesson Plan", "🎨 Visual Aids & GIFs", "📝 Downloadable Worksheet", "⚙️ Small Space Setup"])
+    
+    with tab1:
+        st.subheader("Detailed Inquiry Lesson Plan")
+        st.write(f"**Central Idea Connection:** Exploring core concepts in '{domain_name}' through '{vocab_theme}'.")
+        st.markdown(f"""
+        * **Phase 1: Tune In (Warm-up):** Gather children in a small circle. Introduce the word **{vocab_theme}**. Use real props or tactile objects.
+        * **Phase 2: Finding Out (Inquiry):** Ask open-ended questions corresponding to Harvard Project Zero routines (*"What makes you say that?"*). 
+        * **Phase 3: Sorting & Phonics:** Practice writing English letters **{en_focus}** and Urdu letters **{ur_focus}**. Count objects up to **{math_focus}**.
+        * **Phase 4: Reflection:** Review what was learned using finger-painting or emotion check-ins.
+        """)
 
-# --- REFLECTION LOG (One-Tap Emoji Diary) ---
+    with tab2:
+        st.subheader("Visual Aids & Animations (GIFs)")
+        st.info("💡 Tip for Teachers: Show these visual concepts or animated GIFs on your tablet or smartphone screen.")
+        col_v1, col_v2 = st.columns(2)
+        with col_v1:
+            st.markdown(f"**Visual Aid Concept:** {vocab_theme}")
+            st.image("https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400", caption=f"Visual Reference for {vocab_theme}", use_container_width=True)
+        with col_v2:
+            st.markdown(f"**Stroke Pattern Practice:** {stroke_focus}")
+            st.success(f"Trace motion: Follow the line pattern for **{stroke_focus}** using fingers in the air or sand trays.")
+
+    with tab3:
+        st.subheader("Printable Worksheets & Student Sheets")
+        st.write("Download ready-to-print activity sheets for this specific unit:")
+        worksheet_content = f"""EFALL WORKBOOK SHEET - UNIT {unit_number}
+Theme: {theme_name}
+Vocabulary Focus: {vocab_theme}
+English Phonics: {en_focus}
+Urdu Phonics: {ur_focus}
+Math Counting: {math_focus}
+Stroke Practice: {stroke_focus}
+
+Student Name: _______________________ Date: ____________
+
+1. Trace the letters: {en_focus} | {ur_focus}
+2. Draw or paste a picture of: {vocab_theme}
+3. Count and circle {math_focus} objects.
+"""
+        st.markdown(create_download_button(worksheet_content, f"Unit_{unit_number}_Worksheet.txt", "Download Student Worksheet (.txt)"), unsafe_allow_html=True)
+
+    with tab4:
+        st.subheader("Small Classroom / Limited Furniture Adaptation")
+        st.warning("⚠️ Tailored for compact spaces with limited furniture:")
+        st.markdown("""
+        * **Floor Circle Seating:** Use sitting mats arranged in a compact semicircle so every child can see and touch props.
+        * **Vertical Wall Display:** Use classroom walls or small pinboards for hanging student artwork without cluttering floor space.
+        * **Rotation Stations:** Rotate small groups of 3 children at a time between tactile tracing and object exploration.
+        """)
+
+# --- REFLECTION LOG ---
 elif st.session_state.current_page == "Reflection Log":
     if st.button("⬅️ Back / واپس جائیں"):
         st.session_state.current_page = "Home"
