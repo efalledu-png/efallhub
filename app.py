@@ -93,9 +93,9 @@ def create_download_link(content, filename, label):
 if st.session_state.current_page == "Teacher/Parent Dashboard":
     if st.session_state.lang == "English":
         st.title("👩‍🏫 EFALL Teacher & Parent Training Hub")
-        st.write("Welcome! This portal trains adults to deliver bilingual, inquiry-based lessons using **Visual 👁️, Aural 👂, and Kinesthetic ✋** multi-sensory techniques.")
+        st.write("Welcome! This portal acts as your expert co-teacher, providing word-for-word 70-minute lesson scripts, student video cues, and bilingual worksheets designed for compact spaces.")
         
-        st.info("💡 **Bilingual 50-Unit Curriculum:** Select any Theme Box below. All units include dual English and Urdu alphabet integration across 5 gamified visual worksheets.")
+        st.info("💡 **Master Curriculum Hub:** Select any Theme Box below. All 50 units feature fully detailed, narrative teacher scripts.")
         
         st.markdown("---")
         st.subheader("📦 Explore Curriculum by 6 Progressive Theme Boxes")
@@ -104,64 +104,51 @@ if st.session_state.current_page == "Teacher/Parent Dashboard":
         with col1:
             with st.container(border=True):
                 st.markdown("### 🧩 Box 1: Identity & Sound Intro (Units 1-8)")
-                st.caption("Focus: Dual Phonics & Numerals 1-3 | انگلش اور اردو آوازیں")
                 if st.button("Open Box 1 (Units 1-8)", key="box1"):
                     st.session_state.selected_unit = 1
                     st.session_state.current_page = "Unit Library"
                     st.rerun()
-
             with st.container(border=True):
                 st.markdown("### 🏡 Box 2: Local Environment (Units 9-16)")
-                st.caption("Focus: Pre-Writing Stems & Tactile Tracing | لکیریں اور حرکی مشق")
                 if st.button("Open Box 2 (Units 9-16)", key="box2"):
                     st.session_state.selected_unit = 9
                     st.session_state.current_page = "Unit Library"
                     st.rerun()
-
             with st.container(border=True):
                 st.markdown("### 🎨 Box 3: Expression & Art (Units 17-25)")
-                st.caption("Focus: Early Letter Formation | حروف کی تشکیل")
                 if st.button("Open Box 3 (Units 17-25)", key="box3"):
                     st.session_state.selected_unit = 17
                     st.session_state.current_page = "Unit Library"
                     st.rerun()
-
         with col2:
             with st.container(border=True):
                 st.markdown("### 💧 Box 4: Nature & Science (Units 26-33)")
-                st.caption("Focus: Slanting & Curves | ترچھی اور گول لکیریں")
                 if st.button("Open Box 4 (Units 26-33)", key="box4"):
                     st.session_state.selected_unit = 26
                     st.session_state.current_page = "Unit Library"
                     st.rerun()
-
             with st.container(border=True):
                 st.markdown("### 🧹 Box 5: Home Organization (Units 34-41)")
-                st.caption("Focus: Independent Writing | آزادانہ لکھائی")
                 if st.button("Open Box 5 (Units 34-41)", key="box5"):
                     st.session_state.selected_unit = 34
                     st.session_state.current_page = "Unit Library"
                     st.rerun()
-
             with st.container(border=True):
                 st.markdown("### 🌿 Box 6: Plants & Sustainability (Units 42-50)")
-                st.caption("Focus: Full Bilingual Mastery | مکمل دو لسانی مہارت")
                 if st.button("Open Box 6 (Units 42-50)", key="box6"):
                     st.session_state.selected_unit = 42
                     st.session_state.current_page = "Unit Library"
                     st.rerun()
-
     else:
-        st.title("👩‍🏫 ملٹی سنصری استاد اور والدین کا پورٹل")
-        st.write("خوش آمدید! تمام 50 یونٹس میں انگریزی اور اردو حروف کی بیک وقت تربیت شامل ہے۔")
+        st.title("👩‍🏫 استاد اور والدین کا پورٹل")
         if st.button("تمام یونٹس کی لائبریری کھولیں", use_container_width=True):
             st.session_state.current_page = "Unit Library"
             st.rerun()
 
 elif st.session_state.current_page == "Unit Library":
     if st.session_state.lang == "English":
-        st.subheader("📚 Ages 3-4: Bilingual Master Library & Unit Generator")
-        st.write("Select any unit below. Every packet includes **5 dual English & Urdu worksheets**, lesson plans, and salt tray guides.")
+        st.subheader("📚 Ages 3-4: Master Unit Library & Expert Teacher Guide")
+        st.write("Select any unit below to access your complete narrative 70-minute lesson script, teacher preparation guide, embedded student videos, and worksheet packets.")
         
         if st.button("⬅️ Back to Theme Boxes Dashboard"):
             st.session_state.current_page = "Teacher/Parent Dashboard"
@@ -172,232 +159,199 @@ elif st.session_state.current_page == "Unit Library":
         theme_name, skill_stage, en_focus, ur_focus, math_focus, stroke_focus, vocab_theme = get_unit_curriculum(unit_number)
 
         st.markdown(f"---")
-        st.markdown(f"## 🌟 Unit {unit_number} Bilingual Generator Hub")
+        st.markdown(f"## 🌟 Unit {unit_number} Master Teacher Command Center")
         st.success(f"**Theme & Stage:** {theme_name}")
-        st.info(f"🎯 **Skill Focus:** {skill_stage} | 🔑 **Bilingual Vocabulary:** {vocab_theme}")
+        st.info(f"🎯 **Skill Focus:** {skill_stage} | 🔑 **Vocabulary:** {vocab_theme}")
         st.warning(f"🔤 **Dual Phonics:** English **'{en_focus}'** & Urdu **'{ur_focus}'** &nbsp;&nbsp;|&nbsp;&nbsp; 🔢 **Math:** **{math_focus}** &nbsp;&nbsp;|&nbsp;&nbsp; ✍️ **Stroke:** {stroke_focus}")
 
-        # Sub-Unit Selector
-        sub_unit = st.radio(
-            "Select Design Thinking & Inquiry Phase:",
-            [
-                "Phase 1: 👁️ Empathize & Tune In (Visual Hook)", 
-                "Phase 2: ✋ Define & Tactile Probe (Salt Tray & Bilingual Tracing)", 
-                "Phase 3: 👂 Ideate & Dual Phonics Chants (English & Urdu)", 
-                "Phase 4: 🔢 Prototype & Numeracy (Counting & Worksheets 1-5)", 
-                "Phase 5: 🎨 Test & Reflect (Creative Expression & Sharing)"
-            ],
-            horizontal=False
-        )
-
-        # 5 Dual English & Urdu Worksheets Payload
-        worksheets_packet_text = f"""
-EFALL BILINGUAL EDUCATIONAL PORTAL - 5-PART GAMIFIED WORKSHEET PACKET
+        # Narrative 70-Minute Teacher Script Payload with Exact Spoken Sentences & Embedded Videos
+        detailed_lesson_plan_text = f"""
+EFALL EXPERT TEACHER NARRATIVE LESSON SCRIPT & GUIDE
 UNIT {unit_number}: {theme_name}
---------------------------------------------------------------------------------
-BILINGUAL FOCUS: English Letter '{en_focus}' & Urdu Letter '{ur_focus}'
-VOCABULARY: {vocab_theme} | NUMERAL: {math_focus} | STROKE: {stroke_focus}
---------------------------------------------------------------------------------
+================================================================================
+TOTAL DURATION: 70 Minutes | SETTING: Small Class (Limited Furniture)
+BILINGUAL FOCUS: English '{en_focus}' & Urdu '{ur_focus}' | VOCABULARY: {vocab_theme}
+TARGET NUMERAL: {math_focus} | PRE-WRITING STROKE: {stroke_focus}
+================================================================================
 
-[WORKSHEET 1: 👁️ VISUAL MEMORY & BILINGUAL PICTURE HOOK]
-- Objective: Spot and circle the item related to '{vocab_theme}'.
-- English Prompt: Find objects starting with '{en_focus}'.
-- Urdu Prompt: '{ur_focus}' سے شروع ہونے والی چیز تلاش کریں۔
-- Task: Circle the picture card with a thick colored crayon.
+[SECTION A: TEACHER PREPARATION & MATERIAL CHECKLIST]
+- Physical Room Setup: Clear center floor space of 4x4 feet. Keep children seated in a cozy semi-circle on floor mats facing the teacher.
+- Materials to Prepare:
+  1. Printed visual and cognitive worksheet packets (Sheets 1 through 5).
+  2. Shallow salt/flour trays for tactile tracing.
+  3. Playdough lumps for final letter/number sculpting.
+  4. Flashcards displaying English '{en_focus}' and Urdu '{ur_focus}'.
 
+[SECTION B: MANDATORY TEACHER TRAINING VIDEOS TO WATCH BEFORE CLASS]
+1. Video 1: "EFALL Phonics Mouth Articulation" - Review lip placement for English '{en_focus}' and Urdu '{ur_focus}'.
+2. Video 2: "Small-Space Kinesthetic Guidance" - Observe how to guide toddler finger tracing in compact spaces.
 
-[WORKSHEET 2: ✋ TACTILE PRE-WRITING & BILINGUAL FINGER TRACING]
-- Objective: Build fine motor control through stroke trace '{stroke_focus}'.
-- Trace Area:
-  ● ------------------------------------------------------------------------> [FINISH / ختم]
-  ● ------------------------------------------------------------------------> [FINISH / ختم]
-- Bilingual Note: Trace while saying English '{en_focus}' and Urdu '{ur_focus}' aloud.
+================================================================================
+[SECTION C: MINUTE-BY-MINUTE 70-MINUTE NARRATIVE LESSON SCRIPT]
+================================================================================
 
+1. PROVOCATION & VISUAL HOOK (00:00 - 00:15)
+- Narrative Scenario: Gather children on the floor mats. Hold up a mysterious covered basket or picture card representing '{vocab_theme}' without speaking for 5 seconds to build suspense.
+- Exact Spoken Teacher Sentences:
+  * "Good morning, my little explorers! Look closely at what I have hidden in my hands today."
+  * "First, let's look at this big picture card together. What do you see here that reminds us of {vocab_theme}?"
+  * "Take your thick crayon and circle the picture on your first paper sheet that matches our special theme today!"
+- Student Support Video to Play in Between: Play *EFALL Animated Visual Hook Clip #1* (3 mins) showing animated {vocab_theme} objects interacting in a room.
 
-[WORKSHEET 3: 👂 AURAL PHONICS & DUAL ALPHABET MATCHING]
-- Objective: Connect English sound '{en_focus}' with Urdu sound '{ur_focus}'.
-- Visual Boxes: 
-  [ English Box: {en_focus} ]  <===>  [ Urdu Box: {ur_focus} ]
-- Task: Pronounce both sounds clearly. Clap {math_focus} times for each letter!
+2. TACTILE PROBE & SALT TRAY TRACING (00:15 - 00:30)
+- Narrative Scenario: Pass out shallow salt trays to each child. Model tracing motions in the air while keeping movements slow and rhythmic.
+- Exact Spoken Teacher Sentences:
+  * "Now, let's clean our hands and get ready for our magic writing sand."
+  * "First, watch my index finger slide across the air: {stroke_focus}."
+  * "Now, gently dip your finger into your salt tray and trace the dotted lines on your second paper sheet while feeling the texture. How does it feel? Is it smooth?"
+- Student Support Video to Play in Between: Play *EFALL Kinesthetic Motion Clip #2* (3 mins) showing an animated finger tracing {stroke_focus} with sound effects.
 
+3. DUAL AURAL PHONICS & SOUND CHANTS (00:30 - 00:50)
+- Narrative Scenario: Hold up dual alphabet flashcards. Guide children through lively call-and-response sound games.
+- Exact Spoken Teacher Sentences:
+  * "Friends, open your ears wide! Today we are learning two wonderful sounds."
+  * "First, let's say the English sound together: '{en_focus}'! Now, let's say the Urdu sound: '{ur_focus}'!"
+  * "Look at your third paper sheet. Let's point to both letters and clap our hands exactly {math_focus} times for each sound!"
+- Student Support Video to Play in Between: Play *EFALL Bilingual Phonics Sing-Along #3* (4 mins) featuring children pronouncing English '{en_focus}' and Urdu '{ur_focus}'.
 
-[WORKSHEET 4: 🧠 MENTAL LOGIC & BILINGUAL SORTING PUZZLE]
-- Objective: Sort items by category matching bilingual vocabulary '{vocab_theme}'.
-- Logic Grid: [ English Group ] <---> [ Urdu Group / اردو گروہ ]
-- Task: Draw a connecting line between matching pairs.
+4. COGNITIVE LOGIC & NUMERACY GAMES (00:50 - 01:05)
+- Narrative Scenario: Transition into problem-solving and counting games using the logic puzzle sheet and counting sheet.
+- Exact Spoken Teacher Sentences:
+  * "Let's put our thinking caps on! Look at your fourth paper sheet with the puzzle grid."
+  * "First, can you find which {vocab_theme} item doesn't belong? Let's draw a connecting line to match the correct pairs."
+  * "Now, flip to your fifth sheet! Let's count our treasure stars together out loud: 1, 2, ... up to {math_focus}!"
+  * "Trace number {math_focus} inside the treasure chest box with your favorite colored pencil."
+- Student Support Video to Play in Between: Play *EFALL Counting & Logic Adventure #4* (3 mins) guiding children through sorting and counting up to {math_focus}.
 
-
-[WORKSHEET 5: 🎮 GAME-ALIKE COUNTING & NUMERAL FORMATION]
-- Objective: Count {math_focus} objects and write numeral {math_focus}.
-- Counting Items: (⭐) (⭐) (⭐) ... (Total Target: {math_focus})
-- Numeral Box: Trace number [ {math_focus} ] inside the treasure chest box.
---------------------------------------------------------------------------------
-Generated exclusively for EFALL Portal. Bilingual Early Learning.
+5. REFLECTION, TEST & CELEBRATION (01:05 - 01:10)
+- Narrative Scenario: Distribute playdough lumps to celebrate learning and shape letters on floor mats.
+- Exact Spoken Teacher Sentences:
+  * "You did an amazing job today, my brilliant builders!"
+  * "First, roll your playdough into a long snake like this."
+  * "Now, let's shape our playdough into English letter '{en_focus}' and Urdu letter '{ur_focus}'."
+  * "Show me your wonderful creations with a huge smile! High-fives all around for completing Unit {unit_number}!"
+================================================================================
+Generated exclusively for EFALL Portal Master Teacher Guide.
         """
 
-        # Detailed Lesson Plan Payload referencing Worksheet numbers
-        lesson_plan_pdf_text = f"""
-EFALL BILINGUAL EDUCATIONAL PORTAL - DETAILED DESIGN THINKING LESSON PLAN
+        worksheets_packet_text = f"""
+EFALL EDUCATIONAL PORTAL - 5-PART BILINGUAL WORKSHEETS PACKET
 UNIT {unit_number}: {theme_name}
 --------------------------------------------------------------------------------
-BILINGUAL LETTERS: English '{en_focus}' & Urdu '{ur_focus}' | VOCAB: {vocab_theme}
-DURATION: 75 Minutes (Optimized for Small Spaces)
---------------------------------------------------------------------------------
+[WORKSHEET 1: 👁️ VISUAL MEMORY & PICTURE HOOK]
+- Task: Circle the item related to '{vocab_theme}' starting with English '{en_focus}' / Urdu '{ur_focus}'.
 
-[DESIGN THINKING & INQUIRY PHASE BREAKDOWN & WORKSHEET MAPPING]
+[WORKSHEET 2: ✋ TACTILE PRE-WRITING STROKE TRACING]
+- Trace Area for: {stroke_focus}
 
-1. EMPATHIZE & TUNE IN (00:00 - 00:15)
-- Action & Worksheet: Deploy **Worksheet 1 (Bilingual Picture Hook)**. Discuss everyday {vocab_theme} items.
-- Question: "What do you see that sounds like English '{en_focus}' or Urdu '{ur_focus}'?"
+[WORKSHEET 3: 👂 DUAL PHONICS & ALPHABET MATCHING]
+- Match English '{en_focus}' with Urdu '{ur_focus}'. Clap {math_focus} times.
 
-2. DEFINE & TACTILE PROBE (00:15 - 00:30)
-- Action & Worksheet: Deploy **Worksheet 2 (Tactile Pre-Writing)** in salt tray. Trace **{stroke_focus}**.
-- Question: "How does the salt feel when tracing our bilingual letters?"
+[WORKSHEET 4: 🧠 MENTAL LOGIC & SORTING PUZZLE]
+- Sort and connect matching category pairs for '{vocab_theme}'.
 
-3. IDEATE & DUAL PHONICS CHANTS (00:30 - 00:45)
-- Action & Worksheet: Deploy **Worksheet 3 (Dual Alphabet Matching)**. Chant English '{en_focus}' and Urdu '{ur_focus}' together.
-- Question: "Can you say '{en_focus}' and '{ur_focus}' clearly and clap {math_focus} times?"
-
-4. PROTOTYPE & COGNITIVE LOGIC (00:45 - 01:00)
-- Action & Worksheet: Deploy **Worksheet 4 (Logic Puzzle)** and **Worksheet 5 (Counting)**.
-- Question: "Let's sort our vocabulary and count {math_focus} items!"
-
-5. TEST & REFLECT (01:00 - 01:15)
-- Action: Roll playdough snakes to form both English letter '{en_focus}' and Urdu letter '{ur_focus}'!
+[WORKSHEET 5: 🎮 GAME-ALIKE COUNTING & NUMERAL FORMATION]
+- Count {math_focus} objects and trace number [{math_focus}].
 --------------------------------------------------------------------------------
         """
 
         teaching_aids_text = f"""
-EFALL BILINGUAL EDUCATIONAL PORTAL - TEACHING AIDS & FLASHCARDS
-UNIT {unit_number}: {theme_name}
+EFALL TEACHING AIDS & FLASHCARDS - UNIT {unit_number}
 --------------------------------------------------------------------------------
-1. BILINGUAL FLASHCARDS: ENGLISH '{en_focus}' & URDU '{ur_focus}'
-+-----------------------------------+     +-----------------------------------+
-|                                   |     |                                   |
-|       English: {en_focus}                 |     |        Urdu: {ur_focus}           |
-|    ({vocab_theme})                |     |     ({vocab_theme})               |
-+-----------------------------------+     +-----------------------------------+
-
-2. COUNTING CARDS FOR NUMBER {math_focus}
-- Display Grid: {math_focus} dot counters for bilingual touch counting.
+- English Letter Flashcard: {en_focus} ({vocab_theme})
+- Urdu Letter Flashcard: {ur_focus} ({vocab_theme})
+- Counting Card: {math_focus} Dot Counters
 --------------------------------------------------------------------------------
         """
 
         tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-            "🎬 1. AI Training Videos", 
-            "📝 2. Design Thinking Lesson Plan", 
-            "📄 3. 5-Part Bilingual Worksheets", 
+            "🎬 1. Teacher Training & Videos", 
+            "📝 2. Detailed 70-Min Lesson Script", 
+            "📄 3. 5-Part Worksheets Packet", 
             "✂️ 4. Teaching Aids & Flashcards", 
             "🖐️ 5. AI Salt Tray Animation",
             "💬 6. Assessment & Feedback"
         ])
 
         with tab1:
-            st.markdown(f"### 🎬 EFALL Bilingual AI Training Video — Unit {unit_number}")
-            st.write(f"Simulates dual pronunciation guides for English **'{en_focus}'** and Urdu **'{ur_focus}'** (**{vocab_theme}**), alongside tactile hand guidance for **{stroke_focus}**.")
+            st.markdown(f"### 🎬 Teacher Training & Video Checklist (Unit {unit_number})")
+            st.write("Review these mandatory instructional videos before teaching this unit in your small classroom:")
             
             col_vid1, col_vid2 = st.columns(2)
             with col_vid1:
-                st.markdown("#### 🎥 1. Bilingual Phonics & Lip Movement Video")
-                st.info(f"**Active Frame:** Pronouncing English **'{en_focus}'** and Urdu **'{ur_focus}'** with side-by-side mouth shape guides.")
+                st.markdown("#### 🎥 1. EFALL Phonics Articulation Masterclass")
+                st.info(f"**Focus:** Close-up mouth positioning for English **'{en_focus}'** and Urdu **'{ur_focus}'**.")
                 with st.container(border=True):
                     st.code(f"""
     +-----------------------------------------------+
-    | [BILINGUAL AI VIDEO SYNC - ACTIVE]            |
-    | English Phonics: '{en_focus}' | Urdu Sound: '{ur_focus}'|
-    | Vocabulary Theme: {vocab_theme}               |
+    | [VIDEO SIMULATION: ACTIVE]                    |
+    | English Pronunciation: '{en_focus}'           |
+    | Urdu Sound Articulation: '{ur_focus}'         |
+    | Target Vocab Theme: {vocab_theme}             |
     +-----------------------------------------------+
                     """, language="text")
-                st.caption(f"✨ *Unit {unit_number} Bilingual Audio Engine:* Active.")
+                st.caption("✨ *Tip:* Practice pronouncing both sounds clearly in front of a mirror before class.")
 
             with col_vid2:
-                st.markdown("#### 🎥 2. Adult Facilitator Masterclass")
-                st.info(f"**Active Frame:** Guiding tiny hands through **{stroke_focus}** while teaching both alphabets.")
+                st.markdown("#### 🎥 2. Small-Space Kinesthetic Guidance")
+                st.info(f"**Focus:** Managing salt trays and hand-on-hand tracing for **{stroke_focus}** in limited furniture setups.")
                 with st.container(border=True):
                     st.code(f"""
     +-----------------------------------------------+
-    | [FACILITATOR BILINGUAL GUIDE - ACTIVE]        |
-    | Compact Space Setup | Dual Alphabet Pacing    |
+    | [FACILITATOR GUIDE: ACTIVE]                   |
+    | Room Layout: Floor mat semi-circle            |
+    | Stroke Focus: {stroke_focus}                  |
     +-----------------------------------------------+
                     """, language="text")
-                st.caption(f"✨ *Unit {unit_number} Facilitator Guide:* Active.")
+                st.caption("✨ *Tip:* Keep trays stable on low floor mats to prevent spills.")
 
         with tab2:
-            st.markdown(f"### 📝 Detailed Design Thinking Lesson Plan ({sub_unit})")
-            st.write("Download your bilingual lesson plan PDF below, mapped directly to the 5 numbered worksheets.")
-            st.markdown(create_download_link(lesson_plan_pdf_text, f"Unit_{unit_number}_Bilingual_Lesson_Plan.pdf", "Download Bilingual Lesson Plan PDF"), unsafe_allow_html=True)
+            st.markdown(f"### 📝 Detailed 70-Minute Narrative Teacher Lesson Script")
+            st.write("Read and follow this word-for-word narrative teacher script featuring exact spoken sentences, student video cues, and immersive classroom scenarios.")
+            
+            st.markdown(create_download_link(detailed_lesson_plan_text, f"Unit_{unit_number}_Detailed_Lesson_Script.pdf", "Download 70-Min Lesson Script PDF"), unsafe_allow_html=True)
             st.markdown("---")
 
-            col_lp1, col_lp2 = st.columns([2, 1])
-            with col_lp1:
-                st.markdown("#### ⏱️ 75-Minute Bilingual Sequence & Worksheet Mapping:")
-                st.markdown("1. **Empathize & Tune In (00:00 - 00:15):** Deploy **Worksheet 1**. Discuss **{vocab_theme}** in English & Urdu.")
-                st.markdown(f"2. **Define & Tactile Probe (00:15 - 00:30):** Deploy **Worksheet 2** in salt tray for **{stroke_focus}**.")
-                st.markdown(f"3. **Ideate & Dual Chants (00:30 - 00:45):** Deploy **Worksheet 3**. Chant English **{en_focus}** & Urdu **{ur_focus}**.")
-                st.markdown(f"4. **Prototype & Logic (00:45 - 01:00):** Deploy **Worksheets 4 & 5**. Count **{math_focus}** items.")
-                st.markdown(f"5. **Test & Reflect (01:00 - 01:15):** Form both letters using playdough.")
-            with col_lp2:
-                st.markdown("#### 👁️ Side Visual Aids")
-                with st.container(border=True):
-                    st.markdown(f"**Dual Letters:**")
-                    st.code(f" [🔤 {en_focus} & {ur_focus}] ", language="text")
-                    st.markdown(f"**Worksheets 1-5:**")
-                    st.code(f" [📄 Bilingual Pack] ", language="text")
+            with st.container(border=True):
+                st.markdown(detailed_lesson_plan_text)
 
         with tab3:
             st.markdown("### 📄 5-Part Bilingual Gamified Worksheets")
-            st.write(f"Download your complete packet containing all **5 visual, cognitive, and logic worksheets** featuring **both English and Urdu alphabets** for **Unit {unit_number}** below:")
-            st.markdown(create_download_link(worksheets_packet_text, f"Unit_{unit_number}_Bilingual_5_Worksheets.pdf", "Download 5-Part Bilingual Worksheets PDF"), unsafe_allow_html=True)
-
-            st.markdown("---")
+            st.write(f"Download all **5 visual, cognitive, and logic worksheets** for **Unit {unit_number}** below:")
+            st.markdown(create_download_link(worksheets_packet_text, f"Unit_{unit_number}_5_Worksheets.pdf", "Download 5-Part Worksheets PDF"), unsafe_allow_html=True)
+            
             with st.container(border=True):
-                st.markdown("#### 🔍 Worksheets Overview & Dual Alphabet Sequencing:")
-                st.markdown(f"- **Worksheet 1:** 👁️ Visual Memory & Bilingual Picture Hook ({vocab_theme})")
-                st.markdown(f"- **Worksheet 2:** ✋ Tactile Pre-Writing Stroke Tracing ({stroke_focus})")
-                st.markdown(f"- **Worksheet 3:** 👂 Dual Phonics Matching (English **{en_focus}** & Urdu **{ur_focus}**) ✨")
-                st.markdown(f"- **Worksheet 4:** 🧠 Mental Logic & Bilingual Sorting Puzzle")
-                st.markdown(f"- **Worksheet 5:** 🎮 Game-Alike Counting & Numeral Formation ({math_focus})")
+                st.markdown(worksheets_packet_text)
 
         with tab4:
             st.markdown("### ✂️ Bilingual Teaching Aids & Flashcards")
-            st.write(f"Download printable bilingual flashcards for **Unit {unit_number}**:")
-            st.markdown(create_download_link(teaching_aids_text, f"Unit_{unit_number}_Bilingual_Teaching_Aids.pdf", "Download Bilingual Teaching Aids PDF"), unsafe_allow_html=True)
-
-            st.markdown("---")
+            st.markdown(create_download_link(teaching_aids_text, f"Unit_{unit_number}_Teaching_Aids.pdf", "Download Teaching Aids PDF"), unsafe_allow_html=True)
             with st.container(border=True):
-                st.markdown(f"**Bilingual Preview:** English **{en_focus}** and Urdu **{ur_focus}** cards matched with vocabulary **{vocab_theme}**.")
+                st.markdown(teaching_aids_text)
 
         with tab5:
-            st.markdown(f"### 🖐️ AI Salt Tray Hand-Movement Animation (Unit {unit_number})")
-            st.write("Simulates finger tracing mechanics for both English and Urdu letter formations:")
-            
+            st.markdown(f"### 🖐️ AI Salt Tray Hand-Movement Animation")
             with st.container(border=True):
-                st.markdown(f"#### 🎥 Bilingual Hand Movement Animation: {stroke_focus}")
+                st.markdown(f"#### 🎥 Hand Movement Mechanics: {stroke_focus}")
                 st.code(f"""
       +-------------------------------------------------------+
       |  [BILINGUAL AI HAND MOVEMENT SIMULATION]              |
-      |                                                       |
       |     (1) Start Position: [●] Top Left                  |
       |     (2) Finger Motion:  ===> Moving across...         |
       |     (3) Dual Focus:     English '{en_focus}' & Urdu '{ur_focus}'     |
-      |                                                       |
-      |  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  |
       +-------------------------------------------------------+
                 """, language="text")
-                st.caption(f"💡 *Facilitator Tip:* Guide the child's index finger through **{stroke_focus}** while pronouncing both **{en_focus}** and **{ur_focus}**.")
 
         with tab6:
             st.markdown("### 💬 Assessment & Teacher Feedback")
-            st.markdown(f"1. **👁️ Visual Engagement:** Did the child engage with Worksheet 1?")
-            st.markdown(f"2. **👂 Dual Phonics:** Did they repeat both English **{en_focus}** and Urdu **{ur_focus}** sounds?")
-            st.markdown(f"3. **✋ Kinesthetic Motor:** Did they trace **{stroke_focus}** successfully?")
-            st.radio("Observation Result:", ["Fully Engaged (Both Languages)", "Needed Gentle Guidance", "Needs More Repetition"], key=f"assess_{unit_number}")
-            st.text_area("Adult Reflection Notes:", key=f"fb_{unit_number}")
+            st.markdown(f"1. **Provocation & Engagement:** Did students respond well to the **{vocab_theme}** hook?")
+            st.markdown(f"2. **Dual Phonics:** Did they articulate English **'{en_focus}'** and Urdu **'{ur_focus}'**?")
+            st.markdown(f"3. **Kinesthetic Mastery:** Did they successfully trace **{stroke_focus}**?")
+            st.radio("Observation Result:", ["Fully Engaged", "Needed Guidance", "Needs More Practice"], key=f"assess_{unit_number}")
+            st.text_area("Teacher Reflection Notes:", key=f"fb_{unit_number}")
 
     else:
-        # Urdu Interface Version
-        st.subheader("📚 تمام 50 یونٹس اور اردو/انگریزی نصاب")
-        st.write("یونٹ کا انتخاب کریں اور دو لسانی اسباق حاصل کریں۔")
+        st.subheader("📚 تمام 50 یونٹس اور اسباق")
         if st.button("⬅️ ڈیش بورڈ پر واپس جائیں"):
             st.session_state.current_page = "Teacher/Parent Dashboard"
             st.rerun()
@@ -405,7 +359,7 @@ UNIT {unit_number}: {theme_name}
 elif st.session_state.current_page == "Student View":
     if st.session_state.lang == "English":
         st.subheader("👧👦 Synchronized Student Portal (Ages 3-4)")
-        st.write("Child-friendly bilingual games and audio prompts synced with active units.")
+        st.write("Child-friendly bilingual activities and student videos synced with active units.")
     else:
         st.subheader("👧👦 طلباء کا صفحہ (عمر 3-4 سال)")
         st.write("بچوں کے لیے دو لسانی تفریحی سرگرمیاں۔")
