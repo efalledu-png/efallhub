@@ -36,12 +36,11 @@ def get_age_dynamics(age_group):
             "focus": "Sensory exploration, gross/fine motor control, and physical development.",
             "phonics_target": "Basic phonics sounds, digraphs, and two-letter blends with all vowels (a, e, i, o, u) + Uppercase/Lowercase letter recognition (English A-Z & Urdu ا-ی).",
             "pre_writing": "Pre-writing tracing lines, sensory sand/salt tracing, transitioning to pencil grips.",
-            "math_scale": "Oral counting 1 to 20; object & tally mark counting 1 to 10.",
+            "math_scale": "Oral counting 1 to 20; object & tally mark counting 1 to 10 with step-by-step teacher scripting.",
             "vocab_target": "Everyday bilingual vocabulary (English & Urdu nouns and action verbs).",
             "story_focus": "Listening to short interactive unit stories with guided Q&A prompts.",
             "pacing": "Shorter 10-15 min attention spans, heavy tactile play & movement.",
             "design_level": "Empathize & Explore",
-            "maker_challenge": "Maker Challenge (Low Resources): Build a paper-strip bridge or cup tower using paper scraps and blocks.",
             "activities": [
                 "Tactile Sandpaper Letter Tracing (English & Urdu)",
                 "Sensory Tally-Mark Counting with Playdough Balls",
@@ -53,12 +52,11 @@ def get_age_dynamics(age_group):
             "focus": "Social sharing, fine motor control, bilingual vocabulary expansion, and guided inquiry.",
             "phonics_target": "Consonant blends, short vowel word families, and introductory sight words.",
             "pre_writing": "Structured letter formation and word copying.",
-            "math_scale": "Counting 1 to 30, basic grouping, and simple object addition.",
+            "math_scale": "Counting 1 to 30, basic grouping, and simple object addition with guided teacher instructions.",
             "vocab_target": "Expanded thematic vocabulary in English and Urdu.",
             "story_focus": "Predictive storytelling and character emotion discussion.",
             "pacing": "Balanced 20-min structured blocks with active movement.",
             "design_level": "Define & Ideate",
-            "maker_challenge": "Maker Challenge (Low Resources): Create a cardboard shield or patterned paper basket using folded paper and yarn.",
             "activities": [
                 "Sight Word Fishing Game",
                 "Object Addition Mat with Counting Blocks",
@@ -70,12 +68,11 @@ def get_age_dynamics(age_group):
             "focus": "Cognitive skill building, trigraphs, blending letters to form words, and sight word fluency.",
             "phonics_target": "Trigraphs (e.g., igh, tch), letter blending, English & Urdu sight words reading & writing.",
             "pre_writing": "Reading and writing simple sentences (3-4 sentence comprehension tasks).",
-            "math_scale": "Oral counting 1 to 50, writing & counting 1 to 20, tens and ones place value introduction, addition & subtraction within 20 with dedicated math vocabulary.",
+            "math_scale": "Oral counting 1 to 50, writing & counting 1 to 20, tens and ones place value introduction, addition & subtraction within 20 with detailed step-by-step teacher instructions.",
             "vocab_target": "Advanced thematic vocabulary and sentence structures.",
             "story_focus": "3-4 sentence reading comprehension with analytical Q&A.",
             "pacing": "Structured 30-40 min inquiry sessions.",
             "design_level": "Ideate & Prototype",
-            "maker_challenge": "Maker Challenge (Low Resources): Build a freestanding paper tent or balance scale using a plastic hanger and paper cups.",
             "activities": [
                 "Tens and Ones Place Value Bundling Sticks",
                 "Skip Counting by 2s Rhythm March",
@@ -87,12 +84,11 @@ def get_age_dynamics(age_group):
             "focus": "Advanced age-appropriate reading, writing, spelling mastery, and multi-step mathematical reasoning.",
             "phonics_target": "Complex phonics rules, silent letters, fluent bilingual sentence composition.",
             "pre_writing": "Independent paragraph writing and structured journaling.",
-            "math_scale": "Addition/subtraction across 100, introductory multiplication, word problems, time to the half-hour.",
+            "math_scale": "Addition/subtraction across 100, introductory multiplication, word problems with explicit guided instruction.",
             "vocab_target": "Academic domain-specific terminology.",
             "story_focus": "Independent chapter comprehension and critical analysis.",
             "pacing": "Deep-dive 40-80 min academic and project cycles.",
             "design_level": "Prototype & Test",
-            "maker_challenge": "Maker Challenge (Low Resources): Construct a recycled cardboard tower or paper-plate water wheel using straws and tape.",
             "activities": [
                 "Independent Inquiry Journaling & Research Mapping",
                 "Advanced Word Problem Solving Stations",
@@ -104,12 +100,11 @@ def get_age_dynamics(age_group):
             "focus": "Complex critical analysis, independent research projects, advanced mathematical application, and leadership.",
             "phonics_target": "Root words, prefixes, suffixes, etymology, and fluent bilingual expression.",
             "pre_writing": "Formal essay drafting and structured inquiry reports.",
-            "math_scale": "Fractions, decimals, multi-digit operations, and algebraic thinking foundations.",
+            "math_scale": "Fractions, decimals, multi-digit operations, and algebraic thinking foundations with explicit modeling.",
             "vocab_target": "Scientific and global contextual vocabulary.",
             "story_focus": "Literary analysis, theme exploration, and peer debates.",
             "pacing": "Rigorous inquiry-driven project blocks.",
             "design_level": "Full Design Thinking Cycle",
-            "maker_challenge": "Maker Challenge (Low Resources): Design a working pulley system using string, spools, and paperclips.",
             "activities": [
                 "Global Context Research Project & Presentation",
                 "Advanced Mathematical Modeling & Data Collection",
@@ -124,82 +119,326 @@ def get_age_dynamics(age_group):
 def get_unit_curriculum(unit_num):
     curriculum_database = [
         # --- THEME 1: WHO WE ARE ---
-        ("Who We Are", "My Feelings and Friends", "Face", "چہرہ", "Aa, Bb", "الف ، ب", "Sensory texture tracing on smooth vs rough cards; STEAM face symmetry building", "Small circle on floor (limited furniture space)", "I feel happy when...", "Empathize", "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Once upon a time, little Ali looked in the mirror and noticed his happy face. How does your face look when you see a friend?"),
-        ("Who We Are", "Emotions & Smiles", "Smile", "مسکان", "Cc, Dd", "ج ، د", "Mirror expression matching and tactile clay molding of smiles; STEAM balance scales", "Partner pairing in compact room", "My smile shows...", "Empathize", "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "Sara gave a big warm smile to her teddy bear. Why do smiles make everyone feel so bright inside?"),
-        ("Who We Are", "Eyes & Vision", "Eyes", "آنکھیں", "Ee, Ff", "ر ، ز", "Visual light-box shadow exploration; STEAM light filtering with translucent colored paper", "Seated desk tracking", "I see with my eyes.", "Define", "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Blinking brightly, Zoya spotted a yellow butterfly near the window. What wonderful things can you spot right now?"),
-        ("Who We Are", "Heart & Feelings", "Heart", "دل", "Gg, Hh", "س ، ش", "Tactile heartbeat rhythm tapping; STEAM pulse and movement tracking", "Breathing and movement circle", "My heart beats fast.", "Define", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Thump, thump, went Bilal's heart after a happy skip. What makes your heart feel full of joy?"),
-        ("Who We Are", "Family Bonds", "Family", "خاندان", "Ii, Jj", "ط ، ع", "Kinship ring tracing; STEAM family tree block arrangement", "Drawing family on small slates", "I love my family.", "Ideate", "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "The bird family built a cozy nest high up in the tree. How does your family care for you every day?"),
-        ("Who We Are", "Hands & Touch", "Hands", "ہاتھ", "Kk, Ll", "ف ، ق", "Sensory feely-bag texture guessing; STEAM building towers with varied tactile blocks", "Clapping rhythms on desk", "My hands can build.", "Ideate", "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "With busy hands, Omar stacked ten wooden blocks into a tall tower. What can your hands build today?"),
-        ("Who We Are", "Voice & Sound", "Voice", "آواز", "Mm, Nn", "ک ، گ", "Acoustic whisper tube experimentation; STEAM sound vibration water cups", "Soft voice whispering circle", "My voice is kind.", "Prototype", "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "A soft whisper traveled across the quiet circle. Why are kind words like sweet music?"),
-        ("Who We Are", "My Body Map", "Me", "میں", "Oo, Pp", "ل ، م", "Body stretch mapping; STEAM full-body shadow tracing on floor mats", "Standing body stretch in tight space", "This is my body.", "Test", "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Stretching up high to touch the clouds, Sana felt strong and healthy. How do you take care of your body?"),
+        ("Who We Are", "My Feelings and Friends", "Face", "چہرہ", "Aa, Bb", "الف ، ب", 
+         "Sensory mirror reflection exploration: Children press faces against soft tactile mirrors to explore symmetry and emotion expressions.", 
+         "Maker Challenge: Build a 'Happy Face Mask' using paper plates, yarn strands for hair, and cut-out shapes.",
+         "Small circle on floor (limited furniture space)", "I feel happy when...", "Empathize", 
+         "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Once upon a time, little Ali looked in the mirror and noticed his happy face. How does your face look when you see a friend?"),
+        
+        ("Who We Are", "Emotions & Smiles", "Smile", "مسکان", "Cc, Dd", "ج ، د", 
+         "Tactile emotion molding: Using clay to sculpt different mouth shapes representing happiness, surprise, and calmness.", 
+         "Maker Challenge: Construct a 'Smile Mobile' using a hanger, yarn, and cardstock smiley cut-outs.",
+         "Partner pairing in compact room", "My smile shows...", "Empathize", 
+         "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "Sara gave a big warm smile to her teddy bear. Why do smiles make everyone feel so bright inside?"),
+        
+        ("Who We Are", "Eyes & Vision", "Eyes", "آنکھیں", "Ee, Ff", "ر ، ز", 
+         "Visual light-box exploration: Examining translucent color paddles and tracing shadow outlines of objects.", 
+         "Maker Challenge: Build a 'Spy Glasses' viewfinder using folded paper tubes and colored cellophane sheets.",
+         "Seated desk tracking", "I see with my eyes.", "Define", 
+         "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Blinking brightly, Zoya spotted a yellow butterfly near the window. What wonderful things can you spot right now?"),
+        
+        ("Who We Are", "Heart & Feelings", "Heart", "دل", "Gg, Hh", "س ، ش", 
+         "Acoustic heartbeat tracking: Using paper-cup stethoscopes to listen to resting heart rates and post-movement pulses.", 
+         "Maker Challenge: Create a 'Heartbeat Drum' using empty tissue boxes and rubber bands stretched across.",
+         "Breathing and movement circle", "My heart beats fast.", "Define", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Thump, thump, went Bilal's heart after a happy skip. What makes your heart feel full of joy?"),
+        
+        ("Who We Are", "Family Bonds", "Family", "خاندان", "Ii, Jj", "ط ، ع", 
+         "Kinship mapping: Sorting family role cards and tracing finger-paints in interlinking generational circles.", 
+         "Maker Challenge: Build a 'Family House Pop-Up Card' using folded cardstock and paper cutouts.",
+         "Drawing family on small slates", "I love my family.", "Ideate", 
+         "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "The bird family built a cozy nest high up in the tree. How does your family care for you every day?"),
+        
+        ("Who We Are", "Hands & Touch", "Hands", "ہاتھ", "Kk, Ll", "ف ، ق", 
+         "Sensory feely-bag investigation: Reaching into texture bags to identify rough, smooth, soft, and hard items.", 
+         "Maker Challenge: Construct a 'Cardboard Hand Puppet' using paper cut-outs, movable fingers, and yarn.",
+         "Clapping rhythms on desk", "My hands can build.", "Ideate", 
+         "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "With busy hands, Omar stacked ten wooden blocks into a tall tower. What can your hands build today?"),
+        
+        ("Who We Are", "Voice & Sound", "Voice", "آواز", "Mm, Nn", "ک ، گ", 
+         "Acoustic whisper-tube testing: Testing how sound travels through extended paper towel rolls at low volumes.", 
+         "Maker Challenge: Build a 'Paper Cone Megaphone' using rolled construction paper and tape.",
+         "Soft voice whispering circle", "My voice is kind.", "Prototype", 
+         "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "A soft whisper traveled across the quiet circle. Why are kind words like sweet music?"),
+        
+        ("Who We Are", "My Body Map", "Me", "میں", "Oo, Pp", "ل ، م", 
+         "Full-body stretch and balance mapping: Tracing silhouettes of body postures on large floor mat sheets.", 
+         "Maker Challenge: Design a 'Movable Body Figure' using cardstock limbs attached with paper fasteners.",
+         "Standing body stretch in tight space", "This is my body.", "Test", 
+         "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Stretching up high to touch the clouds, Sana felt strong and healthy. How do you take care of your body?"),
         
         # --- THEME 2: WHERE WE ARE IN PLACE AND TIME ---
-        ("Where We Are in Place and Time", "Classroom Door", "Door", "دروازہ", "Sh", "ن ، و", "Spatial boundary walking; STEAM hinge and lever mechanical testing", "Doorway transition drill", "The door shuts quietly.", "Empathize", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "The wooden door opened wide to welcome everyone inside. What is behind our classroom door?"),
-        ("Where We Are in Place and Time", "Windows & Light", "Window", "کھڑکی", "Ch", "ہ ، ی", "Light refraction tracking; STEAM window pane geometric patterning", "Looking outward observation", "The window lets in light.", "Empathize", "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Golden sunshine streamed through the clean window pane. What can you see outside right now?"),
-        ("Where We Are in Place and Time", "Classroom Tables", "Table", "میز", "Th", "ب ، ت", "Surface texture exploration; STEAM tabletop load balancing with books", "Table-side grouping", "That table is clean.", "Define", "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Sitting neatly at the wooden table, the children shared crayons. Why is a tidy workspace helpful?"),
-        ("Where We Are in Place and Time", "Seating Arrangement", "Chair", "کرسی", "Wh", "ج ، ح", "Ergonomic posture check; STEAM chair stacking geometry", "Quiet chair stacking", "What is my seat?", "Define", "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "Finding his special chair, Ahmed sat down ready to learn. Where is your favorite spot in the room?"),
-        ("Where We Are in Place and Time", "Floor Mats", "Floor", "فرش", "Bl", "د ، ذ", "Mat friction testing; STEAM floor tile grid mapping", "Mat alignment drill", "We walk on the floor.", "Ideate", "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Soft carpets kept little feet warm during story circle. How do we keep our floor neat?"),
-        ("Where We Are in Place and Time", "Walls & Space", "Wall", "دیوار", "Cl", "ر ، ز", "Vertical surface friction tests; STEAM wall puzzle assembly", "Wall touch counting", "The classroom wall stands.", "Ideate", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Colorful artwork decorated the classroom wall. What story does your artwork tell?"),
-        ("Where We Are in Place and Time", "Quiet Mats", "Mat", "چٹائی", "Fl", "س ، ش", "Relaxation texture feel; STEAM mat folding symmetry", "Sitting cross-legged on mat", "Sit on the mat.", "Prototype", "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Resting quietly on the blue mat, Hina took deep, calm breaths. Why do we need quiet rest time?"),
-        ("Where We Are in Place and Time", "Rest Routine", "Bed", "بستر", "Sl", "ص ، ض", "Calm breathing sensory focus; STEAM nesting cushion stack", "Calm resting posture", "It is time to rest.", "Test", "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Nighttime came gently as the stars twinkled outside. How do you prepare for a peaceful night?"),
+        ("Where We Are in Place and Time", "Classroom Door", "Door", "دروازہ", "Sh", "ن ، و", 
+         "Spatial boundary exploration: Testing how door hinges rotate and mapping entry pathways in the room.", 
+         "Maker Challenge: Construct a 'Miniature Working Door' using folded cardboard and a paperclip hinge.",
+         "Doorway transition drill", "The door shuts quietly.", "Empathize", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "The wooden door opened wide to welcome everyone inside. What is behind our classroom door?"),
+        
+        ("Where We Are in Place and Time", "Windows & Light", "Window", "کھڑکی", "Ch", "ہ ، ی", 
+         "Light refraction analysis: Observing how sunlight casts colored patterns through tinted cellophane sheets.", 
+         "Maker Challenge: Build a 'Stained Glass Window Pane' using black construction paper frames and colored tissue paper.",
+         "Looking outward observation", "The window lets in light.", "Empathize", 
+         "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Golden sunshine streamed through the clean window pane. What can you see outside right now?"),
+        
+        ("Where We Are in Place and Time", "Classroom Tables", "Table", "میز", "Th", "ب ، ت", 
+         "Surface stability and weight testing: Placing weighted block stacks across tables to test balanced load distribution.", 
+         "Maker Challenge: Construct a 'Miniature Table' using four paper cups as legs and a stiff cardboard tabletop.",
+         "Table-side grouping", "That table is clean.", "Define", 
+         "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Sitting neatly at the wooden table, the children shared crayons. Why is a tidy workspace helpful?"),
+        
+        ("Where We Are in Place and Time", "Seating Arrangement", "Chair", "کرسی", "Wh", "ج ، ح", 
+         "Ergonomic stacking geometry: Examining how chairs stack vertically to save compact classroom space.", 
+         "Maker Challenge: Build a 'Mini Stacking Chair' using folded strips of index cards and glue.",
+         "Quiet chair stacking", "What is my seat?", "Define", 
+         "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "Finding his special chair, Ahmed sat down ready to learn. Where is your favorite spot in the room?"),
+        
+        ("Where We Are in Place and Time", "Floor Mats", "Floor", "فرش", "Bl", "د ، ذ", 
+         "Friction and traction testing: Sliding various textured fabrics across classroom floor tiles.", 
+         "Maker Challenge: Design a 'Textured Floor Mat Pattern' by weaving paper strips of different colors.",
+         "Mat alignment drill", "We walk on the floor.", "Ideate", 
+         "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Soft carpets kept little feet warm during story circle. How do we keep our floor neat?"),
+        
+        ("Where We Are in Place and Time", "Walls & Space", "Wall", "دیوار", "Cl", "ر ، ز", 
+         "Vertical surface spatial alignment: Using string grids to map hanging artwork positions on the wall.", 
+         "Maker Challenge: Build a 'Hanging Wall Organizer' using a folded paper envelope and yarn loop.",
+         "Wall touch counting", "The classroom wall stands.", "Ideate", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Colorful artwork decorated the classroom wall. What story does your artwork tell?"),
+        
+        ("Where We Are in Place and Time", "Quiet Mats", "Mat", "چٹائی", "Fl", "س ، ش", 
+         "Resting tactile exploration: Feeling smooth woven straw mats vs plush felt cushions.", 
+         "Maker Challenge: Construct a 'Mini Woven Rest Mat' using strips of felt and colored paper.",
+         "Sitting cross-legged on mat", "Sit on the mat.", "Prototype", 
+         "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Resting quietly on the blue mat, Hina took deep, calm breaths. Why do we need quiet rest time?"),
+        
+        ("Where We Are in Place and Time", "Rest Routine", "Bed", "بستر", "Sl", "ص ، ض", 
+         "Calm breathing posture simulation: Exploring weight distribution on multi-layered soft cotton pads.", 
+         "Maker Challenge: Build a 'Padded Bed Frame' using matchboxes, cotton wool, and fabric scraps.",
+         "Calm resting posture", "It is time to rest.", "Test", 
+         "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Nighttime came gently as the stars twinkled outside. How do you prepare for a peaceful night?"),
 
         # --- THEME 3: HOW WE EXPRESS OURSELVES ---
-        ("How We Express Ourselves", "Colors & Hues", "Paint", "رنگ", "Ai", "ط ، ظ", "Finger paint tactile blending; STEAM primary to secondary color mixing", "Mini palette desk painting", "I paint bright colors.", "Empathize", "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "Blue and yellow paint swirled together to make magical green. What is your favorite color?"),
-        ("How We Express Ourselves", "Brushes & Strokes", "Brush", "برش", "Ee", "ع ، غ", "Bristle texture contrasting; STEAM stroke pressure analysis", "Vertical stroke practice", "The brush sweeps up.", "Empathize", "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "The paintbrush danced across the paper like a bird in flight. What pictures can your brush make?"),
-        ("How We Express Ourselves", "Clay Molding", "Clay", "مٹی", "Igh", "ف ، ق", "Molding pliable wet clay; STEAM 3D sculptural stability", "Hand-held clay shaping", "We mold clay high.", "Define", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Soft clay transformed into a little round turtle in Zain's hands. What can you shape today?"),
-        ("How We Express Ourselves", "Songs & Rhythm", "Song", "گیت", "Oa", "ک ، گ", "Acoustic percussion instruments; STEAM sound wave frequency clapping", "Seated clapping songs", "We sing a sweet song.", "Define", "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "A cheerful tune filled the room as everyone clapped in rhythm. How does music make you feel?"),
-        ("How We Express Ourselves", "Stories & Tales", "Story", "کہانی", "Oo", "ل ، م", "Puppet texture storytelling; STEAM story sequence sequencing blocks", "Circle story telling", "Every story has magic.", "Ideate", "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Once upon a starry night, a brave little rabbit went on an adventure. What happens next in your story?"),
-        ("How We Express Ourselves", "Smiles & Joy", "Smile", "مسکرانا", "Ar", "ن ، و", "Happy expression mirror mapping; STEAM mirror reflection symmetry", "Mirror smile check", "Smiles shine like stars.", "Ideate", "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "A single smile spread across the room from friend to friend. How far can a smile travel?"),
-        ("How We Express Ourselves", "Laughter & Play", "Laugh", "ہنسنا", "Or", "ہ ، ی", "Joy energy pacing; STEAM kinetic action toys", "Controlled quiet laughing games", "We play for fun.", "Prototype", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Giggles bubbled up during the joyful playground game. Why is playtime so important?"),
-        ("How We Express Ourselves", "Dance & Motion", "Dance", "ناچ", "Ur", "ا ، ب", "Rhythmic foot-tapping coordination; STEAM balance and kinetic movement", "In-place foot tapping", "We turn and dance.", "Prototype", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Spinning round and round, the dancers moved like autumn leaves. Can you show me your favorite dance step?"),
-        ("How We Express Ourselves", "Art Contrast", "Color", "رنگ", "Ow", "ج ، د", "High-contrast visual sorting; STEAM color hue gradation strips", "Color sorting cards", "Colors stand out now.", "Test", "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Bright red contrasted beautifully against deep blue. How do contrasting colors catch our eyes?"),
+        ("How We Express Ourselves", "Colors & Hues", "Paint", "رنگ", "Ai", "ط ، ظ", 
+         "Primary color blending: Mixing tempera drops on palettes to create secondary hues.", 
+         "Maker Challenge: Create a 'Color Wheel Spinner' using a cardboard circle, markers, and a toothpick spindle.",
+         "Mini palette desk painting", "I paint bright colors.", "Empathize", 
+         "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "Blue and yellow paint swirled together to make magical green. What is your favorite color?"),
+        
+        ("How We Express Ourselves", "Brushes & Strokes", "Brush", "برش", "Ee", "ع ، غ", 
+         "Bristle texture stroke analysis: Testing thick sponge brushes vs fine-tip paintbrushes on rough paper.", 
+         "Maker Challenge: Build a 'Nature Paintbrush' by tying pine needles and leaves to twig handles.",
+         "Vertical stroke practice", "The brush sweeps up.", "Empathize", 
+         "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "The paintbrush danced across the paper like a bird in flight. What pictures can your brush make?"),
+        
+        ("How We Express Ourselves", "Clay Molding", "Clay", "مٹی", "Igh", "ف ، ق", 
+         "Sculptural 3D stability testing: Molding wet clay structures and checking weight balance.", 
+         "Maker Challenge: Sculpt a 'Clay Animal Figurine' using air-dry clay and toothpicks for support.",
+         "Hand-held clay shaping", "We mold clay high.", "Define", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Soft clay transformed into a little round turtle in Zain's hands. What can you shape today?"),
+        
+        ("How We Express Ourselves", "Songs & Rhythm", "Song", "گیت", "Oa", "ک ، گ", 
+         "Acoustic frequency clapping: Matching vocal pitches to rhythmic percussion tappings.", 
+         "Maker Challenge: Construct a 'Rhythm Shaker' using a plastic cup filled with dry beans and taped paper top.",
+         "Seated clapping songs", "We sing a sweet song.", "Define", 
+         "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "A cheerful tune filled the room as everyone clapped in rhythm. How does music make you feel?"),
+        
+        ("How We Express Ourselves", "Stories & Tales", "Story", "کہانی", "Oo", "ل ، م", 
+         "Sequencing narrative blocks: Arranging picture cards in logical beginning, middle, and end order.", 
+         "Maker Challenge: Build a 'Puppet Show Stage' using a shoebox, craft sticks, and paper puppets.",
+         "Circle story telling", "Every story has magic.", "Ideate", 
+         "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Once upon a starry night, a brave little rabbit went on an adventure. What happens next in your story?"),
+        
+        ("How We Express Ourselves", "Smiles & Joy", "Smile", "مسکرانا", "Ar", "ن ، و", 
+         "Facial expression symmetry: Tracing smiling mouth lines and matching symmetrical facial halves.", 
+         "Maker Challenge: Design a 'Joy Badge' using cardboard circles, colorful ribbons, and happy face stamps.",
+         "Mirror smile check", "Smiles shine like stars.", "Ideate", 
+         "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "A single smile spread across the room from friend to friend. How far can a smile travel?"),
+        
+        ("How We Express Ourselves", "Laughter & Play", "Laugh", "ہنسنا", "Or", "ہ ، ی", 
+         "Kinetic movement and balance testing: Constructing balancing toys that bob when tapped.", 
+         "Maker Challenge: Build a 'Wobble Toy' using a half eggshell, clay weight, and paper decoration.",
+         "Controlled quiet laughing games", "We play for fun.", "Prototype", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Giggles bubbled up during the joyful playground game. Why is playtime so important?"),
+        
+        ("How We Express Ourselves", "Dance & Motion", "Dance", "ناچ", "Ur", "ا ، ب", 
+         "Kinetic momentum tracing: Recording footstep rhythms with chalk on floor paper sheets.", 
+         "Maker Challenge: Construct 'Paper Streamer Wands' using wooden sticks and flowing ribbons.",
+         "In-place foot tapping", "We turn and dance.", "Prototype", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Spinning round and round, the dancers moved like autumn leaves. Can you show me your favorite dance step?"),
+        
+        ("How We Express Ourselves", "Art Contrast", "Color", "رنگ", "Ow", "ج ، د", 
+         "High-contrast color sorting: Pairing complementary dark and light shade strips.", 
+         "Maker Challenge: Build a 'Contrast Mosaic' using torn black, white, and brightly colored paper scraps.",
+         "Color sorting cards", "Colors stand out now.", "Test", 
+         "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Bright red contrasted beautifully against deep blue. How do contrasting colors catch our eyes?"),
 
         # --- THEME 4: HOW THE WORLD WORKS ---
-        ("How the World Works", "Water Flow", "Water", "پانی", "Dge", "ر ، ز", "Hydro-sensory pouring; STEAM water displacement & sink/float testing", "Cup pouring experiment", "Water flows under bridges.", "Empathize", "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Cool water trickled down the stream, feeding the thirsty flowers. Where does water come from?"),
-        ("How We Express Ourselves", "Leaves & Veins", "Leaf", "پتا", "Tch", "س ، ش", "Pressed leaf vein rubbing; STEAM botanical structure examination", "Pressed leaf inspection", "Catch the falling leaf.", "Empathize", "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "A crisp green leaf floated gently down from the oak branch. Why do plants have leaves?"),
-        ("How the World Works", "Sunlight & Shadows", "Sun", "سورج", "Air", "ط ، ظ", "Warmth touch and shadow tracing; STEAM solar angle tracking", "Desk shadow tracing", "The sun gives us warmth.", "Define", "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Morning sunlight chased away the chilly shadows. How does the sun help life on Earth?"),
-        ("How the World Works", "Clouds & Sky", "Cloud", "بادل", "Ear", "ط ، ظ", "Cotton fluff tactile touch; STEAM condensation cycle simulation", "Cotton wool cloud shaping", "Can you hear the wind?", "Define", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Fluffy white clouds drifted slowly across the blue sky like sailing ships. What shapes do you see in the clouds?"),
-        ("How the World Works", "Rain Droplets", "Rain", "بارش", "Are", "ع ، غ", "Finger-tap moisture simulation; STEAM rain gauge measurement", "Finger tap rain sounds", "We care for rain water.", "Ideate", "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Pitter-patter went the gentle raindrops on the window glass. Why do plants love the rain?"),
-        ("How the World Works", "Stones & Weight", "Stone", "پتھر", "Oor", "ف ، ق", "Heavy/light tactile sorting; STEAM balance scale weight comparison", "Heavy/light hand balancing", "Heavy stones stay put.", "Ideate", "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "A smooth river stone sat firmly at the bottom of the pond. Why do heavy objects sink?"),
-        ("How the World Works", "Wind & Breeze", "Wind", "ہوا", "O/U", "ک ، گ", "Air current fan testing; STEAM paper glider aerodynamics", "Paper fan blowing test", "Wind pushes the trees.", "Prototype", "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "A breezy wind whispered through the garden, making kites fly high. Can you feel the wind?"),
-        ("How the World Works", "Trees & Wood", "Tree", "درخت", "Ph", "ل ، م", "Tree bark texture rubbing; STEAM wooden block structural integrity", "Wooden block counting", "Trees provide sturdy wood.", "Test", "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "The giant banyan tree offered cool shade to passing travelers. How do trees help our planet?"),
+        ("How the World Works", "Water Flow", "Water", "پانی", "Dge", "ر ، ز", 
+         "Hydro-sensory pouring and sink/float testing: Testing which classroom objects displace water.", 
+         "Maker Challenge: Construct a 'Water Wheel' using plastic spoons, a cork, and a wooden skewer.",
+         "Cup pouring experiment", "Water flows under bridges.", "Empathize", 
+         "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Cool water trickled down the stream, feeding the thirsty flowers. Where does water come from?"),
+        
+        ("How We Express Ourselves", "Leaves & Veins", "Leaf", "پتا", "Tch", "س ، ش", 
+         "Botanical vein tracing: Placing leaves under paper and rubbing wax crayons to reveal vein structures.", 
+         "Maker Challenge: Build a 'Leaf Press Frame' using cardboard sheets and rubber bands.",
+         "Pressed leaf inspection", "Catch the falling leaf.", "Empathize", 
+         "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "A crisp green leaf floated gently down from the oak branch. Why do plants have leaves?"),
+        
+        ("How the World Works", "Sunlight & Shadows", "Sun", "سورج", "Air", "ط ، ظ", 
+         "Solar angle shadow tracking: Measuring how shadow lengths shift throughout the morning.", 
+         "Maker Challenge: Construct a 'Mini Sundial' using a paper plate, a straw, and clock markings.",
+         "Desk shadow tracing", "The sun gives us warmth.", "Define", 
+         "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Morning sunlight chased away the chilly shadows. How does the sun help life on Earth?"),
+        
+        ("How the World Works", "Clouds & Sky", "Cloud", "بادل", "Ear", "ط ، ظ", 
+         "Condensation simulation: Observing water vapor collection inside sealed clear bags.", 
+         "Maker Challenge: Build a 'Cotton Cloud Hanging Mobile' using cotton wool balls, string, and twigs.",
+         "Cotton wool cloud shaping", "Can you hear the wind?", "Define", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Fluffy white clouds drifted slowly across the blue sky like sailing ships. What shapes do you see in the clouds?"),
+        
+        ("How the World Works", "Rain Droplets", "Rain", "بارش", "Are", "ع ، غ", 
+         "Precipitation measurement: Simulating rainfall drops through sponge compression tests.", 
+         "Maker Challenge: Construct a 'Cardboard Rain Gauge' using a marked plastic bottle funnel.",
+         "Finger tap rain sounds", "We care for rain water.", "Ideate", 
+         "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Pitter-patter went the gentle raindrops on the window glass. Why do plants love the rain?"),
+        
+        ("How the World Works", "Stones & Weight", "Stone", "پتھر", "Oor", "ف ، ق", 
+         "Weight comparison: Using makeshift balance scales to weigh stones against foam blocks.", 
+         "Maker Challenge: Build a 'Balance Scale' using a plastic coat hanger, string, and two paper cups.",
+         "Heavy/light hand balancing", "Heavy stones stay put.", "Ideate", 
+         "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "A smooth river stone sat firmly at the bottom of the pond. Why do heavy objects sink?"),
+        
+        ("How the World Works", "Wind & Breeze", "Wind", "ہوا", "O/U", "ک ، گ", 
+         "Air current testing: Using hand-held paper fans to propel lightweight paper gliders.", 
+         "Maker Challenge: Construct a 'Paper Pinwheel' using square paper, a pin, and a straw handle.",
+         "Paper fan blowing test", "Wind pushes the trees.", "Prototype", 
+         "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "A breezy wind whispered through the garden, making kites fly high. Can you feel the wind?"),
+        
+        ("How the World Works", "Trees & Wood", "Tree", "درخت", "Ph", "ل ، م", 
+         "Botanical texture rubbing: Making bark rubbings with crayons on textured tree trunks.", 
+         "Maker Challenge: Build a 'Cardboard Tree Sculpture' using interlocking slotted cardboard branches.",
+         "Wooden block counting", "Trees provide sturdy wood.", "Test", 
+         "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "The giant banyan tree offered cool shade to passing travelers. How do trees help our planet?"),
 
         # --- THEME 5: HOW WE ORGANIZE OURSELVES ---
-        ("How We Organize Ourselves", "Baskets & Storage", "Basket", "ٹوکری", "Sentences", "ن ، و", "Woven basket texture feel; STEAM modular container packing efficiency", "Desk basket sorting", "I put toys in baskets.", "Empathize", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Toys found their cozy homes inside woven baskets at cleanup time. Why is organizing important?"),
-        ("How We Organize Ourselves", "Toys & Sharing", "Toy", "کھلونا", "Sentences", "ہ ، ی", "Collaborative tactile sharing; STEAM fair distribution math sharing", "Passing items in circle", "We share our toys.", "Empathize", "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Passing the toy block with a smile made playtime twice as fun. How do we share with friends?"),
-        ("How We Organize Ourselves", "Shelves & Books", "Shelf", "الماری", "Sentences", "ا ، ب", "Book spine sorting; STEAM vertical shelf weight distribution", "Mini bookshelf stacking", "Our books are on shelves.", "Define", "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Neat rows of storybooks waited on the classroom shelf. How do we take care of books?"),
-        ("How We Organize Ourselves", "Boxes & Packing", "Box", "ڈبہ", "Sentences", "ج ، د", "Cardboard box geometric fitting; STEAM 3D spatial puzzle building", "Box fitting exercise", "Put blocks in the box.", "Define", "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "Every puzzle piece fit snugly inside its storage box. How do shapes fit together?"),
-        ("How We Organize Ourselves", "Tidying & Care", "Clean", "صاف", "Sentences", "ر ، ز", "Workspace organization drill; STEAM sorting items by classification", "Desk clearing drill", "Keep the classroom clean.", "Ideate", "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Sweeping the floor together made the classroom shine like new. How do we keep our space tidy?"),
-        ("How We Organize Ourselves", "Patterns & Order", "Tidy", "درست", "Sentences", "س ، ش", "Alternating sensory beads; STEAM pattern sequencing algorithms", "Color pattern pairing", "Make patterns neatly.", "Ideate", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Red, blue, red, blue—the bead pattern repeated perfectly. Can you make a pattern?"),
-        ("How We Organize Ourselves", "Helping Hands", "Help", "مدد", "Sentences", "ص ، ض", "Peer buddy assistance tactile exercise; STEAM collaborative bridge building", "Peer buddy assistance", "We are helping hands.", "Prototype", "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Lifting the heavy bin together, two friends showed true teamwork. How do you help others?"),
-        ("How We Organize Ourselves", "Sorting Objects", "Sort", "ترتیب", "Sentences", "ط ، ظ", "Attribute sorting trays; STEAM Venn diagram grouping", "Shape sorting trays", "Sort items by shape.", "Test", "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Circles went in one tray and squares in another. Why do we sort objects by attributes?"),
+        ("How We Organize Ourselves", "Baskets & Storage", "Basket", "ٹوکری", "Sentences", "ن ، و", 
+         "Container packing efficiency: Testing how different geometric items fit inside woven bins.", 
+         "Maker Challenge: Construct a 'Mini Woven Basket' using paper strips and a cardstock base.",
+         "Desk basket sorting", "I put toys in baskets.", "Empathize", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Toys found their cozy homes inside woven baskets at cleanup time. Why is organizing important?"),
+        
+        ("How We Organize Ourselves", "Toys & Sharing", "Toy", "کھلونا", "Sentences", "ہ ، ی", 
+         "Collaborative fair distribution math sharing: Dividing counters evenly among peer groups.", 
+         "Maker Challenge: Build a 'Sharing Tray Divider' using folded cardboard strips inside a box lid.",
+         "Passing items in circle", "We share our toys.", "Empathize", 
+         "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Passing the toy block with a smile made playtime twice as fun. How do we share with friends?"),
+        
+        ("How We Organize Ourselves", "Shelves & Books", "Shelf", "الماری", "Sentences", "ا ، ب", 
+         "Vertical shelf weight distribution: Testing book stack heights on cardboard shelves.", 
+         "Maker Challenge: Construct a 'Mini Bookshelf' using stacked shoeboxes secured with tape.",
+         "Mini bookshelf stacking", "Our books are on shelves.", "Define", 
+         "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Neat rows of storybooks waited on the classroom shelf. How do we take care of books?"),
+        
+        ("How We Organize Ourselves", "Boxes & Packing", "Box", "ڈبہ", "Sentences", "ج ، د", 
+         "3D spatial puzzle fitting: Fitting various blocks snugly inside custom cardboard boxes.", 
+         "Maker Challenge: Design a 'Matchbox Storage Drawer' using matchbox trays and paper pulls.",
+         "Box fitting exercise", "Put blocks in the box.", "Define", 
+         "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "Every puzzle piece fit snugly inside its storage box. How do shapes fit together?"),
+        
+        ("How We Organize Ourselves", "Tidying & Care", "Clean", "صاف", "Sentences", "ر ، ز", 
+         "Workspace sorting drills: Classifying mixed classroom supplies into designated trays.", 
+         "Maker Challenge: Build a 'Desk Caddy' using glued toilet paper rolls inside a cardboard tray.",
+         "Desk clearing drill", "Keep the classroom clean.", "Ideate", 
+         "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Sweeping the floor together made the classroom shine like new. How do we keep our space tidy?"),
+        
+        ("How We Organize Ourselves", "Patterns & Order", "Tidy", "درست", "Sentences", "س ، ش", 
+         "Alternating bead sequencing: Creating repeating AB color patterns with beads and string.", 
+         "Maker Challenge: Construct a 'Pattern Bracelet' using pipe cleaners and multi-colored beads or paper rings.",
+         "Color pattern pairing", "Make patterns neatly.", "Ideate", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Red, blue, red, blue—the bead pattern repeated perfectly. Can you make a pattern?"),
+        
+        ("How We Organize Ourselves", "Helping Hands", "Help", "مدد", "Sentences", "ص ، ض", 
+         "Collaborative bridge building: Teaming up with a partner to construct joint card spans.", 
+         "Maker Challenge: Build a 'Teamwork Paper Bridge' spanning two books using folded paper arches.",
+         "Peer buddy assistance", "We are helping hands.", "Prototype", 
+         "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Lifting the heavy bin together, two friends showed true teamwork. How do you help others?"),
+        
+        ("How We Organize Ourselves", "Sorting Objects", "Sort", "ترتیب", "Sentences", "ط ، ظ", 
+         "Attribute sorting trays: Grouping items by color, shape, and size into Venn diagrams.", 
+         "Maker Challenge: Construct a 'Sorting Tray' using folded cardboard partitioned into compartments.",
+         "Shape sorting trays", "Sort items by shape.", "Test", 
+         "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "Circles went in one tray and squares in another. Why do we sort objects by attributes?"),
 
         # --- THEME 6: SHARING THE PLANET ---
-        ("Sharing the Planet", "Seeds & Growth", "Seed", "بیج", "Writing", "ع ، غ", "Seed texture and hardness sorting; STEAM sprouting observation timeline", "Cup sprouting observation", "Seeds grow into tall plants.", "Empathize", "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "A tiny sunflower seed slept quietly under the dark soil. What does a seed need to wake up?"),
-        ("Sharing the Planet", "Soil & Ground", "Soil", "مٹی", "Writing", "ف ، ق", "Earthy soil texture touch; STEAM soil moisture retention testing", "Soil texture touching", "Rich soil feeds roots.", "Empathize", "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Rich, dark soil held moisture to keep plant roots cool and strong. What lives in the soil?"),
-        ("Sharing the Planet", "Planting Life", "Plant", "پودا", "Writing", "ک ، گ", "Stem and leaf tactile exploration; STEAM plant hydration tracking", "Plant watering care", "Plants need water daily.", "Define", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "The little green sprout stretched its first leaves toward the morning sun. How do plants grow?"),
-        ("Sharing the Planet", "Flowers & Blooms", "Flower", "پھول", "Writing", "ل ، م", "Petal softness counting; STEAM flower radial symmetry study", "Flower petal counting", "Flowers bloom in spring.", "Define", "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Bright yellow petals opened wide to greet the buzzing honeybee. Why do bees visit flowers?"),
-        ("Sharing the Planet", "Birds & Feathers", "Bird", "پرندہ", "Writing", "ن ، و", "Feather lightness test; STEAM bird wing span measurements", "Feather blowing motion", "Birds fly across skies.", "Ideate", "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "A little sparrow sang a morning melody from the branch. How do birds build their nests?"),
-        ("Sharing the Planet", "Cats & Paws", "Cat", "بلی", "Writing", "ہ ، ی", "Soft plush tactile feel; STEAM animal foot imprint matching", "Soft touch exercise", "Cats have soft paws.", "Ideate", "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "The fluffy kitten purred softly while chasing a ball of yarn. How do animals express comfort?"),
-        ("Sharing the Planet", "Dogs & Canines", "Dog", "کتا", "Writing", "ا ، ب", "Acoustic animal sound matching; STEAM canine tracking mechanics", "Animal sound matching", "Dogs are loyal friends.", "Prototype", "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Washing his tail happily, the friendly puppy greeted his owner. How do animals help humans?"),
-        ("Sharing the Planet", "Tracking Growth", "Growth", "بڑھوتری", "Writing", "ج ، د", "Height chart comparison; STEAM growth rate bar graphing", "Height chart marking", "We measure plant growth.", "Prototype", "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Marking the height chart showed how much the seedlings grew this week. How do we measure growth?"),
-        ("Sharing the Planet", "Nature Care", "Care", "دیکھ بھال", "Writing", "ر ، ز", "Eco-stewardship pledge; STEAM recycling sorting challenge", "Plant protection pledge", "We protect our planet.", "Test", "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Working together to clean the park, the children promised to protect nature. How do you care for the earth?")
+        ("Sharing the Planet", "Seeds & Growth", "Seed", "بیج", "Writing", "ع ، غ", 
+         "Seed sprouting timeline observation: Planting bean seeds in clear damp cotton cups.", 
+         "Maker Challenge: Build a 'Mini Greenhouse' using a clear plastic cup and a plastic wrap cover.",
+         "Cup sprouting observation", "Seeds grow into tall plants.", "Empathize", 
+         "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "A tiny sunflower seed slept quietly under the dark soil. What does a seed need to wake up?"),
+        
+        ("Sharing the Planet", "Soil & Ground", "Soil", "مٹی", "Writing", "ف ، ق", 
+         "Soil moisture retention testing: Comparing sandy vs rich organic soil drainage rates.", 
+         "Maker Challenge: Construct a 'Soil Layer Jar' using clear cups, sand, pebbles, and potting soil.",
+         "Soil texture touching", "Rich soil feeds roots.", "Empathize", 
+         "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Rich, dark soil held moisture to keep plant roots cool and strong. What lives in the soil?"),
+        
+        ("Sharing the Planet", "Planting Life", "Plant", "پودا", "Writing", "ک ، گ", 
+         "Plant hydration tracking: Measuring stem heights and leaf counts over time.", 
+         "Maker Challenge: Build a 'Plant Watering Funnel' using a cut plastic bottle inserted into soil.",
+         "Plant watering care", "Plants need water daily.", "Define", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "The little green sprout stretched its first leaves toward the morning sun. How do plants grow?"),
+        
+        ("Sharing the Planet", "Flowers & Blooms", "Flower", "پھول", "Writing", "ل ، م", 
+         "Radial floral symmetry study: Counting petal arrangements and dissecting flower parts.", 
+         "Maker Challenge: Construct a '3D Paper Flower' using layered tissue paper petals and a green pipe-cleaner stem.",
+         "Flower petal counting", "Flowers bloom in spring.", "Define", 
+         "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Bright yellow petals opened wide to greet the buzzing honeybee. Why do bees visit flowers?"),
+        
+        ("Sharing the Planet", "Birds & Feathers", "Bird", "پرندہ", "Writing", "ن ، و", 
+         "Feather aerodynamics test: Dropping feathers vs paper weights to observe air resistance.", 
+         "Maker Challenge: Build a 'Paper Bird Glider' using cardstock wings and a paperclip nose weight.",
+         "Feather blowing motion", "Birds fly across skies.", "Ideate", 
+         "https://media.giphy.com/media/3o7TKSjRrfIPjeiOkM/giphy.gif", "A little sparrow sang a morning melody from the branch. How do birds build their nests?"),
+        
+        ("Sharing the Planet", "Cats & Paws", "Cat", "بلی", "Writing", "ہ ، ی", 
+         "Animal foot imprint matching: Comparing textured paw stamp molds to animal tracks.", 
+         "Maker Challenge: Construct 'Animal Paw Stamps' using carved kitchen sponges glued to wooden blocks.",
+         "Soft touch exercise", "Cats have soft paws.", "Ideate", 
+         "https://media.giphy.com/media/l0HlRnAWXxn0MhOBK/giphy.gif", "The fluffy kitten purred softly while chasing a ball of yarn. How do animals express comfort?"),
+        
+        ("Sharing the Planet", "Dogs & Canines", "Dog", "کتا", "Writing", "ا ، ب", 
+         "Acoustic animal sound matching: Matching bark frequencies to animal behavior flashcards.", 
+         "Maker Challenge: Build a 'Puppy Pull Toy' using a small shoebox, string, and paper ears.",
+         "Animal sound matching", "Dogs are loyal friends.", "Prototype", 
+         "https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif", "Washing his tail happily, the friendly puppy greeted his owner. How do animals help humans?"),
+        
+        ("Sharing the Planet", "Tracking Growth", "Growth", "بڑھوتری", "Writing", "ج ، د", 
+         "Height chart bar graphing: Recording seedling growth milestones on vertical paper charts.", 
+         "Maker Challenge: Construct a 'Growth Measuring Ruler' using marked paper strips and sticker markers.",
+         "Height chart marking", "We measure plant growth.", "Prototype", 
+         "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif", "Marking the height chart showed how much the seedlings grew this week. How do you measure growth?"),
+        
+        ("Sharing the Planet", "Nature Care", "Care", "دیکھ بھال", "Writing", "ر ، ز", 
+         "Eco-stewardship recycling sorting: Classifying plastic, paper, and organic waste into bins.", 
+         "Maker Challenge: Build a 'Mini Recycling Sorter' using partitioned shoeboxes and labeled recycling tags.",
+         "Plant protection pledge", "We protect our planet.", "Test", 
+         "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif", "Working together to clean the park, the children promised to protect nature. How do you care for the earth?")
     ]
     
-    domain, category, eng_vocab, urdu_vocab, eng_phonics, urdu_phonics, steam_sensory, space_mgmt, sentence_focus, design_phase, gif_url, unit_story = curriculum_database[unit_num - 1]
+    domain, category, eng_vocab, urdu_vocab, eng_phonics, urdu_phonics, steam_sensory, maker_challenge, space_mgmt, sentence_focus, design_phase, gif_url, unit_story = curriculum_database[unit_num - 1]
     theme_name = f"Unit {unit_num}: {category}"
-    return theme_name, eng_vocab, urdu_vocab, eng_phonics, urdu_phonics, steam_sensory, space_mgmt, domain, sentence_focus, design_phase, gif_url, unit_story
+    return theme_name, eng_vocab, urdu_vocab, eng_phonics, urdu_phonics, steam_sensory, maker_challenge, space_mgmt, domain, sentence_focus, design_phase, gif_url, unit_story
 
 def compile_master_script(unit_num, age_group, slot_duration="40 min", include_cultural_flavor=False):
     dynamics = get_age_dynamics(age_group)
-    _, eng_vocab, urdu_vocab, _, _, steam_sensory, space_mgmt, domain, sentence_focus, design_phase, _, unit_story = get_unit_curriculum(unit_num)
+    _, eng_vocab, urdu_vocab, _, _, steam_sensory, maker_challenge, space_mgmt, domain, sentence_focus, design_phase, _, unit_story = get_unit_curriculum(unit_num)
     flavor = " We also weave in regional storytelling motifs and traditional cultural folk elements." if include_cultural_flavor else ""
     
     script = f"""MASTER LESSON SCRIPT FOR UNIT {unit_num} ({domain}) | AGE: {age_group} | FORMAT: {slot_duration}
 --------------------------------------------------------------------------------
 Target Dynamics & Focus: {dynamics['focus']}
 Phonics & Literacy Target: {dynamics['phonics_target']}
-Math Target: {dynamics['math_scale']}
+Math Target & Detailed Script: {dynamics['math_scale']}
 Pacing Strategy: {dynamics['pacing']}
 Classroom Environment: Compact setup ({space_mgmt}), Design Phase: '{design_phase}'.
 
@@ -210,7 +449,7 @@ Classroom Environment: Compact setup ({space_mgmt}), Design Phase: '{design_phas
 
 2. STEAM, DESIGN THINKING & MAKER CHALLENGE:
    - Sensory & STEAM Focus: {steam_sensory}{flavor}
-   - {dynamics['maker_challenge']}
+   - Theme-Aligned Maker Challenge: {maker_challenge}
 
 Let's begin our active inquiry session!"""
     return script
@@ -231,7 +470,7 @@ def create_math_worksheet(filename, unit_num, eng_vocab, urdu_vocab):
         fontSize=22,
         leading=26,
         textColor=colors.HexColor("#1A5276"),
-        alignment=1 # Centered
+        alignment=1
     )
     
     story.append(Paragraph(f"<b>Unit {unit_num}: {eng_vocab} ({urdu_vocab}) Worksheet</b>", title_style))
@@ -375,7 +614,7 @@ elif st.session_state.current_page == "Unit Library":
     )
     st.session_state.selected_unit = unit_number
     
-    theme_name, eng_vocab, urdu_vocab, eng_phonics, urdu_phonics, steam_sensory, space_mgmt, domain_name, sentence_focus, design_phase, gif_url, unit_story = get_unit_curriculum(unit_number)
+    theme_name, eng_vocab, urdu_vocab, eng_phonics, urdu_phonics, steam_sensory, maker_challenge, space_mgmt, domain_name, sentence_focus, design_phase, gif_url, unit_story = get_unit_curriculum(unit_number)
     age_dynamics = get_age_dynamics(selected_age)
     master_script = compile_master_script(unit_number, selected_age, slot_duration, cultural_flavor_toggle)
 
@@ -395,7 +634,7 @@ elif st.session_state.current_page == "Unit Library":
         done_s2 = st.checkbox("2️⃣ STEAM & Maker Challenge", value=st.session_state.completed_steps.get(step2_key, False))
         st.session_state.completed_steps[step2_key] = done_s2
     with c_check3:
-        done_s3 = st.checkbox("3️⃣ Math Scale & Worksheet Tally", value=st.session_state.completed_steps.get(step3_key, False))
+        done_s3 = st.checkbox("3️⃣ Detailed Math & Tally Practice", value=st.session_state.completed_steps.get(step3_key, False))
         st.session_state.completed_steps[step3_key] = done_s3
 
     if done_s1 and done_s2 and done_s3:
@@ -406,19 +645,18 @@ elif st.session_state.current_page == "Unit Library":
     
     # --- SYNCHRONIZED TABS ---
     t1, t2, t3, t4, t5 = st.tabs([
-        "🕒 Lesson Plan Generator", 
-        "🎨 Activity & Maker Challenges", 
+        "🕒 Lesson Plan & Detailed Math", 
+        "🎨 Maker Challenges & Activities", 
         "📝 Worksheet Generator", 
         "📜 Master Script View",
         "🎬 Script-Driven Video Generator"
     ])
 
     with t1:
-        st.markdown(f"### 🕒 Step-by-Step Teacher Guide ({selected_age} | {slot_duration})")
+        st.markdown(f"### 🕒 Step-by-Step Teacher Guide & Detailed Math Instruction ({selected_age} | {slot_duration})")
         st.markdown(f"""
         * **Pedagogical Focus:** {age_dynamics['focus']}
         * **Phonics & Literacy Target:** {age_dynamics['phonics_target']}
-        * **Math Target:** {age_dynamics['math_scale']}
         * **Pacing & Flow:** {age_dynamics['pacing']}
         * **Environment Setup:** {space_mgmt}. Compact layout tailored for small classrooms.
         * **Design Thinking Phase:** **{design_phase}**
@@ -426,33 +664,32 @@ elif st.session_state.current_page == "Unit Library":
         """)
         
         st.markdown("---")
+        st.markdown("#### 🔢 Phase 3: Detailed Step-by-Step Math & Tally Instruction")
+        st.info("Teacher Note: Follow this explicit instructional script to teach counting and tally marks to young learners step-by-step.")
+        st.markdown(f"""
+        1. **Concept Introduction (5 min):** 
+           * Gather students and explain what a tally mark is: *"A tally mark is a simple straight line we draw to count things quickly. Every time we count one object, we draw one vertical line: `|`."*
+           * Show the special rule for the number 5: *"When we reach 5, we draw a diagonal slash straight across the first four lines (`H` or `HH`-style bundle: `||||` with a slash across)."* Demonstrate this clearly on a mini whiteboard or slate.
+        2. **Guided Practice (10 min):**
+           * Have students use their finger to draw tally lines in the air or on their desk surface.
+           * Count physical objects related to our theme (**{eng_vocab}** items) together. Point to each item one by one and draw the corresponding tally mark on the board.
+        3. **Independent Tallying & Math Application:**
+           * {age_dynamics['math_scale']}
+           * Distribute counters or blocks and have students group them into bundles of 5, practicing tallying out loud before filling out the worksheet.
+        """)
+
+        st.markdown("---")
         st.markdown("#### 📖 Unit Story & Guided Q&A Prompt:")
         with st.container(border=True):
             st.markdown(f"> *{unit_story}*")
             st.caption("🗣️ **Teacher Prompt:** Read the story aloud to students. Ask them how they feel about the theme and encourage them to answer using complete sentences.")
 
-        st.markdown("---")
-        st.markdown("#### 👩‍🏫 Step-by-Step Execution for Teacher:")
-        st.markdown(f"""
-        1. **Phase 1 (0-10 min) - {design_phase} & Story Hook:** 
-           * Gather students in a **{space_mgmt}**. 
-           * Read the unit story above and prompt interactive Q&A.
-           * Introduce bilingual flashcards for **{eng_vocab}** and **{urdu_vocab}** ({urdu_phonics}).
-        2. **Phase 2 (10-25 min) - STEAM & Maker Challenge:**
-           * Execute maker challenge: *{age_dynamics['maker_challenge']}*
-           * Sensor/STEAM focus: *{steam_sensory}*.
-           * Keep instructions concise with physical gestures since classroom space is compact.
-        3. **Phase 3 (25-40 min) - Math Practice & Worksheet:**
-           * Conduct math scope: *{age_dynamics['math_scale']}*.
-           * Distribute the generated PDF worksheet and collect student feedback.
-        """)
-
     with t2:
-        st.markdown(f"### 🎨 STEAM Activity Choices & Design Thinking Maker Challenges")
+        st.markdown(f"### 🎨 Theme-Aligned Maker Challenges & Activities")
         
         with st.container(border=True):
-            st.markdown(f"🛠️ **{age_dynamics['maker_challenge']}**")
-            st.caption("Designed for small classrooms with limited resources (utilizing paper, cardboard scraps, blocks, and household items).")
+            st.markdown(f"🛠️ **Theme-Aligned Maker Challenge:** {maker_challenge}")
+            st.caption("Specifically tailored to match Unit Theme concepts while using low-resource classroom materials (paper scraps, blocks, cardboard, yarn).")
 
         st.markdown("---")
         st.markdown("#### Select from Curated Classroom Activities:")
@@ -470,7 +707,6 @@ elif st.session_state.current_page == "Unit Library":
             * **Required Teaching Aids for {selected_age}:**
               * Bilingual Flashcards: **{eng_vocab}** / **{urdu_vocab}**
               * Phonics Sound Cards: **{eng_phonics}** & **{urdu_phonics}**
-              * Math Scope: **{age_dynamics['math_scale']}**
             * **STEAM & Sensory Integration Design:**
               * {steam_sensory}
               * Adapted specifically for small classroom footprints (`{space_mgmt}`).
@@ -500,7 +736,7 @@ elif st.session_state.current_page == "Unit Library":
 
     with t4:
         st.markdown("### 📜 Master Script View")
-        st.markdown("This exact script compiles the lesson plan, dictates teaching aids, fills the worksheet parameters, and powers the video generator backend:")
+        st.markdown("This exact script compiles the lesson plan, detailed math instruction, theme-aligned maker challenge, and backend parameters:")
         st.code(master_script, language="text")
 
     with t5:
