@@ -576,7 +576,8 @@ def create_complete_unit_lesson_pdf(filename, unit_num, eng_vocab, urdu_vocab, a
     
     grid_data = []
     for i in range(0, len(raw_questions), 3):
-        grid_data.append([Paragraph(f"<font size=11>{q}</font>", styles['Normal']) for q in raw_questions[i:i+3]]
+        # CORRECTED LINE WITH PROPER CLOSING PARENTHESIS:
+        grid_data.append([Paragraph(f"<font size=11>{q}</font>", styles['Normal']) for q in raw_questions[i:i+3]])
         
     question_table = Table(grid_data, colWidths=[180, 180, 180], rowHeights=grid_row_heights)
     question_table.setStyle(TableStyle([
