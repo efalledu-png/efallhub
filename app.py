@@ -7,7 +7,7 @@ import os
 
 # Page Configuration
 st.set_page_config(
-    page_title="EFALL Master Curriculum Hub | آسان تعلیمی پورٹل",
+    page_title="EFALL Master Curriculum Hub",
     page_icon="🌟",
     layout="wide"
 )
@@ -28,10 +28,6 @@ if "custom_lesson_overrides" not in st.session_state:
 
 # --- SMART HASH & BACKEND VIDEO PIPELINE ENGINE ---
 def get_or_update_lesson_asset(unit_num, vocab_en, vocab_ur, phonics_target, custom_note=""):
-    """
-    Simulates the backend automated pipeline with Smart Hash Version Control.
-    Returns the cached asset path if unchanged, or dynamically regenerates if user needs change.
-    """
     script_string = f"U{unit_num}_{vocab_en}_{vocab_ur}_{phonics_target}_{custom_note}"
     current_hash = hashlib.md5(script_string.encode()).hexdigest()[:8]
     
@@ -39,11 +35,11 @@ def get_or_update_lesson_asset(unit_num, vocab_en, vocab_ur, phonics_target, cus
     video_filename = f"assets/videos/unit_{unit_num}_{current_hash}.mp4"
     
     if os.path.exists(video_filename):
-        status_msg = "⚡ Loaded from cache (Instantaneous & Optimized)"
+        status_msg = "⚡ Loaded from cache (Instantaneous & Optimized)" if st.session_state.lang == "English" else "⚡ کیش سے لوڈ ہو گیا (فوری اور بہتر)"
     else:
         with open(video_filename, "wb") as f:
             f.write(b"mock_video_binary_data")
-        status_msg = "🔄 Dynamic update detected! Backend automatically regenerated lesson asset."
+        status_msg = "🔄 Dynamic update detected! Backend automatically regenerated lesson asset." if st.session_state.lang == "English" else "🔄 خودکار تبدیلی تشخیص ہو گئی! بیک اینڈ نے سبق کا مٹیریل اپ ڈیٹ کر دیا ہے۔"
         
     return video_filename, current_hash, status_msg
 
@@ -114,7 +110,7 @@ def get_unit_curriculum(unit_num):
     ]
     
     domain, category, vocab_en, vocab_ur, phonics_target, phonics_ur, math_num, stroke, sentence_focus, design_phase, video_url = curriculum_database[unit_num - 1]
-    theme_name = f"Unit {unit_num}: {category}"
+    theme_name = f"Unit {unit_num}: {category}" if st.session_state.lang == "English" else f"یونٹ {unit_num}: {category}"
     return theme_name, vocab_en, vocab_ur, phonics_target, phonics_ur, math_num, stroke, domain, sentence_focus, design_phase, video_url
 
 def create_download_button(content, filename, label):
@@ -123,81 +119,155 @@ def create_download_button(content, filename, label):
 
 # --- NAVIGATION SIDEBAR ---
 st.sidebar.title("🌟 EFALL Hub")
-st.sidebar.caption("تعلیم یافتہ ماں، روشن مستقبل")
+st.sidebar.caption("Empowering Teachers & Parents")
 
-if st.sidebar.button("🏠 Home / مین صفحہ", use_container_width=True):
+# Language Toggle Switch
+selected_language = st.sidebar.selectbox("Select Language / زبان منتخب کریں:", ["English", "اردو"])
+if selected_language != st.session_state.lang:
+    st.session_state.lang = selected_language
+    st.rerun()
+
+st.sidebar.markdown("---")
+
+if st.session_state.lang == "English":
+    nav_home = "🏠 Home"
+    nav_units = "📚 50 Units Library"
+    nav_diary = "📝 My Teaching Diary"
+else:
+    nav_home = "🏠 مین صفحہ"
+    nav_units = "📚 50 اسباق کی لائبریری"
+    nav_diary = "📝 میری تعلیمی ڈائری"
+
+if st.sidebar.button(nav_home, use_container_width=True):
     st.session_state.current_page = "Home"
     st.rerun()
-if st.sidebar.button("📚 50 Units / اسباق کی لائبریری", use_container_width=True):
+if st.sidebar.button(nav_units, use_container_width=True):
     st.session_state.current_page = "Unit Library"
     st.rerun()
-if st.sidebar.button("📝 My Diary / میری ڈائری", use_container_width=True):
+if st.sidebar.button(nav_diary, use_container_width=True):
     st.session_state.current_page = "Reflection Log"
     st.rerun()
 
 # --- HOME PAGE ---
 if st.session_state.current_page == "Home":
-    st.title("🌟 Welcome to EFALL Master Teaching Hub")
-    st.markdown("### 🎯 آج آپ کیا پڑھانا چاہتے ہیں؟ (Interactive Quick Hub)")
+    if st.session_state.lang == "English":
+        st.title("🌟 Welcome to EFALL Master Teaching Hub")
+        st.markdown("### 🎯 What would you like to teach today?")
+        
+        col_a, col_b = st.columns(2)
+        with col_a:
+            if st.button("🎲 Surprise Me! (Random Unit)", use_container_width=True):
+                st.session_state.selected_unit = random.randint(1, 50)
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+        with col_b:
+            if st.button("🚀 Quick Lesson Jump", use_container_width=True):
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
 
-    col_a, col_b = st.columns(2)
-    with col_a:
-        if st.button("🎲 Surprise Me! (رینڈم سرگرمی چنیں)", use_container_width=True):
-            random_unit = random.randint(1, 50)
-            st.session_state.selected_unit = random_unit
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-    with col_b:
-        if st.button("🚀 Quick Lesson Jump (براہ راست یونٹ کھولیں)", use_container_width=True):
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
+        st.markdown("---")
+        st.markdown("### 🧩 Select Inquiry Theme:")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🧩 Theme 1: Who We Are (Units 1-8)", use_container_width=True):
+                st.session_state.selected_unit = 1
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+            if st.button("🎨 Theme 3: How We Express Ourselves (Units 17-25)", use_container_width=True):
+                st.session_state.selected_unit = 17
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+            if st.button("🧹 Theme 5: How We Organize Ourselves (Units 34-41)", use_container_width=True):
+                st.session_state.selected_unit = 34
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+        with col2:
+            if st.button("🏡 Theme 2: Where We Are in Time & Place (Units 9-16)", use_container_width=True):
+                st.session_state.selected_unit = 9
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+            if st.button("💧 Theme 4: How the World Works (Units 26-33)", use_container_width=True):
+                st.session_state.selected_unit = 26
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+            if st.button("🌿 Theme 6: Sharing the Planet (Units 42-50)", use_container_width=True):
+                st.session_state.selected_unit = 42
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
 
-    st.markdown("---")
-    st.markdown("### 🧩 تھیم کے مطابق خانے منتخب کریں:")
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("🧩 خانہ 1: ہم کون ہیں (یونٹس 1-8)", use_container_width=True):
-            st.session_state.selected_unit = 1
-            st.session_state.current_page = "Unit Library"
+        st.markdown("---")
+        if st.button("📝 Open Teaching Reflection Log", use_container_width=True):
+            st.session_state.current_page = "Reflection Log"
             st.rerun()
-        if st.button("🎨 خانہ 3: ہم خیالات کا اظہار کیسے کرتے ہیں (یونٹس 17-25)", use_container_width=True):
-            st.session_state.selected_unit = 17
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-        if st.button("🧹 خانہ 5: ہم خود کو کیسے منظم کرتے ہیں (یونٹس 34-41)", use_container_width=True):
-            st.session_state.selected_unit = 34
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-    with col2:
-        if st.button("🏡 خانہ 2: ہم جگہ اور وقت میں کہاں ہیں (یونٹس 9-16)", use_container_width=True):
-            st.session_state.selected_unit = 9
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-        if st.button("💧 خانہ 4: دنیا کیسے کام کرتی ہے (یونٹس 26-33)", use_container_width=True):
-            st.session_state.selected_unit = 26
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
-        if st.button("🌿 خانہ 6: سیارے کی دیکھ بھال (یونٹس 42-50)", use_container_width=True):
-            st.session_state.selected_unit = 42
-            st.session_state.current_page = "Unit Library"
-            st.rerun()
+            
+    else: # Urdu Interface
+        st.title("🌟 EFALL ماسٹر ٹیچنگ پورٹل میں خوش آمدید")
+        st.markdown("### 🎯 آج آپ کیا پڑھانا چاہتے ہیں؟")
 
-    st.markdown("---")
-    if st.button("📝 میری تدریسی ڈائری کھولیں", use_container_width=True):
-        st.session_state.current_page = "Reflection Log"
-        st.rerun()
+        col_a, col_b = st.columns(2)
+        with col_a:
+            if st.button("🎲 رینڈم سرگرمی چنیں (Surprise Me)", use_container_width=True):
+                st.session_state.selected_unit = random.randint(1, 50)
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+        with col_b:
+            if st.button("🚀 براہ راست یونٹ کھولیں", use_container_width=True):
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+
+        st.markdown("---")
+        st.markdown("### 🧩 تھیم کے مطابق خانے منتخب کریں:")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🧩 خانہ 1: ہم کون ہیں (یونٹس 1-8)", use_container_width=True):
+                st.session_state.selected_unit = 1
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+            if st.button("🎨 خانہ 3: ہم خیالات کا اظہار کیسے کرتے ہیں (یونٹس 17-25)", use_container_width=True):
+                st.session_state.selected_unit = 17
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+            if st.button("🧹 خانہ 5: ہم خود کو کیسے منظم کرتے ہیں (یونٹس 34-41)", use_container_width=True):
+                st.session_state.selected_unit = 34
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+        with col2:
+            if st.button("🏡 خانہ 2: ہم جگہ اور وقت میں کہاں ہیں (یونٹس 9-16)", use_container_width=True):
+                st.session_state.selected_unit = 9
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+            if st.button("💧 خانہ 4: دنیا کیسے کام کرتی ہے (یونٹس 26-33)", use_container_width=True):
+                st.session_state.selected_unit = 26
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+            if st.button("🌿 خانہ 6: سیارے کی دیکھ بھال (یونٹس 42-50)", use_container_width=True):
+                st.session_state.selected_unit = 42
+                st.session_state.current_page = "Unit Library"
+                st.rerun()
+
+        st.markdown("---")
+        if st.button("📝 میری تدریسی ڈائری کھولیں", use_container_width=True):
+            st.session_state.current_page = "Reflection Log"
+            st.rerun()
 
 # --- UNIT LIBRARY & AUTOMATED VIDEO PIPELINE ---
 elif st.session_state.current_page == "Unit Library":
-    if st.button("⬅️ Back / واپس جائیں"):
+    back_label = "⬅️ Back" if st.session_state.lang == "English" else "⬅️ واپس جائیں"
+    if st.button(back_label):
         st.session_state.current_page = "Home"
         st.rerun()
 
-    st.title("📚 50-Unit Curriculum Hub & اسباق کی تفصیلی لائبریری")
+    if st.session_state.lang == "English":
+        st.title("📚 50-Unit Curriculum Hub")
+        unit_label = "Select Unit Number (1 to 50):"
+    else:
+        st.title("📚 50 اسباق کی تفصیلی لائبریری")
+        unit_label = "یونٹ نمبر منتخب کریں (1 سے 50):"
     
     unit_number = st.selectbox(
-        "یونٹ نمبر منتخب کریں (1 سے 50):", 
+        unit_label, 
         list(range(1, 51)), 
         index=st.session_state.selected_unit - 1, 
         format_func=lambda x: f"Unit {x}: {get_unit_curriculum(x)[0]}"
@@ -208,23 +278,36 @@ elif st.session_state.current_page == "Unit Library":
 
     st.markdown("---")
     st.markdown(f"## 📋 {theme_name}")
-    st.info(f"🌐 **مرکزی موضوع:** {domain_name} &nbsp;|&nbsp; 🔤 **الفاظ:** {vocab_en} ({vocab_ur}) &nbsp;|&nbsp; ✍️ **جملہ:** {sentence_focus}")
+    if st.session_state.lang == "English":
+        st.info(f"🌐 **Theme:** {domain_name} &nbsp;|&nbsp; 🔤 **Vocabulary:** {vocab_en} ({vocab_ur}) &nbsp;|&nbsp; ✍️ **Sentence:** {sentence_focus}")
+    else:
+        st.info(f"🌐 **مرکزی موضوع:** {domain_name} &nbsp;|&nbsp; 🔤 **الفاظ:** {vocab_en} ({vocab_ur}) &nbsp;|&nbsp; ✍️ **جملہ:** {sentence_focus}")
 
     # --- EASY ONE-TAP CUSTOMIZATION FOR NON-TECH USERS ---
-    with st.expander("⚙️ سبق کو اپنی مرضی کے مطابق بنائیں (One-Tap Lesson Options)"):
-        st.markdown("<b>آسان بٹن کی مدد سے سبق کا فوکس تبدیل کریں:</b>", unsafe_allow_html=True)
+    expander_title = "⚙️ Customize Lesson (One-Tap Options)" if st.session_state.lang == "English" else "⚙️ سبق کو اپنی مرضی کے مطابق بنائیں (آسان بٹن)"
+    with st.expander(expander_title):
+        if st.session_state.lang == "English":
+            st.markdown("<b>Quickly adjust lesson focus with a single tap:</b>", unsafe_allow_html=True)
+            btn_text_1 = "⭐ Extra Practice"
+            btn_text_2 = "🎨 Add Art Focus"
+            btn_text_3 = "🔄 Reset"
+        else:
+            st.markdown("<b>آسان بٹن کی مدد سے سبق کا فوکس تبدیل کریں:</b>", unsafe_allow_html=True)
+            btn_text_1 = "⭐ زیادہ مشق (Extra Practice)"
+            btn_text_2 = "🎨 فن اور رنگ (Add Art Focus)"
+            btn_text_3 = "🔄 اصل حالت (Reset)"
         
         c_btn1, c_btn2, c_btn3 = st.columns(3)
         with c_btn1:
-            if st.button("⭐ زیادہ مشق (Extra Practice)", use_container_width=True):
+            if st.button(btn_text_1, use_container_width=True):
                 st.session_state.custom_lesson_overrides[unit_number] = "Focus on extra practice today"
                 st.rerun()
         with c_btn2:
-            if st.button("🎨 فن اور رنگ (Add Art Focus)", use_container_width=True):
+            if st.button(btn_text_2, use_container_width=True):
                 st.session_state.custom_lesson_overrides[unit_number] = "Incorporate extra drawing and art"
                 st.rerun()
         with c_btn3:
-            if st.button("🔄 اصل حالت (Reset)", use_container_width=True):
+            if st.button(btn_text_3, use_container_width=True):
                 st.session_state.custom_lesson_overrides[unit_number] = ""
                 st.rerun()
 
@@ -232,15 +315,17 @@ elif st.session_state.current_page == "Unit Library":
     active_custom_note = st.session_state.custom_lesson_overrides.get(unit_number, "")
     _, asset_hash, pipeline_status = get_or_update_lesson_asset(unit_number, vocab_en, vocab_ur, phonics_target, active_custom_note)
     
-    st.markdown(f"### 🤖 Backend Automated Video & Script Pipeline")
+    pipeline_title = "🤖 Backend Automated Video & Script Pipeline" if st.session_state.lang == "English" else "🤖 خودکار بیک اینڈ اور اسکرپٹ پائپ لائن"
+    st.markdown(f"### {pipeline_title}")
     st.caption(f"Asset Hash Fingerprint: `{asset_hash}`")
-    if "Loaded from cache" in pipeline_status:
+    if "cache" in pipeline_status or "کیش" in pipeline_status:
         st.success(pipeline_status)
     else:
         st.warning(pipeline_status)
 
-    # --- INTERACTIVE CHECKLIST FOR TEACHER/PARENT ---
-    st.markdown("### ✅ Interactive Lesson Progress (سبق کی پیش رفت چیک کریں)")
+    # --- INTERACTIVE CHECKLIST ---
+    check_title = "✅ Interactive Lesson Progress" if st.session_state.lang == "English" else "✅ سبق کی پیش رفت چیک کریں"
+    st.markdown(f"### {check_title}")
     
     step1_key = f"u{unit_number}_s1"
     step2_key = f"u{unit_number}_s2"
@@ -248,88 +333,115 @@ elif st.session_state.current_page == "Unit Library":
     
     c_check1, c_check2, c_check3 = st.columns(3)
     with c_check1:
-        done_s1 = st.checkbox("1️⃣ تعارف اور گول دائرہ", value=st.session_state.completed_steps.get(step1_key, False))
+        s1_label = "1️⃣ Opening & Circle" if st.session_state.lang == "English" else "1️⃣ تعارف اور گول دائرہ"
+        done_s1 = st.checkbox(s1_label, value=st.session_state.completed_steps.get(step1_key, False))
         st.session_state.completed_steps[step1_key] = done_s1
     with c_check2:
-        done_s2 = st.checkbox("2️⃣ صوتی آواز اور لکھائی", value=st.session_state.completed_steps.get(step2_key, False))
+        s2_label = "2️⃣ Phonics & Writing" if st.session_state.lang == "English" else "2️⃣ صوتی آواز اور لکھائی"
+        done_s2 = st.checkbox(s2_label, value=st.session_state.completed_steps.get(step2_key, False))
         st.session_state.completed_steps[step2_key] = done_s2
     with c_check3:
-        done_s3 = st.checkbox("3️⃣ عملی سرگرمی اور گنتی", value=st.session_state.completed_steps.get(step3_key, False))
+        s3_label = "3️⃣ Activity & Math" if st.session_state.lang == "English" else "3️⃣ عملی سرگرمی اور گنتی"
+        done_s3 = st.checkbox(s3_label, value=st.session_state.completed_steps.get(step3_key, False))
         st.session_state.completed_steps[step3_key] = done_s3
 
     if done_s1 and done_s2 and done_s3:
         st.balloons()
-        st.success("🎉 زبردست! آپ نے اس یونٹ کا سیشن کامیابی سے مکمل کر لیا ہے!")
+        success_msg = "🎉 Amazing! You have successfully completed this unit session!" if st.session_state.lang == "English" else "🎉 زبردست! آپ نے اس یونٹ کا سیشن کامیابی سے مکمل کر لیا ہے!"
+        st.success(success_msg)
 
     st.markdown("---")
     
-    # --- INTERACTIVE CHRONOLOGICAL LESSON TABS ---
-    t1, t2, t3, t4, t5 = st.tabs([
-        "🕒 Phase 1: Interactive Opening", 
-        "🕒 Phase 2: Phonics & Game", 
-        "🕒 Phase 3: Hands-On Challenge", 
-        "🕒 Phase 4: Reflection & Share",
-        "🎥 Video & Worksheet"
-    ])
+    # --- INTERACTIVE LESSON TABS ---
+    if st.session_state.lang == "English":
+        t_labels = [
+            "🕒 Phase 1: Opening", 
+            "🕒 Phase 2: Phonics", 
+            "🕒 Phase 3: Activity", 
+            "🕒 Phase 4: Reflection",
+            "🎥 Video & Worksheet"
+        ]
+    else:
+        t_labels = [
+            "🕒 مرحلہ 1: آغاز", 
+            "🕒 مرحلہ 2: صوتی کھیل", 
+            "🕒 مرحلہ 3: عملی سرگرمی", 
+            "🕒 مرحلہ 4: جائزہ",
+            "🎥 ویڈیو اور ورک شیٹ"
+        ]
+
+    t1, t2, t3, t4, t5 = st.tabs(t_labels)
 
     with t1:
-        st.markdown(f"### Phase 1: Interactive Opening & Body Movement (0-10 mins) — {vocab_en}")
-        if active_custom_note:
-            st.info(f"💡 **Active Adjustment:** {active_custom_note}")
-        st.markdown("""
-        * **حرکت اور جوش (Action Warm-up):** بچے فرنیچر ہٹا کر چھوٹے دائرے میں زمین پر بیٹھ جائیں۔ استاد لفظ **"Imagine if..." (تصویر کریں اگر...)** بول کر بچوں کو سوچنے پر مجبور کرے کہ دنیا کے دوسرے بچوں کا تجربہ کیسا ہوتا ہوگا۔
-        * **آپس میں بات چیت:** بچے جوڑے بنا کر ایک دوسرے سے اپنے خیالات کا اظہار کریں۔
-        """)
-        st.markdown("---")
-        st.markdown("### مرحلہ اول: متحرک آغاز (0 تا 10 منٹ)")
-        st.markdown("""
-        * بچوں کو دائرے میں بٹھا کر جسمانی اشاروں سے سبق کا آغاز کریں۔
-        * بچوں سے پوچھیں کہ وہ اس موضوع کے بارے میں کیا جانتے ہیں۔
-        """)
+        if st.session_state.lang == "English":
+            st.markdown(f"### Phase 1: Interactive Opening & Body Movement (0-10 mins) — {vocab_en}")
+            if active_custom_note:
+                st.info(f"💡 **Active Adjustment:** {active_custom_note}")
+            st.markdown("""
+            * **Action Warm-up:** Children clear furniture and sit in a small circle on the floor. Use **"Imagine if..."** to prompt thinking.
+            * **Peer Discussion:** Children pair up to share thoughts.
+            """)
+        else:
+            st.markdown(f"### مرحلہ اول: متحرک آغاز (0 تا 10 منٹ) — {vocab_en}")
+            if active_custom_note:
+                st.info(f"💡 **مخصوص تبدیلی:** {active_custom_note}")
+            st.markdown("""
+            * بچوں کو دائرے میں بٹھا کر جسمانی اشاروں سے سبق کا آغاز کریں۔
+            * بچوں سے پوچھیں کہ وہ اس موضوع کے بارے میں کیا جانتے ہیں۔
+            """)
 
     with t2:
-        st.markdown(f"### Phase 2: Phonics Game & Pre-Writing Action (10-20 mins)")
-        st.markdown(f"""
-        * **آواز کا کھیل (Sound Hunt):** بچے کمرے میں اس صوتی ہدف **{phonics_target}** سے ملنے والی چیزیں ڈھونڈ کر لائیں۔
-        * **ہوا میں لکھنا (Air Writing):** انگلیوں سے ہوا میں پیٹرن **{stroke_focus}** بنائیں تاکہ ہاتھ کے پٹ مضبوط ہوں۔
-        * **جملہ بولنا:** مل کر جملہ دہرائیں: *"{sentence_focus}"*۔
-        """)
-        st.markdown("---")
-        st.markdown("### مرحلہ دوم: صوتی آوازوں کا کھیل اور لکھائی (10 تا 20 منٹ)")
-        st.markdown(f"""
-        * بچے صوتی ہدف <b>{phonics_ur}</b> کی آواز بلند آواز میں دہرائیں اور ہوا میں لکیریں بنائیں۔
-        * جوڑوں میں بیٹھ کر ایک دوسرے کو نیا لفظ سکھائیں۔
-        """)
+        if st.session_state.lang == "English":
+            st.markdown(f"### Phase 2: Phonics Game & Pre-Writing Action (10-20 mins)")
+            st.markdown(f"""
+            * **Sound Hunt:** Children hunt for objects around the room matching target **{phonics_target}**.
+            * **Air Writing:** Trace pattern **{stroke_focus}** in the air.
+            * **Sentence Focus:** Repeat together: *"{sentence_focus}"*
+            """)
+        else:
+            st.markdown(f"### مرحلہ دوم: صوتی آوازوں کا کھیل اور لکھائی (10 تا 20 منٹ)")
+            st.markdown(f"""
+            * بچے صوتی ہدف <b>{phonics_ur}</b> کی آواز بلند آواز میں دہرائیں اور ہوا میں لکیریں بنائیں۔
+            * جوڑوں میں بیٹھ کر ایک دوسرے کو نیا لفظ سکھائیں۔
+            """)
 
     with t3:
-        st.markdown(f"### Phase 3: Hands-On Inquiry Challenge (20-40 mins)")
-        st.markdown(f"""
-        * **عملی چیلنج (Building & Sorting):** بچے ٹوکری سے چیزیں لے کر جوڑوں میں ماڈل بنائیں یا چیزوں کو شمار کریں (ہدف: **{math_num}** تک گنتی)۔
-        * **باہمی تعاون (Sharing Materials):** ایک دوسرے کے ساتھ دوستانہ انداز میں چیزیں بانٹیں۔
-        """)
-        st.markdown("---")
-        st.markdown("### مرحلہ سوم: عملی اور تخلیقی سرگرمی (20 تا 40 منٹ)")
-        st.markdown(f"""
-        * بچوں کو چھوٹی ٹوکری سے چیزیں دے کر ان کی ترتیب اور گنتی <b>{math_num}</b> تک کرائیں۔
-        * سب مل کر ٹیم ورک کے ذریعے ماڈل یا ڈرائنگ تیار کریں۔
-        """)
+        if st.session_state.lang == "English":
+            st.markdown(f"### Phase 3: Hands-On Inquiry Challenge (20-40 mins)")
+            st.markdown(f"""
+            * **Building & Sorting:** Children use baskets to build models or count objects (Target: up to **{math_num}**).
+            * **Sharing:** Practice friendly material sharing.
+            """)
+        else:
+            st.markdown(f"### مرحلہ سوم: عملی اور تخلیقی سرگرمی (20 تا 40 منٹ)")
+            st.markdown(f"""
+            * بچوں کو چھوٹی ٹوکری سے چیزیں دے کر ان کی ترتیب اور گنتی <b>{math_num}</b> تک کرائیں۔
+            * سب مل کر ٹیم ورک کے ذریعے ماڈل یا ڈرائنگ تیار کریں۔
+            """)
 
     with t4:
-        st.markdown(f"### Phase 4: Reflection, Clap & Share (40-60 mins)")
-        st.markdown("""
-        * **تعریف کا دائرہ (Appreciation Circle):** سب بچے تالیاں بجا کر ایک دوسرے کے کام کی تعریف کریں۔
-        * **بورڈ پر سجاوٹ:** سب کی بنائی ہوئی تصاویر ڈسپلے بورڈ پر لگائیں۔
-        """)
-        st.markdown("---")
-        st.markdown("### مرحلہ چہارم: جائزہ اور خوشی کا اظہار (40 تا 60 منٹ)")
-        st.markdown("""
-        * بچوں سے پوچھیں کہ آج انہوں نے کیا نیا سیکھا اور کیسا محسوس کیا۔
-        * سب کے کام کی تعریف کرکے بورڈ پر لگائیں۔
-        """)
+        if st.session_state.lang == "English":
+            st.markdown(f"### Phase 4: Reflection, Clap & Share (40-60 mins)")
+            st.markdown("""
+            * **Appreciation Circle:** Clap together to appreciate each other's work.
+            * **Display:** Hang created drawings on the board.
+            """)
+        else:
+            st.markdown(f"### مرحلہ چہارم: جائزہ اور خوشی کا اظہار (40 تا 60 منٹ)")
+            st.markdown("""
+            * بچوں سے پوچھیں کہ آج انہوں نے کیا نیا سیکھا اور کیسا محسوس کیا۔
+            * سب کے کام کی تعریف کرکے بورڈ پر لگائیں۔
+            """)
 
     with t5:
-        st.markdown("### Automated Backend Video & Downloadable Materials")
-        st.info(f"💡 **ভিڈیو لنک (Video Link):** [موضوع سے متعلق ویڈیو دیکھیں]({video_url})")
+        if st.session_state.lang == "English":
+            st.markdown("### Automated Backend Video & Downloadable Materials")
+            st.info(f"💡 **Video Link:** [Watch Related Lesson Video]({video_url})")
+            btn_label = f"Download Unit {unit_number} Custom Worksheet (.txt)"
+        else:
+            st.markdown("### خودکار ویڈیو اور ڈاؤن لوڈ کے قابل مواد")
+            st.info(f"💡 **ویڈیو لنک:** [موضوع سے متعلق ویڈیو دیکھیں]({video_url})")
+            btn_label = f"یونٹ {unit_number} کی ورک شیٹ ڈاؤن لوڈ کریں (.txt)"
         
         worksheet_content = f"""EFALL MASTER CURRICULUM WORKBOOK - UNIT {unit_number}
 Theme: {theme_name}
@@ -353,32 +465,50 @@ Student Name: _______________________ Date: ____________
 3. Math & Tally Counting (Target: {math_num}):
    Count and draw tally marks for {math_num} objects.
 """
-        st.markdown(create_download_button(worksheet_content, f"Unit_{unit_number}_FineTuned_Worksheet.txt", f"Download Unit {unit_number} Custom Worksheet (.txt)"), unsafe_allow_html=True)
+        st.markdown(create_download_button(worksheet_content, f"Unit_{unit_number}_FineTuned_Worksheet.txt", btn_label), unsafe_allow_html=True)
 
 # --- REFLECTION LOG ---
 elif st.session_state.current_page == "Reflection Log":
-    if st.button("⬅️ Back / واپس جائیں"):
+    back_label = "⬅️ Back" if st.session_state.lang == "English" else "⬅️ واپس جائیں"
+    if st.button(back_label):
         st.session_state.current_page = "Home"
         st.rerun()
 
-    st.title("📝 My Teaching Diary & میری تعلیمی ڈائری")
-    
+    if st.session_state.lang == "English":
+        st.title("📝 My Teaching Diary")
+        name_prompt = "Your Name:"
+        mood_title = "How did today go?"
+        mood_options = ["🌟 Very Good", "💡 Learned Something New", "🌱 Need More Practice"]
+        note_prompt = "Add any special notes or observations:"
+        save_btn_label = "💾 Save Entry"
+        success_save = "Successfully saved!"
+        warning_name = "Please enter your name."
+        saved_title = "📖 Saved Diary Entries"
+        no_entries = "No diary entries yet."
+    else:
+        st.title("📝 میری تعلیمی ڈائری")
+        name_prompt = "آپ کا نام (Your Name):"
+        mood_title = "آج کا دن کیسا رہا؟"
+        mood_options = ["🌟 بہت اچھا دن رہا (Very Good)", "💡 کچھ نیا سیکھا (Learned Something New)", "🌱 مزید مشق کی ضرورت ہے (Need More Practice)"]
+        note_prompt = "کوئی خاص بات یا نوٹ لکھیں:"
+        save_btn_label = "💾 محفوظ کریں (Save)"
+        success_save = "کامیابی سے محفوظ ہو گیا!"
+        warning_name = "براہ کرم اپنا نام درج کریں۔"
+        saved_title = "📖 محفوظ شدہ ڈائری (Saved Entries)"
+        no_entries = "ابھی تک کوئی ڈائری درج نہیں ہوئی۔"
+
     with st.form("simple_diary"):
-        user_name = st.text_input("آپ کا نام (Your Name):")
+        user_name = st.text_input(name_prompt)
         
-        st.markdown("### آج کا دن کیسا رہا؟ (Select how today went):")
-        emoji_choice = st.radio("انتخاب کریں:", [
-            "🌟 بہت اچھا دن رہا (Very Good)", 
-            "💡 کچھ نیا سیکھا (Learned Something New)", 
-            "🌱 مزید مشق کی ضرورت ہے (Need More Practice)"
-        ])
+        st.markdown(f"### {mood_title}")
+        emoji_choice = st.radio("", mood_options)
         
-        note_text = st.text_area("کوئی خاص بات یا نوٹ لکھیں:")
+        note_text = st.text_area(note_prompt)
         
-        save_btn = st.form_submit_button("💾 محفوظ کریں (Save)")
+        save_btn = st.form_submit_button(save_btn_label)
         if save_btn:
             if user_name.strip() == "":
-                st.warning("براہ کرم اپنا نام درج کریں۔")
+                st.warning(warning_name)
             else:
                 st.session_state.reflection_logs.append({
                     "name": user_name,
@@ -386,16 +516,16 @@ elif st.session_state.current_page == "Reflection Log":
                     "mood": emoji_choice,
                     "note": note_text
                 })
-                st.success("کامیابی سے محفوظ ہو گیا!")
+                st.success(success_save)
 
     st.markdown("---")
-    st.subheader("📖 محفوظ شدہ ڈائری (Saved Entries)")
+    st.subheader(saved_title)
     if len(st.session_state.reflection_logs) == 0:
-        st.info("ابھی تک کوئی ڈائری درج نہیں ہوئی۔")
+        st.info(no_entries)
     else:
         for idx, entry in enumerate(st.session_state.reflection_logs):
             with st.container(border=True):
                 st.write(f"**#{idx+1} | {entry['date']} | {entry['name']}**")
-                st.write(f"حالت: {entry['mood']}")
+                st.write(f"Status / حالت: {entry['mood']}")
                 if entry['note']:
-                    st.write(f"نوٹ: {entry['note']}")
+                	st.write(f"Note / نوٹ: {entry['note']}")
