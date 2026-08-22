@@ -576,7 +576,7 @@ def create_complete_unit_lesson_pdf(filename, unit_num, eng_vocab, urdu_vocab, a
     
     grid_data = []
     for i in range(0, len(raw_questions), 3):
-        grid_data.append([Paragraph(f"<font size=11>{q}</font>", styles['Normal']) for q in raw_questions[i:i+3]])
+        grid_data.append([Paragraph(f"<font size=11>{q}</font>", styles['Normal']) for q in raw_questions[i:i+3]]
         
     question_table = Table(grid_data, colWidths=[180, 180, 180], rowHeights=grid_row_heights)
     question_table.setStyle(TableStyle([
@@ -734,7 +734,7 @@ elif st.session_state.current_page == "Unit Library":
 
     st.markdown("---")
     
-    # --- SYNCHRONIZED TABS ---
+    # --- SYNCHRONIZED TABS WITH FULL RESTORED DETAIL ---
     t1, t2, t3, t4, t5 = st.tabs([
         "🕒 Phase 1: Literacy & Story", 
         "🎨 Phase 2: STEAM & Maker Challenges", 
@@ -753,6 +753,15 @@ elif st.session_state.current_page == "Unit Library":
         * **Environment Setup:** {space_mgmt}. Compact layout tailored for small classrooms.
         * **Design Thinking Phase:** **{design_phase}**
         * **Core Spoken Sentence Goal:** *"{sentence_focus}"*
+        """)
+        
+        st.markdown("---")
+        st.markdown("#### 📖 Interactive Story Circle & Guided Prompt")
+        st.info(f"**Teacher Script / Prompt:** \"{unit_story}\"")
+        st.markdown(f"""
+        * **Step 1 (0-5 min):** Gather students in a tight, cozy circle on the floor. Introduce bilingual vocabulary cards (**{eng_vocab}** / **{urdu_vocab}**).
+        * **Step 2 (5-10 min):** Read the story prompt aloud with expressive hand motions. Ask students to repeat the target vocabulary words in both English and Urdu.
+        * **Step 3 (10-15 min):** Guide students through pre-writing tracing exercises matching the phonics target ({age_dynamics['phonics_target']}) on mini whiteboards or sand trays.
         """)
 
     with t2:
@@ -775,6 +784,10 @@ elif st.session_state.current_page == "Unit Library":
             * **STEAM & Sensory Integration Design:**
               * {steam_sensory}
               * Adapted specifically for small classroom footprints (`{space_mgmt}`).
+            * **Step-by-Step Maker Implementation:**
+              1. **Explore / Empathize:** Introduce physical materials at desks or floor seating.
+              2. **Build / Prototype:** Guide children step-by-step to construct their maker project using safe, minimal supplies.
+              3. **Reflect:** Share creations with a partner using the sentence goal: *"{sentence_focus}"*.
             """)
 
     with t3:
@@ -788,6 +801,7 @@ elif st.session_state.current_page == "Unit Library":
            * Have students use their fingers or counters to practice grouping and counting items related to our theme (**{eng_vocab}**).
         3. **Independent Tallying & Math Application:**
            * {age_dynamics['math_scale']}
+           * Use structured worksheets or slates to record numbers and tally marks side-by-side in English and Urdu numeral contexts.
         """)
 
     with t4:
