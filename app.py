@@ -1,6 +1,4 @@
 import streamlit as st
-import json
-from google import genai
 
 # Page config
 st.set_page_config(
@@ -24,7 +22,7 @@ st.markdown("""
         border-radius: 8px;
         background-color: #ffffff;
         border: 1px solid #ced4da;
-        min-height: 300px;
+        min-height: 280px;
         margin-bottom: 15px;
     }
     .age-card {
@@ -63,7 +61,7 @@ if 'selected_unit' not in st.session_state:
 # --- MAIN LANDING (2 Main Portals) ---
 if st.session_state['main_portal'] == 'Home':
     st.title("🌟 EFALL — Education For All | IB PYP Portal")
-    st.write("An open-source digital learning platform providing quality educational experiences for educators, parents, and students in Pakistan.")
+    st.write("An open-source digital learning platform providing quality educational experiences for educators, parents, and students.")
     st.write("Please select your portal to begin:")
     
     st.divider()
@@ -72,7 +70,7 @@ if st.session_state['main_portal'] == 'Home':
     with col1:
         st.markdown('<div class="card-box">', unsafe_allow_html=True)
         st.markdown("### 🍎 Parent / Teacher Portal")
-        st.write("Automated bilingual lesson plans (English/Urdu), local small-space STEAM challenges, teaching aids, and worksheets.")
+        st.write("Instant bilingual lesson plans (English/Urdu), small-space STEAM challenges, teaching aids, and worksheets.")
         if st.button("Enter Parent / Teacher Portal", use_container_width=True):
             st.session_state['main_portal'] = 'ParentTeacher'
             st.rerun()
@@ -165,7 +163,7 @@ elif st.session_state['main_portal'] in ['ParentTeacher', 'Student']:
                     st.rerun()
                 st.markdown('</div>', unsafe_allow_html=True)
 
-    # LEVEL 4: 4-QUADRANT UNIT WORKSPACE WITH AUTO-GENERATED LESSON
+    # LEVEL 4: 4-QUADRANT UNIT WORKSPACE
     else:
         unit = st.session_state['selected_unit']
         age_group = st.session_state['selected_age']
@@ -177,82 +175,35 @@ elif st.session_state['main_portal'] in ['ParentTeacher', 'Student']:
         st.header(f"📚 {unit} | Target: {age_group}")
         st.divider()
 
-        # Automatically generate lesson plan using server-side secret
-        if f'auto_lesson_{unit}' not in st.session_state and st.session_state['main_portal'] == 'ParentTeacher':
-            with st.spinner("EFALL AI is generating your bilingual lesson plan..."):
-                try:
-                    api_key = st.secrets["GEMINI_API_KEY"]
-                    client = genai.Client(api_key=api_key)
-                    
-                    system_instruction = f"""
-                    You are an expert IB PYP bilingual curriculum designer and educator for EFALL (Education For All) specializing in English and Urdu instruction tailored for schools in Pakistan. 
-                    - Target Age Group: {age_group}
-                    - Parameters Required: Full integration of English, Urdu, phonics, reading, writing, math (including age-appropriate addition and subtraction), STEAM design thinking, and inquiry routines.
-                    - Classroom Constraints: Designed for compact physical spaces with limited furniture common in local school setups. All STEAM maker challenges must use minimal, locally accessible materials that fit on student desks or small floor mats.
-                    - Output format: STRICTLY valid JSON only, matching the exact requested schema containing bilingual academics and multi-phase teacher scripts using Harvard Project Zero routines. No markdown outside JSON.
-                    """
-                    user_prompt = f"Generate an automated comprehensive transdisciplinary lesson plan for unit '{unit}' for age group {age_group}."
-
-                    response = client.models.generate_content(
-                        model='gemini-2.5-flash',
-                        contents=user_prompt,
-                        config={
-                            'system_instruction': system_instruction,
-                            'response_mime_type': 'application/json',
-                        }
-                    )
-                    st.session_state[f'auto_lesson_{unit}'] = json.loads(response.text)
-                except Exception as e:
-                    st.error(f"Error generating automated plan. Make sure GEMINI_API_KEY is set in your Streamlit Cloud secrets. Details: {e}")
-
         row1_col1, row1_col2 = st.columns(2)
         row2_col1, row2_col2 = st.columns(2)
 
-        # --- QUADRANT 1: LESSON PLAN (Auto-Generated & Multilingual) ---
+        # --- QUADRANT 1: LESSON PLAN & BILINGUAL ACADEMICS ---
         with row1_col1:
             st.markdown('<div class="quadrant-box">', unsafe_allow_html=True)
-            st.markdown("### 📋 1. Lesson Plan (EFALL Generated)")
+            st.markdown("### 📋 1. Lesson Plan & Academics")
             
-            if st.session_state['main_portal'] == 'ParentTeacher':
-                if f'auto_lesson_{unit}' in st.session_state:
-                    data = st.session_state[f'auto_lesson_{unit}']
-                    lang = st.radio("Language / زبان", ["English", "Urdu (اردو)"], horizontal=True, key=f"lang_{unit}")
-                    is_urdu = (lang == "Urdu (اردو)")
+            lang = st.radio("Language / زبان", ["English", "Urdu (اردو)"], horizontal=True, key=f"lang_{unit}")
+            is_urdu = (lang == "Urdu (اردو)")
 
-                    acad = data.get("bilingual_academics", {})
-                    if is_urdu:
-                        st.info(f"🔤 **Phonics & Reading:** {acad.get('urdu', {}).get('phonics_focus')}\n\n📖 **Writing & Literacy:** {acad.get('urdu', {}).get('literacy_task')}\n\n🔢 **Math (+/-):** {acad.get('urdu', {}).get('math_focus')}")
-                    else:
-                        st.info(f"🔤 **Phonics & Reading:** {acad.get('english', {}).get('phonics_focus')}\n\n📖 **Writing & Literacy:** {acad.get('english', {}).get('literacy_task')}\n\n🔢 **Math (+/-):** {acad.get('english', {}).get('math_focus')}")
-
-                    for key, phase in data.get("phases", {}).items():
-                        with st.expander(f"📌 {phase.get('title', 'Phase')}"):
-                            st.write(f"**Inquiry Routine:** {phase.get('project_zero_routine', 'N/A')}")
-                            if "driving_challenge" in phase:
-                                st.write(f"**STEAM Challenge:** {phase.get('driving_challenge')}")
-                            if "materials" in phase:
-                                st.write(f"**Local Compact Materials:** {', '.join(phase.get('materials', []))}")
-                            
-                            script_data = phase.get('bilingual_teacher_script', {})
-                            if is_urdu:
-                                st.markdown(f"**معلم کی ہدایت:**\n{script_data.get('urdu_translation', '')}")
-                            else:
-                                st.markdown(f"**Teacher Script:**\n{script_data.get('english', '')}")
-                else:
-                    st.write("Loading automated lesson plan from server...")
+            if is_urdu:
+                st.info("🔤 **حروف اور آوازیں (Phonics):** آوازوں کی شناخت اور الفاظ سازی\n\n📖 ** لکھائی (Literacy):** روزمرہ کے موضوع پر جملہ سازی\n\n🔢 **ریاضی (Math +/-):** اشیاء کی گنتی اور جمع تفریق")
+                st.markdown("**تدریسی مرحلہ (Project Zero Routine):**\n* **تجسس (I Notice, I Wonder):** طلباء تصویر دیکھ کر سوالات پوچھتے ہیں۔")
             else:
-                st.write("Student view: Interactive station prompts active.")
+                st.info("🔤 **Phonics & Reading:** Letter sounds and blending practice.\n\n📖 **Writing & Literacy:** Contextual sentence creation task.\n\n🔢 **Math (+/-):** Small-group sorting and simple addition/subtraction.")
+                st.markdown("**Inquiry Routine (Harvard Project Zero):**\n* **See, Think, Wonder:** Guided student provocation prompt.")
+            
             st.markdown('</div>', unsafe_allow_html=True)
 
         # --- QUADRANT 2: TEACHING AIDS & ACTIVITIES ---
         with row1_col2:
             st.markdown('<div class="quadrant-box">', unsafe_allow_html=True)
             st.markdown("### 🧩 2. Teaching Aids & Activities")
-            st.write("Optimized for local classrooms with limited space:")
+            st.write("Optimized for compact local classrooms:")
             st.markdown("""
-            * **Desk-Top Sorting Trays:** Compact loose-parts bins for math counting (+/-).
-            * **Floor Mat Inquiry Cards:** Visual prompts designed for tight spaces.
-            * **Bilingual Word Wall:** Dual-script English and Urdu vocabulary cards for early literacy.
+            * **Desk-Top Sorting Trays:** Bins for tactile math counting (+/-).
+            * **Floor Mat Inquiry Cards:** Visual prompt cards for tight spaces.
+            * **Bilingual Word Wall:** Dual-script English and Urdu vocabulary cards.
             """)
             st.markdown('</div>', unsafe_allow_html=True)
 
@@ -260,11 +211,11 @@ elif st.session_state['main_portal'] in ['ParentTeacher', 'Student']:
         with row2_col1:
             st.markdown('<div class="quadrant-box">', unsafe_allow_html=True)
             st.markdown("### 🎬 3. Videos")
-            st.write("Curated media hooks and interactive read-alouds:")
+            st.write("Curated media hooks & read-alouds:")
             st.markdown("""
             * 🎥 **Provocation Hook:** Core concept introduction clip.
             * 🎥 **STEAM Maker Tutorial:** Desk-friendly construction guide.
-            * 🎥 **Bilingual Story Session:** English and Urdu storytelling.
+            * 🎥 **Bilingual Story Session:** English and Urdu storytelling link.
             """)
             st.markdown('</div>', unsafe_allow_html=True)
 
@@ -274,8 +225,8 @@ elif st.session_state['main_portal'] in ['ParentTeacher', 'Student']:
             st.markdown("### 📝 4. Worksheets")
             st.write("Printable early years learning sheets:")
             st.markdown("""
-            * 📄 **Reading & Phonics Sheet:** Letter-tracing and sound matching (English & Urdu).
-            * 📄 **Math Activity:** Simple addition and subtraction visual worksheets.
-            * 📄 **Reflection Sheet:** 'I Notice, I Wonder' drawing prompt.
+            * 📄 **Reading & Phonics Sheet:** Letter-tracing and sound matching.
+            * 📄 **Math Activity:** Visual addition and subtraction sheets.
+            * 📄 **Reflection Sheet:** 'I Notice, I Wonder' drawing template.
             """)
             st.markdown('</div>', unsafe_allow_html=True)
