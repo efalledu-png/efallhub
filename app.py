@@ -1,6 +1,9 @@
 import streamlit as st
 import base64
 from datetime import date
+import random
+import hashlib
+import os
 
 # Page Configuration
 st.set_page_config(
@@ -18,11 +21,36 @@ if "selected_unit" not in st.session_state:
     st.session_state.selected_unit = 1
 if "reflection_logs" not in st.session_state:
     st.session_state.reflection_logs = []
+if "completed_steps" not in st.session_state:
+    st.session_state.completed_steps = {}
+if "custom_lesson_overrides" not in st.session_state:
+    st.session_state.custom_lesson_overrides = {}
 
-# --- CURRICULUM ENGINE WITH EMBEDDED IB ATTRIBUTES & LANGUAGE SEPARATION ---
+# --- SMART HASH & BACKEND VIDEO PIPELINE ENGINE ---
+def get_or_update_lesson_asset(unit_num, vocab_en, vocab_ur, phonics_target, custom_note=""):
+    """
+    Simulates the backend automated pipeline with Smart Hash Version Control.
+    Returns the cached asset path if unchanged, or dynamically regenerates if user needs change.
+    """
+    script_string = f"U{unit_num}_{vocab_en}_{vocab_ur}_{phonics_target}_{custom_note}"
+    current_hash = hashlib.md5(script_string.encode()).hexdigest()[:8]
+    
+    os.makedirs("assets/videos", exist_ok=True)
+    video_filename = f"assets/videos/unit_{unit_num}_{current_hash}.mp4"
+    
+    if os.path.exists(video_filename):
+        status_msg = "⚡ Loaded from cache (Instantaneous & Optimized)"
+    else:
+        with open(video_filename, "wb") as f:
+            f.write(b"mock_video_binary_data")
+        status_msg = "🔄 Dynamic update detected! Backend automatically regenerated lesson asset."
+        
+    return video_filename, current_hash, status_msg
+
+# --- CURRICULUM DATABASE ---
 def get_unit_curriculum(unit_num):
     curriculum_database = [
-        # --- THEME 1: WHO WE ARE (Units 1-8: Single Letters & Basic Words) ---
+        # --- THEME 1: WHO WE ARE (Units 1-8) ---
         ("Who We Are", "My Feelings and Me", "Face", "چہرہ", "Aa, Bb", "الف، ب", "0, 1", "Circular & Curve Loops", "I feel happy when...", "Empathize", "https://www.youtube.com/watch?v=Us-TVg40ExM"),
         ("Who We Are", "Emotions & Smiles", "Smile", "مسکان", "Cc, Dd", "پ، ت", "2, 3", "Horizontal lines", "My smile shows...", "Empathize", "https://www.youtube.com/watch?v=zUNWwWjF5x0"),
         ("Who We Are", "Eyes & Vision", "Eyes", "آنکھیں", "Ee, Ff", "ٹ، ث", "4, 5", "Slanting diagonal lines", "I see with my eyes.", "Define", "https://www.youtube.com/watch?v=v608v4zmlio"),
@@ -32,7 +60,7 @@ def get_unit_curriculum(unit_num):
         ("Who We Are", "Voice & Sound", "Voice", "آواز", "Mm, Nn", "ذ، ر", "12, 13", "Horizontal lines", "My voice is kind.", "Prototype", "https://www.youtube.com/watch?v=pW89h5fX8cI"),
         ("Who We Are", "My Body & Map", "Me", "میں", "Oo, Pp", "ڑ، ز", "14, 15", "Slanting lines", "This is my body.", "Test", "https://www.youtube.com/watch?v=h4u0bx_wgxE"),
         
-        # --- THEME 2: WHERE WE ARE IN PLACE AND TIME (Units 9-16: Consonant Digraphs) ---
+        # --- THEME 2: WHERE WE ARE IN PLACE AND TIME (Units 9-16) ---
         ("Where We Are in Place and Time", "Doorways & Entry", "Door", "دروازہ", "Sh (Ship)", "ژ، س", "16, 17", "Circular loops", "The door shuts quietly.", "Empathize", "https://www.youtube.com/watch?v=8Vz9Z7o2cKo"),
         ("Where We Are in Place and Time", "Windows & Light", "Window", "کھڑکی", "Ch (Chair)", "ش، ص", "18, 19", "Zig-zag patterns", "The window lets in light.", "Empathize", "https://www.youtube.com/watch?v=L2v9s9K2V7o"),
         ("Where We Are in Place and Time", "Classroom Layout", "Table", "میز", "Th (That)", "ض، ط", "1, 2", "Standing lines", "That table is clean.", "Define", "https://www.youtube.com/watch?v=4r2v8K5Z1sE"),
@@ -42,7 +70,7 @@ def get_unit_curriculum(unit_num):
         ("Where We Are in Place and Time", "Mats & Space", "Mat", "چٹائی", "Fl (Floor)", "گ، ل", "9, 10", "Tactile zig-zag", "Sit on the mat.", "Prototype", "https://www.youtube.com/watch?v=2v9s8k3l1wE"),
         ("Where We Are in Place and Time", "Rest & Routine", "Bed", "بستر", "Sl (Sleep)", "م، ن", "11, 12", "Vertical lines", "It is time to rest.", "Test", "https://www.youtube.com/watch?v=7k3s2w9l8vA"),
         
-        # --- THEME 3: HOW WE EXPRESS OURSELVES (Units 17-25: Vowel Teams & Blends) ---
+        # --- THEME 3: HOW WE EXPRESS OURSELVES (Units 17-25) ---
         ("How We Express Ourselves", "Colors & Hues", "Paint", "رنگ", "Ai (Paint)", "و، ہ", "13, 14", "Horizontal lines", "I paint bright colors.", "Empathize", "https://www.youtube.com/watch?v=8k3s2w9l1vE"),
         ("How We Express Ourselves", "Brushes & Strokes", "Brush", "برش", "Ee (Tree)", "ھ، ء", "15, 16", "Slanting lines", "The brush sweeps up.", "Empathize", "https://www.youtube.com/watch?v=1v8k3s2w9lE"),
         ("How We Express Ourselves", "Clay Molding", "Clay", "مٹی", "igh (High)", "ی، ے", "17, 18", "Curve loops", "We mold clay high.", "Define", "https://www.youtube.com/watch?v=9l8k3s2w1vE"),
@@ -53,7 +81,7 @@ def get_unit_curriculum(unit_num):
         ("How We Express Ourselves", "Dance & Motion", "Dance", "ناچ", "Ur (Turn)", "خ، د", "7, 8", "Curve loops", "We turn and dance.", "Prototype", "https://www.youtube.com/watch?v=8s2w9l8k6vE"),
         ("How We Express Ourselves", "Art & Contrast", "Color", "رنگ", "Ow (Cow)", "ڈ، ذ", "9, 10", "Tactile zig-zag", "Colors stand out now.", "Test", "https://www.youtube.com/watch?v=9s1k8l7v7vE"),
         
-        # --- THEME 4: HOW THE WORLD WORKS (Units 26-33: Trigraphs & Complex Phonics) ---
+        # --- THEME 4: HOW THE WORLD WORKS (Units 26-33) ---
         ("How the World Works", "Water & Flow", "Water", "پانی", "Dge (Bridge)", "ر، ڑ", "11, 12", "Vertical lines", "Water flows under bridges.", "Empathize", "https://www.youtube.com/watch?v=1w2s3k4l5vE"),
         ("How the World Works", "Leaves & Veins", "Leaf", "پتا", "Tch (Catch)", "ز، ژ", "13, 14", "Horizontal lines", "Catch the falling leaf.", "Empathize", "https://www.youtube.com/watch?v=2w3s4k5l6vE"),
         ("How the World Works", "Sunlight & Shadows", "Sun", "سورج", "Air (Chair)", "س، ش", "15, 16", "Slanting lines", "The sun gives us warmth.", "Define", "https://www.youtube.com/watch?v=3w4s5k6l7vE"),
@@ -63,22 +91,22 @@ def get_unit_curriculum(unit_num):
         ("How the World Works", "Wind & Breeze", "Wind", "ہوا", "O/U (Push)", "ف، ق", "3, 4", "Slanting lines", "Wind pushes the trees.", "Prototype", "https://www.youtube.com/watch?v=7w8s9k1l2vE"),
         ("How the World Works", "Trees & Wood", "Tree", "درخت", "Ph (Phone)", "ک، گ", "5, 6", "Curve loops", "Trees provide sturdy wood.", "Test", "https://www.youtube.com/watch?v=8w9s1k2l3vE"),
         
-        # --- THEME 5: HOW WE ORGANIZE OURSELVES (Units 34-41: Sentences & Descriptive Writing) ---
+        # --- THEME 5: HOW WE ORGANIZE OURSELVES (Units 34-41) ---
         ("How We Organize Ourselves", "Baskets & Storage", "Basket", "ٹوکری", "Sentences (I)", "ل، م", "7, 8", "Zig-zag patterns", "I put toys in baskets.", "Empathize", "https://www.youtube.com/watch?v=9w1s2k3l4vE"),
         ("How We Organize Ourselves", "Toys & Sharing", "Toy", "کھلونا", "Sentences (We)", "ن، و", "9, 10", "Vertical lines", "We share our toys.", "Empathize", "https://www.youtube.com/watch?v=1s2k3l4v5wE"),
         ("How We Organize Ourselves", "Shelves & Books", "Shelf", "الماری", "Sentences (Our)", "ہ، ی", "11, 12", "Horizontal lines", "Our books are on shelves.", "Define", "https://www.youtube.com/watch?v=2s3k4l5v6wE"),
-        ("How We Organize Ourselves", "Boxes & Packing", "Box", "ڈبہ", "Sentences (Put)", "ء، ے", "13, 14", "Slanting lines", "Put blocks in the box.", "Define", "https://www.youtube.com/watch?v=3s4k5l6v7wE"),
+        ("How We Organize Ourselves", "Boxes & Packing", "Box", "ڈبہ", "Sentences (Put)", "ء، ے", "13, 14", "Slanting lines", "Put blocks in the box.", "Define", "https://www.youtube.com/watch?v=3s4k5l6v7vE"),
         ("How We Organize Ourselves", "Tidying & Care", "Clean", "صاف", "Sentences (Keep)", "الف، ب", "15, 16", "Curve loops", "Keep the classroom clean.", "Ideate", "https://www.youtube.com/watch?v=4s5k6l7v8wE"),
         ("How We Organize Ourselves", "Patterns & Order", "Tidy", "درست", "Sentences (Make)", "پ، ت", "17, 18", "Zig-zag patterns", "Make patterns neatly.", "Ideate", "https://www.youtube.com/watch?v=5s6k7l8v9wE"),
         ("How We Organize Ourselves", "Helping Hands", "Help", "مدد", "Sentences (Help)", "ٹ، ث", "19, 20", "Vertical lines", "We are helping hands.", "Prototype", "https://www.youtube.com/watch?v=6s7k8l9v1wE"),
         ("How We Organize Ourselves", "Sorting Objects", "Sort", "ترتیب", "Sentences (Sort)", "ج، چ", "1, 2", "Horizontal lines", "Sort items by shape.", "Test", "https://www.youtube.com/watch?v=7s8k9l1v2wE"),
         
-        # --- THEME 6: SHARING THE PLANET (Units 42-50: Independent Writing & Paragraphs) ---
+        # --- THEME 6: SHARING THE PLANET (Units 42-50) ---
         ("Sharing the Planet", "Seeds & Growth", "Seed", "بیج", "Writing (Grow)", "ح، خ", "3, 4", "Slanting lines", "Seeds grow into tall plants.", "Empathize", "https://www.youtube.com/watch?v=8s9k1l2v3wE"),
-        ("Sharing the Planet", "Soil & Ground", "Soil", "مٹی", "Writing (Earth)", "د، ڈ", "5, 6", "Curve loops", "Rich soil feeds roots.", "Empathize", "https://www.youtube.com/watch?v=9s1k2l3v4wE"),
+        ("Sharing the Planet", "Soil & Ground", "Soil", "مٹی", "Writing (Earth)", "د، ڈ", "5, 6", "Curve loops", "Rich soil feeds roots.", "Empathize", "https://www.youtube.com/watch?v=9s1k2l3v4vE"),
         ("Sharing the Planet", "Planting Life", "Plant", "پودا", "Writing (Water)", "ذ، ر", "7, 8", "Vertical lines", "Plants need water daily.", "Define", "https://www.youtube.com/watch?v=1k2l3v4v5wE"),
         ("Sharing the Planet", "Flowers & Blooms", "Flower", "پھول", "Writing (Bloom)", "ڑ، ز", "9, 10", "Horizontal lines", "Flowers bloom in spring.", "Define", "https://www.youtube.com/watch?v=2k3l4v5v6wE"),
-        ("Sharing the Planet", "Birds & Feathers", "Bird", "پرندہ", "Writing (Fly)", "ژ، س", "11, 12", "Slanting lines", "Birds fly across skies.", "Ideate", "https://www.youtube.com/watch?v=3k4l5v6v7wE"),
+        ("Sharing the Planet", "Birds & Feathers", "Bird", "پرندہ", "Writing (Fly)", "ژ، س", "11, 12", "Slanting lines", "Birds fly across skies.", "Ideate", "https://www.youtube.com/watch?v=3k4l5v6v7vE"),
         ("Sharing the Planet", "Cats & Paws", "Cat", "بلی", "Writing (Soft)", "ش، ص", "13, 14", "Curve loops", "Cats have soft paws.", "Ideate", "https://www.youtube.com/watch?v=4k5l6v7v8wE"),
         ("Sharing the Planet", "Dogs & Canines", "Dog", "کتا", "Writing (Loyal)", "ض، ط", "15, 16", "Zig-zag patterns", "Dogs are loyal friends.", "Prototype", "https://www.youtube.com/watch?v=5k6l7v8v9wE"),
         ("Sharing the Planet", "Tracking Growth", "Growth", "بڑھوتری", "Writing (Measure)", "ظ، ع", "17, 18", "Vertical lines", "We measure plant growth.", "Prototype", "https://www.youtube.com/watch?v=6k7l8v8v1wE"),
@@ -95,74 +123,72 @@ def create_download_button(content, filename, label):
 
 # --- NAVIGATION SIDEBAR ---
 st.sidebar.title("🌟 EFALL Hub")
-st.sidebar.caption("Educated Mother Education Nation")
-
-if st.sidebar.button("🏠 Home", use_container_width=True):
-    st.session_state.current_page = "Home"
-    st.rerun()
-if st.sidebar.button("📚 50 Units Library", use_container_width=True):
-    st.session_state.current_page = "Unit Library"
-    st.rerun()
-if st.sidebar.button("📝 My Diary", use_container_width=True):
-    st.session_state.current_page = "Reflection Log"
-    st.rerun()
-
-st.sidebar.markdown("---")
-st.sidebar.title("🌟 آسان تعلیمی ہب")
 st.sidebar.caption("تعلیم یافتہ ماں، روشن مستقبل")
 
-if st.sidebar.button("🏠 مین صفحہ", use_container_width=True):
+if st.sidebar.button("🏠 Home / مین صفحہ", use_container_width=True):
     st.session_state.current_page = "Home"
     st.rerun()
-if st.sidebar.button("📚 اسباق کی لائبریری", use_container_width=True):
+if st.sidebar.button("📚 50 Units / اسباق کی لائبریری", use_container_width=True):
     st.session_state.current_page = "Unit Library"
     st.rerun()
-if st.sidebar.button("📝 میری ڈائری", use_container_width=True):
+if st.sidebar.button("📝 My Diary / میری ڈائری", use_container_width=True):
     st.session_state.current_page = "Reflection Log"
     st.rerun()
 
 # --- HOME PAGE ---
 if st.session_state.current_page == "Home":
     st.title("🌟 Welcome to EFALL Master Teaching Hub")
-    st.markdown("### 🎯 Select an IB PYP Theme Box below to open units:")
+    st.markdown("### 🎯 آج آپ کیا پڑھانا چاہتے ہیں؟ (Interactive Quick Hub)")
+
+    col_a, col_b = st.columns(2)
+    with col_a:
+        if st.button("🎲 Surprise Me! (رینڈم سرگرمی چنیں)", use_container_width=True):
+            random_unit = random.randint(1, 50)
+            st.session_state.selected_unit = random_unit
+            st.session_state.current_page = "Unit Library"
+            st.rerun()
+    with col_b:
+        if st.button("🚀 Quick Lesson Jump (براہ راست یونٹ کھولیں)", use_container_width=True):
+            st.session_state.current_page = "Unit Library"
+            st.rerun()
+
+    st.markdown("---")
+    st.markdown("### 🧩 تھیم کے مطابق خانے منتخب کریں:")
     
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("🧩 Box 1: Who We Are\n(Letters & Basics - Units 1-8)", use_container_width=True):
+        if st.button("🧩 خانہ 1: ہم کون ہیں (یونٹس 1-8)", use_container_width=True):
             st.session_state.selected_unit = 1
             st.session_state.current_page = "Unit Library"
             st.rerun()
-        if st.button("🎨 Box 3: How We Express\n(Vowels & Blends - Units 17-25)", use_container_width=True):
+        if st.button("🎨 خانہ 3: ہم خیالات کا اظہار کیسے کرتے ہیں (یونٹس 17-25)", use_container_width=True):
             st.session_state.selected_unit = 17
             st.session_state.current_page = "Unit Library"
             st.rerun()
-        if st.button("🧹 Box 5: How We Organize\n(Sentences - Units 34-41)", use_container_width=True):
+        if st.button("🧹 خانہ 5: ہم خود کو کیسے منظم کرتے ہیں (یونٹس 34-41)", use_container_width=True):
             st.session_state.selected_unit = 34
             st.session_state.current_page = "Unit Library"
             st.rerun()
     with col2:
-        if st.button("🏡 Box 2: Where We Are\n(Digraphs - Units 9-16)", use_container_width=True):
+        if st.button("🏡 خانہ 2: ہم جگہ اور وقت میں کہاں ہیں (یونٹس 9-16)", use_container_width=True):
             st.session_state.selected_unit = 9
             st.session_state.current_page = "Unit Library"
             st.rerun()
-        if st.button("💧 Box 4: How World Works\n(Trigraphs - Units 26-33)", use_container_width=True):
+        if st.button("💧 خانہ 4: دنیا کیسے کام کرتی ہے (یونٹس 26-33)", use_container_width=True):
             st.session_state.selected_unit = 26
             st.session_state.current_page = "Unit Library"
             st.rerun()
-        if st.button("🌿 Box 6: Sharing Planet\n(Independent Writing - Units 42-50)", use_container_width=True):
+        if st.button("🌿 خانہ 6: سیارے کی دیکھ بھال (یونٹس 42-50)", use_container_width=True):
             st.session_state.selected_unit = 42
             st.session_state.current_page = "Unit Library"
             st.rerun()
 
     st.markdown("---")
-    st.title("🌟 خوش آمدید: آسان تدریسی پورٹل")
-    st.markdown("### 🎯 کسی بھی یونٹ کو کھولنے کے لیے ذیل میں سے سیکشن منتخب کریں:")
-    
     if st.button("📝 میری تدریسی ڈائری کھولیں", use_container_width=True):
         st.session_state.current_page = "Reflection Log"
         st.rerun()
 
-# --- UNIT LIBRARY & CHRONOLOGICAL LESSON COACH ---
+# --- UNIT LIBRARY & AUTOMATED VIDEO PIPELINE ---
 elif st.session_state.current_page == "Unit Library":
     if st.button("⬅️ Back / واپس جائیں"):
         st.session_state.current_page = "Home"
@@ -171,7 +197,7 @@ elif st.session_state.current_page == "Unit Library":
     st.title("📚 50-Unit Curriculum Hub & اسباق کی تفصیلی لائبریری")
     
     unit_number = st.selectbox(
-        "Select Unit Number (1 to 50) / یونٹ نمبر منتخب کریں:", 
+        "یونٹ نمبر منتخب کریں (1 سے 50):", 
         list(range(1, 51)), 
         index=st.session_state.selected_unit - 1, 
         format_func=lambda x: f"Unit {x}: {get_unit_curriculum(x)[0]}"
@@ -182,126 +208,138 @@ elif st.session_state.current_page == "Unit Library":
 
     st.markdown("---")
     st.markdown(f"## 📋 {theme_name}")
-    st.info(f"🌐 **IB Theme:** {domain_name} &nbsp;|&nbsp; 🔤 **Literacy Target:** {phonics_target} &nbsp;|&nbsp; ✍️ **Sentence Goal:** {sentence_focus}")
-    st.info(f"🌐 **آئی بی تھیم:** {domain_name} &nbsp;|&nbsp; 🔤 **اردو الفاظ اور صوتی ہدف:** {vocab_ur} ({phonics_ur})")
+    st.info(f"🌐 **مرکزی موضوع:** {domain_name} &nbsp;|&nbsp; 🔤 **الفاظ:** {vocab_en} ({vocab_ur}) &nbsp;|&nbsp; ✍️ **جملہ:** {sentence_focus}")
 
-    # --- TOP 3-STEP QUICK FACILITATION CARD ---
-    st.markdown("### 👩‍🏫 Quick Facilitation Guide & آسان تدریسی طریقہ")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown(f"""
-        <div style="background: #e8f8f5; border: 2px solid #1abc9c; padding: 10px; border-radius: 8px; text-align: center;">
-            <h4 style="color: #16a085; margin:0;">1️⃣ Show</h4>
-            <p style="font-size: 12px; margin-top: 5px;">Show flashcard for <b>{vocab_en}</b> & sound <b>{phonics_target}</b>.</p>
-            <hr style="margin:5px 0;">
-            <h4 style="color: #16a085; margin:0;">دکھائیں۔</h4>
-            <p style="font-size: 12px; margin-top: 5px;"><b>{vocab_ur}</b> اور آواز <b>{phonics_ur}</b> کا فلیش کارڈ دکھائیں۔</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with c2:
-        st.markdown(f"""
-        <div style="background: #fdf2e9; border: 2px solid #f39c12; padding: 10px; border-radius: 8px; text-align: center;">
-            <h4 style="color: #d35400; margin:0;">2️⃣ Ask</h4>
-            <p style="font-size: 12px; margin-top: 5px;"><b>Listen:</b> "What do you notice? How do others see this?"</p>
-            <hr style="margin:5px 0;">
-            <h4 style="color: #d35400; margin:0;">پوچھیں۔</h4>
-            <p style="font-size: 12px; margin-top: 5px;"><b>سنیے:</b> "دوسرے اس کو کیسے دیکھتے ہیں؟ آپ کو کیا محسوس ہوتا ہے؟"</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with c3:
-        st.markdown(f"""
-        <div style="background: #ebf5fb; border: 2px solid #3498db; padding: 10px; border-radius: 8px; text-align: center;">
-            <h4 style="color: #2980b9; margin:0;">3️⃣ Do</h4>
-            <p style="font-size: 12px; margin-top: 5px;">Trace <b>{stroke_focus}</b> & write: <b>{sentence_focus}</b> thoughtfully.</p>
-            <hr style="margin:5px 0;">
-            <h4 style="color: #2980b9; margin:0;">کریں۔</h4>
-            <p style="font-size: 12px; margin-top: 5px;">لاب اسٹروک <b>{stroke_focus}</b> بنائیں اور ذمہ داری سے مشق کریں۔</p>
-        </div>
-        """, unsafe_allow_html=True)
+    # --- EASY ONE-TAP CUSTOMIZATION FOR NON-TECH USERS ---
+    with st.expander("⚙️ سبق کو اپنی مرضی کے مطابق بنائیں (One-Tap Lesson Options)"):
+        st.markdown("<b>آسان بٹن کی مدد سے سبق کا فوکس تبدیل کریں:</b>", unsafe_allow_html=True)
+        
+        c_btn1, c_btn2, c_btn3 = st.columns(3)
+        with c_btn1:
+            if st.button("⭐ زیادہ مشق (Extra Practice)", use_container_width=True):
+                st.session_state.custom_lesson_overrides[unit_number] = "Focus on extra practice today"
+                st.rerun()
+        with c_btn2:
+            if st.button("🎨 فن اور رنگ (Add Art Focus)", use_container_width=True):
+                st.session_state.custom_lesson_overrides[unit_number] = "Incorporate extra drawing and art"
+                st.rerun()
+        with c_btn3:
+            if st.button("🔄 اصل حالت (Reset)", use_container_width=True):
+                st.session_state.custom_lesson_overrides[unit_number] = ""
+                st.rerun()
+
+    # --- AUTOMATED BACKEND ASSET PIPELINE STATUS ---
+    active_custom_note = st.session_state.custom_lesson_overrides.get(unit_number, "")
+    _, asset_hash, pipeline_status = get_or_update_lesson_asset(unit_number, vocab_en, vocab_ur, phonics_target, active_custom_note)
+    
+    st.markdown(f"### 🤖 Backend Automated Video & Script Pipeline")
+    st.caption(f"Asset Hash Fingerprint: `{asset_hash}`")
+    if "Loaded from cache" in pipeline_status:
+        st.success(pipeline_status)
+    else:
+        st.warning(pipeline_status)
+
+    # --- INTERACTIVE CHECKLIST FOR TEACHER/PARENT ---
+    st.markdown("### ✅ Interactive Lesson Progress (سبق کی پیش رفت چیک کریں)")
+    
+    step1_key = f"u{unit_number}_s1"
+    step2_key = f"u{unit_number}_s2"
+    step3_key = f"u{unit_number}_s3"
+    
+    c_check1, c_check2, c_check3 = st.columns(3)
+    with c_check1:
+        done_s1 = st.checkbox("1️⃣ تعارف اور گول دائرہ", value=st.session_state.completed_steps.get(step1_key, False))
+        st.session_state.completed_steps[step1_key] = done_s1
+    with c_check2:
+        done_s2 = st.checkbox("2️⃣ صوتی آواز اور لکھائی", value=st.session_state.completed_steps.get(step2_key, False))
+        st.session_state.completed_steps[step2_key] = done_s2
+    with c_check3:
+        done_s3 = st.checkbox("3️⃣ عملی سرگرمی اور گنتی", value=st.session_state.completed_steps.get(step3_key, False))
+        st.session_state.completed_steps[step3_key] = done_s3
+
+    if done_s1 and done_s2 and done_s3:
+        st.balloons()
+        st.success("🎉 زبردست! آپ نے اس یونٹ کا سیشن کامیابی سے مکمل کر لیا ہے!")
 
     st.markdown("---")
     
-    # --- DETAILED CHRONOLOGICAL LESSON TABS ---
+    # --- INTERACTIVE CHRONOLOGICAL LESSON TABS ---
     t1, t2, t3, t4, t5 = st.tabs([
-        "🕒 Phase 1: Setup & Opening", 
-        "🕒 Phase 2: Phonics & Writing", 
-        "🕒 Phase 3: Challenge & Worksheet", 
-        "🕒 Phase 4: Reflection & Boards",
-        "🎥 Aligned Video & Resources"
+        "🕒 Phase 1: Interactive Opening", 
+        "🕒 Phase 2: Phonics & Game", 
+        "🕒 Phase 3: Hands-On Challenge", 
+        "🕒 Phase 4: Reflection & Share",
+        "🎥 Video & Worksheet"
     ])
 
     with t1:
-        st.markdown(f"### Phase 1: Opening & Provocation (0-10 mins) — {vocab_en}")
+        st.markdown(f"### Phase 1: Interactive Opening & Body Movement (0-10 mins) — {vocab_en}")
+        if active_custom_note:
+            st.info(f"💡 **Active Adjustment:** {active_custom_note}")
         st.markdown("""
-        * **Small Space Setup:** Clear classroom furniture to maximize floor space, welcoming diverse perspectives as children sit together on the circle carpet.
-        * **Gathering Students:** Bring children into small collaborative circles to encourage open communication and mutual respect.
-        * **Teacher Script & Inquiry Routine:** Use open-ended inquiry prompts (*"Imagine if everyone around the world shared this feeling..."*) to cultivate global empathy and balanced thinking.
+        * **حرکت اور جوش (Action Warm-up):** بچے فرنیچر ہٹا کر چھوٹے دائرے میں زمین پر بیٹھ جائیں۔ استاد لفظ **"Imagine if..." (تصویر کریں اگر...)** بول کر بچوں کو سوچنے پر مجبور کرے کہ دنیا کے دوسرے بچوں کا تجربہ کیسا ہوتا ہوگا۔
+        * **آپس میں بات چیت:** بچے جوڑے بنا کر ایک دوسرے سے اپنے خیالات کا اظہار کریں۔
         """)
         st.markdown("---")
-        st.markdown(f"### مرحلہ اول: آغاز اور تعارف (0 تا 10 منٹ) — {vocab_ur}")
+        st.markdown("### مرحلہ اول: متحرک آغاز (0 تا 10 منٹ)")
         st.markdown("""
-        * **چھوٹی جگہ کا انتظام:** فرنیچر ہٹا کر بچوں کو گول دائرے میں اس طرح بٹھائیں کہ سب ایک دوسرے کی بات غور سے سن سکیں۔
-        * **بچوں کو اکٹھا کرنا:** چھوٹے گروپس میں ایک دوسرے کے خیالات کا احترام کرنے کی عادت ڈالیں۔
-        * **تدریسی انداز:** بچوں سے ایسے سوالات پوچھیں جو انہیں دنیا بھر کے ماحول اور دوستوں کے بارے میں سوچنے پر آمادہ کریں۔
+        * بچوں کو دائرے میں بٹھا کر جسمانی اشاروں سے سبق کا آغاز کریں۔
+        * بچوں سے پوچھیں کہ وہ اس موضوع کے بارے میں کیا جانتے ہیں۔
         """)
 
     with t2:
-        st.markdown(f"### Phase 2: Phonics, Digraphs & Pre-Writing (10-20 mins)")
+        st.markdown(f"### Phase 2: Phonics Game & Pre-Writing Action (10-20 mins)")
         st.markdown(f"""
-        * **Literacy Progression:** Practice target sound **{phonics_target}** alongside vocabulary **{vocab_en}**, encouraging risk-taking and articulate expression.
-        * **Pre-Writing Stroke Practice:** Trace linear or curved stroke pattern **{stroke_focus}** with reflective care and patience.
-        * **Sentence Building:** Guide students to articulate, risk trying new words, and write the sentence goal: *"{sentence_focus}"*.
+        * **آواز کا کھیل (Sound Hunt):** بچے کمرے میں اس صوتی ہدف **{phonics_target}** سے ملنے والی چیزیں ڈھونڈ کر لائیں۔
+        * **ہوا میں لکھنا (Air Writing):** انگلیوں سے ہوا میں پیٹرن **{stroke_focus}** بنائیں تاکہ ہاتھ کے پٹ مضبوط ہوں۔
+        * **جملہ بولنا:** مل کر جملہ دہرائیں: *"{sentence_focus}"*۔
         """)
         st.markdown("---")
-        st.markdown("### مرحلہ دوم: صوتیات اور تحریری مشق (10 تا 20 منٹ)")
+        st.markdown("### مرحلہ دوم: صوتی آوازوں کا کھیل اور لکھائی (10 تا 20 منٹ)")
         st.markdown(f"""
-        * **صوتی ہدف:** اردو الفاظ اور آوازوں <b>{vocab_ur} ({phonics_ur})</b> کی مشق کریں اور بچوں کو نئے الفاظ بولنے کی ترغیب دیں۔
-        * **لاب لکھائی:** صبر اور توجہ کے ساتھ لکیروں اور دائروں کی مشق کریں۔
-        * **جملہ سازی:** بچوں کو با اعتماد طریقے سے سوچ کر سادہ جملے لکھنے کی رہنمائی کریں۔
+        * بچے صوتی ہدف <b>{phonics_ur}</b> کی آواز بلند آواز میں دہرائیں اور ہوا میں لکیریں بنائیں۔
+        * جوڑوں میں بیٹھ کر ایک دوسرے کو نیا لفظ سکھائیں۔
         """)
 
     with t3:
-        st.markdown(f"### Phase 3: The Inquiry Challenge & Custom Worksheet (20-40 mins)")
+        st.markdown(f"### Phase 3: Hands-On Inquiry Challenge (20-40 mins)")
         st.markdown(f"""
-        * **Hands-On Activity:** Engage students in collaborative inquiry challenges, promoting principled sharing of materials from the supply basket.
-        * **Math Integration:** Measure objects using finger units, reflecting on different ways peers solve problems up to count **{math_num}**.
-        * **Custom Worksheet:** Distribute the downloadable activity sheet tailored to this unit's literacy, caring attitudes, and math goals.
+        * **عملی چیلنج (Building & Sorting):** بچے ٹوکری سے چیزیں لے کر جوڑوں میں ماڈل بنائیں یا چیزوں کو شمار کریں (ہدف: **{math_num}** تک گنتی)۔
+        * **باہمی تعاون (Sharing Materials):** ایک دوسرے کے ساتھ دوستانہ انداز میں چیزیں بانٹیں۔
         """)
         st.markdown("---")
-        st.markdown("### مرحلہ سوم: عملی چیلنج اور ورک شیٹ (20 تا 40 منٹ)")
+        st.markdown("### مرحلہ سوم: عملی اور تخلیقی سرگرمی (20 تا 40 منٹ)")
         st.markdown(f"""
-        * **عملی سرگرمی:** بچوں کو ٹوکری میں موجود اشیاء کو آپس میں مل کر بانٹ کر استعمال کرنے کا سکھائیں۔
-        * **ریاضی کا امتزاج:** چیزوں کی گنتی کریں، مختلف طریقوں سے سوچیں اور ہندسہ <b>{math_num}</b> تک کے نشانات لگائیں۔
-        * **ورک شیٹ:** اس یونٹ کے لیے خاص طور پر تیار کردہ ورک شیٹ تقسیم کریں۔
+        * بچوں کو چھوٹی ٹوکری سے چیزیں دے کر ان کی ترتیب اور گنتی <b>{math_num}</b> تک کرائیں۔
+        * سب مل کر ٹیم ورک کے ذریعے ماڈل یا ڈرائنگ تیار کریں۔
         """)
 
     with t4:
-        st.markdown(f"### Phase 4: Reflection, Boards & Closing (40-60 mins)")
+        st.markdown(f"### Phase 4: Reflection, Clap & Share (40-60 mins)")
         st.markdown("""
-        * **Lab Board Documentation:** Post Polaroid photos, student blueprints, vocabulary cards, and tally graphs to celebrate diverse ideas and open-minded inquiry.
-        * **Responsibility Board:** Mount group pictures with created projects, discussing how caring actions positively impact our local and global community.
-        * **Bridge to Next Session:** Conclude with reflective inquiry questions that inspire principled habits.
+        * **تعریف کا دائرہ (Appreciation Circle):** سب بچے تالیاں بجا کر ایک دوسرے کے کام کی تعریف کریں۔
+        * **بورڈ پر سجاوٹ:** سب کی بنائی ہوئی تصاویر ڈسپلے بورڈ پر لگائیں۔
         """)
         st.markdown("---")
-        st.markdown("### مرحلہ چہارم: جائزہ اور اختتام (40 تا 60 منٹ)")
+        st.markdown("### مرحلہ چہارم: جائزہ اور خوشی کا اظہار (40 تا 60 منٹ)")
         st.markdown("""
-        * **لاگ بورڈ:** بچوں کے بنائے ہوئے کام اور تخلیقی خیالات کو ڈسپلے بورڈ پر سجا کر ایک دوسرے کے کام کی تعریف کریں۔
-        * **ذمے داری بورڈ:** بچوں کو یہ سمجھائیں کہ ان کے چھوٹے چھوٹے اچھے کام کس طرح دنیا کو بہتر بناتے ہیں۔
-        * **اگلے سبق کا تسلسل:** اگلے دن کے لیے فکری اور دلچسپ سوالات کے ساتھ سیشن ختم کریں۔
+        * بچوں سے پوچھیں کہ آج انہوں نے کیا نیا سیکھا اور کیسا محسوس کیا۔
+        * سب کے کام کی تعریف کرکے بورڈ پر لگائیں۔
         """)
 
     with t5:
-        st.markdown("### Aligned Video & Downloadable Materials")
-        st.info(f"💡 **Aligned Video Resource:** Watch this topic-matched video to support your lesson: [Open Video Link]({video_url})")
+        st.markdown("### Automated Backend Video & Downloadable Materials")
+        st.info(f"💡 **ভিڈیو لنک (Video Link):** [موضوع سے متعلق ویڈیو دیکھیں]({video_url})")
         
         worksheet_content = f"""EFALL MASTER CURRICULUM WORKBOOK - UNIT {unit_number}
 Theme: {theme_name}
 Vocabulary Focus: {vocab_en} / {vocab_ur}
-Literacy / Phonics / Digraph Target: {phonics_target}
+Literacy / Phonics Target: {phonics_target}
 Urdu Phonics & Letters: {phonics_ur}
 Sentence Writing Goal: {sentence_focus}
 Math Counting Target: {math_num}
 Pre-Writing Stroke Pattern: {stroke_focus}
+Custom Mode: {active_custom_note if active_custom_note else 'Standard'}
 
 Student Name: _______________________ Date: ____________
 
@@ -326,21 +364,21 @@ elif st.session_state.current_page == "Reflection Log":
     st.title("📝 My Teaching Diary & میری تعلیمی ڈائری")
     
     with st.form("simple_diary"):
-        user_name = st.text_input("Your Name / آپ کا نام:")
+        user_name = st.text_input("آپ کا نام (Your Name):")
         
-        st.markdown("### Select how today went / آج کا تاثر منتخب کریں:")
-        emoji_choice = st.radio("Choose One:", [
-            "🌟 Very Good / بہت اچھا دن رہا", 
-            "💡 Learned Something New / کچھ نیا سیکھا", 
-            "🌱 Need More Practice / مزید مشق کی ضرورت ہے"
+        st.markdown("### آج کا دن کیسا رہا؟ (Select how today went):")
+        emoji_choice = st.radio("انتخاب کریں:", [
+            "🌟 بہت اچھا دن رہا (Very Good)", 
+            "💡 کچھ نیا سیکھا (Learned Something New)", 
+            "🌱 مزید مشق کی ضرورت ہے (Need More Practice)"
         ])
         
-        note_text = st.text_area("Write or speak a short note / کوئی خاص بات لکھیں:")
+        note_text = st.text_area("کوئی خاص بات یا نوٹ لکھیں:")
         
-        save_btn = st.form_submit_button("💾 Save / محفوظ کریں")
+        save_btn = st.form_submit_button("💾 محفوظ کریں (Save)")
         if save_btn:
             if user_name.strip() == "":
-                st.warning("Please enter your name. / براہ کرم نام درج کریں۔")
+                st.warning("براہ کرم اپنا نام درج کریں۔")
             else:
                 st.session_state.reflection_logs.append({
                     "name": user_name,
@@ -348,16 +386,16 @@ elif st.session_state.current_page == "Reflection Log":
                     "mood": emoji_choice,
                     "note": note_text
                 })
-                st.success("Saved successfully! / کامیابی سے محفوظ ہو گیا!")
+                st.success("کامیابی سے محفوظ ہو گیا!")
 
     st.markdown("---")
-    st.subheader("📖 Saved Diary Entries / محفوظ شدہ ڈائری")
+    st.subheader("📖 محفوظ شدہ ڈائری (Saved Entries)")
     if len(st.session_state.reflection_logs) == 0:
-        st.info("No entries yet. / ابھی تک کوئی ڈائری درج نہیں ہوئی۔")
+        st.info("ابھی تک کوئی ڈائری درج نہیں ہوئی۔")
     else:
         for idx, entry in enumerate(st.session_state.reflection_logs):
             with st.container(border=True):
                 st.write(f"**#{idx+1} | {entry['date']} | {entry['name']}**")
-                st.write(f"Status: {entry['mood']}")
+                st.write(f"حالت: {entry['mood']}")
                 if entry['note']:
-                    st.write(f"Note: {entry['note']}")
+                    st.write(f"نوٹ: {entry['note']}")
