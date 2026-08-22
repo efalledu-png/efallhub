@@ -442,14 +442,17 @@ Math Target & Detailed Script: {dynamics['math_scale']}
 Pacing Strategy: {dynamics['pacing']}
 Classroom Environment: Compact setup ({space_mgmt}), Design Phase: '{design_phase}'.
 
-1. BILINGUAL LITERACY & STORYTELLING:
+1. BILINGUAL LITERACY, STORYTELLING & PHONICS (PHASE 1):
    - Vocab: {eng_vocab} / {urdu_vocab}
    - Story Prompt & Q&A: "{unit_story}"
    - Core Spoken Sentence Goal: "{sentence_focus}"
 
-2. STEAM, DESIGN THINKING & MAKER CHALLENGE:
+2. STEAM, DESIGN THINKING & MAKER CHALLENGE (PHASE 2):
    - Sensory & STEAM Focus: {steam_sensory}{flavor}
    - Theme-Aligned Maker Challenge: {maker_challenge}
+
+3. DETAILED MATH & TALLY INSTRUCTION (PHASE 3):
+   - Object & Tally Mark counting guide and step-by-step teacher instructions.
 
 Let's begin our active inquiry session!"""
     return script
@@ -645,15 +648,15 @@ elif st.session_state.current_page == "Unit Library":
     
     # --- SYNCHRONIZED TABS ---
     t1, t2, t3, t4, t5 = st.tabs([
-        "🕒 Lesson Plan & Detailed Math", 
-        "🎨 Maker Challenges & Activities", 
-        "📝 Worksheet Generator", 
+        "🕒 Phase 1: Literacy & Story", 
+        "🎨 Phase 2: STEAM & Maker Challenges", 
+        "🔢 Phase 3: Detailed Math & Tally", 
         "📜 Master Script View",
         "🎬 Script-Driven Video Generator"
     ])
 
     with t1:
-        st.markdown(f"### 🕒 Step-by-Step Teacher Guide & Detailed Math Instruction ({selected_age} | {slot_duration})")
+        st.markdown(f"### 🕒 Phase 1: Detailed Bilingual Literacy, Phonics & Story Circle ({selected_age} | {slot_duration})")
         st.markdown(f"""
         * **Pedagogical Focus:** {age_dynamics['focus']}
         * **Phonics & Literacy Target:** {age_dynamics['phonics_target']}
@@ -662,41 +665,43 @@ elif st.session_state.current_page == "Unit Library":
         * **Design Thinking Phase:** **{design_phase}**
         * **Core Spoken Sentence:** *"{sentence_focus}"*
         """)
-        
+
         st.markdown("---")
-        st.markdown("#### 🔢 Phase 3: Detailed Step-by-Step Math & Tally Instruction")
-        st.info("Teacher Note: Follow this explicit instructional script to teach counting and tally marks to young learners step-by-step.")
+        st.markdown("#### 🗣️ Step-by-Step Teacher Script for Phase 1:")
+        st.info("Teacher Note: Follow this explicit instructional script to guide students through vocabulary introduction, phonics sounds, and interactive storytelling.")
         st.markdown(f"""
-        1. **Concept Introduction (5 min):** 
-           * Gather students and explain what a tally mark is: *"A tally mark is a simple straight line we draw to count things quickly. Every time we count one object, we draw one vertical line: `|`."*
-           * Show the special rule for the number 5: *"When we reach 5, we draw a diagonal slash straight across the first four lines (`H` or `HH`-style bundle: `||||` with a slash across)."* Demonstrate this clearly on a mini whiteboard or slate.
-        2. **Guided Practice (10 min):**
-           * Have students use their finger to draw tally lines in the air or on their desk surface.
-           * Count physical objects related to our theme (**{eng_vocab}** items) together. Point to each item one by one and draw the corresponding tally mark on the board.
-        3. **Independent Tallying & Math Application:**
-           * {age_dynamics['math_scale']}
-           * Distribute counters or blocks and have students group them into bundles of 5, practicing tallying out loud before filling out the worksheet.
+        1. **Bilingual Vocabulary & Phonics Introduction (8 min):**
+           * Hold up the flashcards for **{eng_vocab}** (English) and **{urdu_vocab}** (Urdu). Have students repeat both words out loud three times.
+           * Introduce the corresponding phonics sounds (**{eng_phonics}** & **{urdu_phonics}**). Emphasize the distinct phonetic mouth positions and have children trace the letters in the air with their finger.
+        2. **Interactive Story Circle & Guided Q&A Prompt (10 min):**
+           * Gather students closely together in your classroom space (**{space_mgmt}**) and read the unit story aloud with expressive inflection:
+             > *"{unit_story}"*
+           * Pause after reading to ask guiding questions: *"How does this make you feel?"* or *"Have you ever experienced this?"*
+           * Encourage students to respond using the core spoken sentence goal: **"{sentence_focus}"**.
+        3. **Transition to Inquiry:**
+           * Conclude Phase 1 by bridging the story theme directly into our hands-on exploration and maker challenge.
         """)
 
-        st.markdown("---")
-        st.markdown("#### 📖 Unit Story & Guided Q&A Prompt:")
-        with st.container(border=True):
-            st.markdown(f"> *{unit_story}*")
-            st.caption("🗣️ **Teacher Prompt:** Read the story aloud to students. Ask them how they feel about the theme and encourage them to answer using complete sentences.")
-
     with t2:
-        st.markdown(f"### 🎨 Theme-Aligned Maker Challenges & Activities")
+        st.markdown(f"### 🎨 Phase 2: Theme-Aligned STEAM & Maker Challenges ({selected_age})")
+        st.markdown("Teacher Note: Follow this explicit instructional script to facilitate hands-on sensory exploration and low-resource maker construction tailored to your small classroom setup.")
         
-        with st.container(border=True):
-            st.markdown(f"🛠️ **Theme-Aligned Maker Challenge:** {maker_challenge}")
-            st.caption("Specifically tailored to match Unit Theme concepts while using low-resource classroom materials (paper scraps, blocks, cardboard, yarn).")
+        st.markdown("---")
+        st.markdown(f"🛠️ **Theme-Aligned Maker Challenge:** {maker_challenge}")
+        st.caption("Specifically tailored to match Unit Theme concepts while using low-resource classroom materials (paper scraps, blocks, cardboard, yarn) within limited furniture spaces.")
 
         st.markdown("---")
-        st.markdown("#### Select from Curated Classroom Activities:")
-        for idx, act in enumerate(age_dynamics['activities'], 1):
-            with st.container(border=True):
-                st.markdown(f"**Activity Option {idx}: {act}**")
-                st.caption(f"Aligned with Unit {unit_number} ({eng_vocab} / {urdu_vocab}) under the {selected_age} framework.")
+        st.markdown("#### 🔬 Step-by-Step Teacher Script for Phase 2 Maker Challenge:")
+        st.markdown(f"""
+        1. **Sensory Exploration & Empathy Hook (10 min):**
+           * Introduce the core sensory and scientific phenomenon: *{steam_sensory}*
+           * Allow students to touch, observe, and investigate materials directly within your small classroom setup (`{space_mgmt}`).
+        2. **Design Thinking & Ideation (10 min):**
+           * Guide students through the **{design_phase}** phase. Ask open-ended questions: *"How can we build this using what we have on our desks?"* or *"What shape will work best?"*
+        3. **Maker Construction & Peer Sharing (15 min):**
+           * Distribute simple supplies (cardboard, paper, tape, yarn). Walk students step-by-step through building their theme-aligned creation.
+           * Have each student pair up with a neighbor to share their creation and explain what it does.
+        """)
 
         st.markdown("---")
         col_img, col_desc = st.columns([1, 1.5])
@@ -713,7 +718,22 @@ elif st.session_state.current_page == "Unit Library":
             """)
 
     with t3:
-        st.markdown(f"### 📝 Professional PDF Worksheet Generator")
+        st.markdown(f"### 🔢 Phase 3: Detailed Step-by-Step Math & Tally Instruction ({selected_age})")
+        st.info("Teacher Note: Follow this explicit instructional script to teach counting and tally marks to young learners step-by-step.")
+        st.markdown(f"""
+        1. **Concept Introduction (5 min):** 
+           * Gather students and explain what a tally mark is: *"A tally mark is a simple straight line we draw to count things quickly. Every time we count one object, we draw one vertical line: `|`."*
+           * Show the special rule for the number 5: *"When we reach 5, we draw a diagonal slash straight across the first four lines (`H` or `HH`-style bundle: `||||` with a slash across)."* Demonstrate this clearly on a mini whiteboard or slate.
+        2. **Guided Practice (10 min):**
+           * Have students use their finger to draw tally lines in the air or on their desk surface.
+           * Count physical objects related to our theme (**{eng_vocab}** items) together. Point to each item one by one and draw the corresponding tally mark on the board.
+        3. **Independent Tallying & Math Application:**
+           * {age_dynamics['math_scale']}
+           * Distribute counters or blocks and have students group them into bundles of 5, practicing tallying out loud before filling out the worksheet.
+        """)
+
+        st.markdown("---")
+        st.markdown("### 📝 Professional PDF Worksheet Generator")
         st.markdown(f"Generate a customized ReportLab PDF math and tracing worksheet for **Unit {unit_number}: {eng_vocab} ({urdu_vocab})**.")
         
         pdf_filename = f"Unit_{unit_number}_Math_Worksheet.pdf"
@@ -736,7 +756,7 @@ elif st.session_state.current_page == "Unit Library":
 
     with t4:
         st.markdown("### 📜 Master Script View")
-        st.markdown("This exact script compiles the lesson plan, detailed math instruction, theme-aligned maker challenge, and backend parameters:")
+        st.markdown("This exact script compiles all three detailed phases (Literacy, STEAM Maker Challenge, and Detailed Math/Tally instruction) along with backend parameters:")
         st.code(master_script, language="text")
 
     with t5:
