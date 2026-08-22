@@ -434,31 +434,35 @@ def compile_master_script(unit_num, age_group, slot_duration="40 min", include_c
     _, eng_vocab, urdu_vocab, _, _, steam_sensory, maker_challenge, space_mgmt, domain, sentence_focus, design_phase, _, unit_story = get_unit_curriculum(unit_num)
     flavor = " We also weave in regional storytelling motifs and traditional cultural folk elements." if include_cultural_flavor else ""
     
-    script = f"""MASTER LESSON SCRIPT FOR UNIT {unit_num} ({domain}) | AGE: {age_group} | FORMAT: {slot_duration}
+    script = f"""MASTER LESSON SCRIPT FOR UNIT {unit_num} ({domain}) | AGE TIER: {age_group} | FORMAT: {slot_duration}
 --------------------------------------------------------------------------------
 Target Dynamics & Focus: {dynamics['focus']}
 Phonics & Literacy Target: {dynamics['phonics_target']}
-Math Target & Detailed Script: {dynamics['math_scale']}
+Pre-Writing Milestone: {dynamics['pre_writing']}
+Math Target & Scale: {dynamics['math_scale']}
 Pacing Strategy: {dynamics['pacing']}
 Classroom Environment: Compact setup ({space_mgmt}), Design Phase: '{design_phase}'.
 
 1. BILINGUAL LITERACY, STORYTELLING & PHONICS (PHASE 1):
-   - Vocab: {eng_vocab} / {urdu_vocab}
-   - Story Prompt & Q&A: "{unit_story}"
-   - Core Spoken Sentence Goal: "{sentence_focus}"
+   - Vocab Target: {eng_vocab} ({urdu_vocab})
+   - Phonics Focus: {dynamics['phonics_target']}
+   - Story Prompt & Guided Q&A: "{unit_story}"
+   - Core Spoken/Written Sentence Goal: "{sentence_focus}"
 
 2. STEAM, DESIGN THINKING & MAKER CHALLENGE (PHASE 2):
+   - Design Level & Phase: {design_phase}
    - Sensory & STEAM Focus: {steam_sensory}{flavor}
-   - Theme-Aligned Maker Challenge: {maker_challenge}
+   - Age-Scaled Maker Challenge: {maker_challenge}
 
 3. DETAILED MATH & TALLY INSTRUCTION (PHASE 3):
-   - Object & Tally Mark counting guide and step-by-step teacher instructions.
+   - Mathematical Milestone: {dynamics['math_scale']}
+   - Step-by-Step Counting, Grouping, and Problem-Solving Script.
 
 Let's begin our active inquiry session!"""
     return script
 
 # --- REPORTLAB PDF GENERATOR FUNCTION ---
-def create_math_worksheet(filename, unit_num, eng_vocab, urdu_vocab):
+def create_math_worksheet(filename, unit_num, eng_vocab, urdu_vocab, age_group):
     doc = SimpleDocTemplate(
         filename,
         pagesize=letter,
@@ -470,13 +474,14 @@ def create_math_worksheet(filename, unit_num, eng_vocab, urdu_vocab):
     title_style = ParagraphStyle(
         'WorksheetTitle',
         parent=styles['Heading1'],
-        fontSize=22,
-        leading=26,
+        fontSize=20,
+        leading=24,
         textColor=colors.HexColor("#1A5276"),
         alignment=1
     )
     
     story.append(Paragraph(f"<b>Unit {unit_num}: {eng_vocab} ({urdu_vocab}) Worksheet</b>", title_style))
+    story.append(Paragraph(f"<font size=10 color='#555555'>Tier: {age_group}</font>", ParagraphStyle('Sub', alignment=1)))
     story.append(Spacer(1, 15))
     
     meta_data = [
@@ -491,19 +496,33 @@ def create_math_worksheet(filename, unit_num, eng_vocab, urdu_vocab):
     story.append(meta_table)
     story.append(Spacer(1, 20))
     
-    raw_questions = [
-        "1)  5 + 3 = ____", "2)  7 + 2 = ____", "3)  9 + 4 = ____",
-        "4)  6 + 6 = ____", "5)  8 + 1 = ____", "6)  3 + 9 = ____",
-        "7)  4 + 7 = ____", "8)  2 + 5 = ____", "9)  10 + 3 = ____",
-        "10) 8 + 8 = ____", "11) 6 + 3 = ____", "12) 7 + 5 = ____"
-    ]
+    if "3–4" in age_group:
+        raw_questions = [
+            "1) Count: 🍎🍎🍎 = ___", "2) Count: 🎈🎈 = ___", "3) Count: ⭐⭐⭐⭐ = ___",
+            "4) Count: 🐱🐱🐱 = ___", "5) Trace: 1, 2, 3", "6) Trace: 4, 5, 6"
+        ]
+        grid_row_heights = [60, 60, 60]
+    elif "4–5" in age_group:
+        raw_questions = [
+            "1) 3 + 1 = ____", "2) 2 + 2 = ____", "3) 4 + 1 = ____",
+            "4) 5 + 2 = ____", "5) Count tally: |||| = ___", "6) Count tally: ||| = ___"
+        ]
+        grid_row_heights = [60, 60, 60]
+    else:
+        raw_questions = [
+            "1)  5 + 3 = ____", "2)  7 + 2 = ____", "3)  9 + 4 = ____",
+            "4)  6 + 6 = ____", "5)  8 + 1 = ____", "6)  3 + 9 = ____",
+            "7)  4 + 7 = ____", "8)  2 + 5 = ____", "9)  10 + 3 = ____",
+            "10) 8 + 8 = ____", "11) 6 + 3 = ____", "12) 7 + 5 = ____"
+        ]
+        grid_row_heights = [50, 50, 50, 50]
     
     grid_data = []
     for i in range(0, len(raw_questions), 3):
-        row = [Paragraph(f"<font size=14>{q}</font>", styles['Normal']) for q in raw_questions[i:i+3]]
+        row = [Paragraph(f"<font size=13>{q}</font>", styles['Normal']) for q in raw_questions[i:i+3]]
         grid_data.append(row)
         
-    question_table = Table(grid_data, colWidths=[180, 180, 180], rowHeights=[50, 50, 50, 50])
+    question_table = Table(grid_data, colWidths=[180, 180, 180], rowHeights=grid_row_heights)
     question_table.setStyle(TableStyle([
         ('ALIGN', (0,0), (-1,-1), 'CENTER'),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
@@ -557,7 +576,7 @@ if st.sidebar.button(nav_diary, use_container_width=True):
 # --- HOME PAGE ---
 if st.session_state.current_page == "Home":
     st.title("🌟 Welcome to EFALL Master Curriculum Hub")
-    st.markdown(f"### 🎯 Active Profile: **{selected_age}** | Synced Backend Engine")
+    st.markdown(f"### 🎯 Active Profile: **{selected_age}** | Fully Scaled Backend Engine")
     
     col_a, col_b = st.columns(2)
     with col_a:
@@ -660,47 +679,49 @@ elif st.session_state.current_page == "Unit Library":
         st.markdown(f"""
         * **Pedagogical Focus:** {age_dynamics['focus']}
         * **Phonics & Literacy Target:** {age_dynamics['phonics_target']}
+        * **Pre-Writing Skill:** {age_dynamics['pre_writing']}
         * **Pacing & Flow:** {age_dynamics['pacing']}
         * **Environment Setup:** {space_mgmt}. Compact layout tailored for small classrooms.
         * **Design Thinking Phase:** **{design_phase}**
-        * **Core Spoken Sentence:** *"{sentence_focus}"*
+        * **Core Spoken Sentence Goal:** *"{sentence_focus}"*
         """)
 
         st.markdown("---")
         st.markdown("#### 🗣️ Step-by-Step Teacher Script for Phase 1:")
-        st.info("Teacher Note: Follow this explicit instructional script to guide students through vocabulary introduction, phonics sounds, and interactive storytelling.")
+        st.info(f"Teacher Note ({selected_age} Tier): Follow this customized script tailored specifically to match the developmental capabilities and attention span of this age group.")
         st.markdown(f"""
-        1. **Bilingual Vocabulary & Phonics Introduction (8 min):**
-           * Hold up the flashcards for **{eng_vocab}** (English) and **{urdu_vocab}** (Urdu). Have students repeat both words out loud three times.
-           * Introduce the corresponding phonics sounds (**{eng_phonics}** & **{urdu_phonics}**). Emphasize the distinct phonetic mouth positions and have children trace the letters in the air with their finger.
+        1. **Bilingual Vocabulary & Phonics Target (8 min):**
+           * Display cards for **{eng_vocab}** (English) and **{urdu_vocab}** (Urdu). Have students practice pronunciation.
+           * Focus on tier-specific phonics: *{age_dynamics['phonics_target']}*. Engage students in tracing letter shapes ({age_dynamics['pre_writing']}).
         2. **Interactive Story Circle & Guided Q&A Prompt (10 min):**
            * Gather students closely together in your classroom space (**{space_mgmt}**) and read the unit story aloud with expressive inflection:
              > *"{unit_story}"*
-           * Pause after reading to ask guiding questions: *"How does this make you feel?"* or *"Have you ever experienced this?"*
-           * Encourage students to respond using the core spoken sentence goal: **"{sentence_focus}"**.
+           * Pause after reading to ask tier-appropriate guiding questions: *"What did you notice in the story?"*
+           * Encourage students to respond using the core target: **"{sentence_focus}"**.
         3. **Transition to Inquiry:**
            * Conclude Phase 1 by bridging the story theme directly into our hands-on exploration and maker challenge.
         """)
 
     with t2:
         st.markdown(f"### 🎨 Phase 2: Theme-Aligned STEAM & Maker Challenges ({selected_age})")
-        st.markdown("Teacher Note: Follow this explicit instructional script to facilitate hands-on sensory exploration and low-resource maker construction tailored to your small classroom setup.")
+        st.info(f"Teacher Note ({selected_age} Tier): Design thinking level is set to **{design_phase}** using low-resource classroom materials within limited furniture spaces.")
         
         st.markdown("---")
         st.markdown(f"🛠️ **Theme-Aligned Maker Challenge:** {maker_challenge}")
         st.caption("Specifically tailored to match Unit Theme concepts while using low-resource classroom materials (paper scraps, blocks, cardboard, yarn) within limited furniture spaces.")
 
         st.markdown("---")
-        st.markdown("#### 🔬 Step-by-Step Teacher Script for Phase 2 Maker Challenge:")
+        st.markdown(f"#### 🔬 Step-by-Step Teacher Script for Phase 2 Maker Challenge ({design_phase}):")
         st.markdown(f"""
-        1. **Sensory Exploration & Empathy Hook (10 min):**
+        1. **Sensory Exploration & Phenomenon Hook (10 min):**
            * Introduce the core sensory and scientific phenomenon: *{steam_sensory}*
            * Allow students to touch, observe, and investigate materials directly within your small classroom setup (`{space_mgmt}`).
-        2. **Design Thinking & Ideation (10 min):**
-           * Guide students through the **{design_phase}** phase. Ask open-ended questions: *"How can we build this using what we have on our desks?"* or *"What shape will work best?"*
+        2. **Design Thinking Level (**{design_phase}**) (10 min):**
+           * Guide students through the **{design_phase}** phase activities: *{age_dynamics['activities'][3]}*.
+           * Ask open-ended questions: *"How can we build this using what we have on our desks?"*
         3. **Maker Construction & Peer Sharing (15 min):**
            * Distribute simple supplies (cardboard, paper, tape, yarn). Walk students step-by-step through building their theme-aligned creation.
-           * Have each student pair up with a neighbor to share their creation and explain what it does.
+           * Have each student share their creation and explain what it does.
         """)
 
         st.markdown("---")
@@ -711,7 +732,7 @@ elif st.session_state.current_page == "Unit Library":
             st.markdown(f"""
             * **Required Teaching Aids for {selected_age}:**
               * Bilingual Flashcards: **{eng_vocab}** / **{urdu_vocab}**
-              * Phonics Sound Cards: **{eng_phonics}** & **{urdu_phonics}**
+              * Tier Focus Activities: *{', '.join(age_dynamics['activities'][:2])}*
             * **STEAM & Sensory Integration Design:**
               * {steam_sensory}
               * Adapted specifically for small classroom footprints (`{space_mgmt}`).
@@ -719,28 +740,28 @@ elif st.session_state.current_page == "Unit Library":
 
     with t3:
         st.markdown(f"### 🔢 Phase 3: Detailed Step-by-Step Math & Tally Instruction ({selected_age})")
-        st.info("Teacher Note: Follow this explicit instructional script to teach counting and tally marks to young learners step-by-step.")
+        st.info(f"Teacher Note ({selected_age} Tier): Math scale and counting milestones are adjusted to **{age_dynamics['math_scale']}**.")
         st.markdown(f"""
-        1. **Concept Introduction (5 min):** 
-           * Gather students and explain what a tally mark is: *"A tally mark is a simple straight line we draw to count things quickly. Every time we count one object, we draw one vertical line: `|`."*
-           * Show the special rule for the number 5: *"When we reach 5, we draw a diagonal slash straight across the first four lines (`H` or `HH`-style bundle: `||||` with a slash across)."* Demonstrate this clearly on a mini whiteboard or slate.
-        2. **Guided Practice (10 min):**
-           * Have students use their finger to draw tally lines in the air or on their desk surface.
-           * Count physical objects related to our theme (**{eng_vocab}** items) together. Point to each item one by one and draw the corresponding tally mark on the board.
+        1. **Mathematical Concept Introduction (5 min):** 
+           * Gather students and introduce the math objective for this tier: *{age_dynamics['math_scale']}*.
+           * Demonstrate counting techniques clearly on your mini whiteboard or slate using tactile counters or drawing visual tallies.
+        2. **Guided Practice & Interactive Counting (10 min):**
+           * Have students use their fingers or counters to practice grouping and counting items related to our theme (**{eng_vocab}**).
+           * Verify understanding by having students complete collaborative counting circles in your compact space (`{space_mgmt}`).
         3. **Independent Tallying & Math Application:**
            * {age_dynamics['math_scale']}
-           * Distribute counters or blocks and have students group them into bundles of 5, practicing tallying out loud before filling out the worksheet.
+           * Distribute counters or blocks and have students complete counting exercises before generating the worksheet.
         """)
 
         st.markdown("---")
         st.markdown("### 📝 Professional PDF Worksheet Generator")
-        st.markdown(f"Generate a customized ReportLab PDF math and tracing worksheet for **Unit {unit_number}: {eng_vocab} ({urdu_vocab})**.")
+        st.markdown(f"Generate a customized ReportLab PDF math and tracing worksheet for **Unit {unit_number}: {eng_vocab} ({urdu_vocab})** tailored for **{selected_age}**.")
         
         pdf_filename = f"Unit_{unit_number}_Math_Worksheet.pdf"
         
         if st.button("📄 Generate Printable PDF Worksheet", use_container_width=True):
             with st.spinner("Compiling PDF document layout..."):
-                create_math_worksheet(pdf_filename, unit_number, eng_vocab, urdu_vocab)
+                create_math_worksheet(pdf_filename, unit_number, eng_vocab, urdu_vocab, selected_age)
                 st.success("✅ Worksheet PDF compiled successfully!")
         
         if os.path.exists(pdf_filename):
@@ -756,7 +777,7 @@ elif st.session_state.current_page == "Unit Library":
 
     with t4:
         st.markdown("### 📜 Master Script View")
-        st.markdown("This exact script compiles all three detailed phases (Literacy, STEAM Maker Challenge, and Detailed Math/Tally instruction) along with backend parameters:")
+        st.markdown(f"This exact script compiles all three detailed phases dynamically scaled for **{selected_age}**:")
         st.code(master_script, language="text")
 
     with t5:
