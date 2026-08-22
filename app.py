@@ -6,7 +6,7 @@ import hashlib
 import time
 import os
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 
@@ -461,8 +461,8 @@ Classroom Environment: Compact setup ({space_mgmt}), Design Phase: '{design_phas
 Let's begin our active inquiry session!"""
     return script
 
-# --- REPORTLAB PDF GENERATOR FUNCTION ---
-def create_math_worksheet(filename, unit_num, eng_vocab, urdu_vocab, age_group):
+# --- MULTI-WORKSHEET PDF GENERATOR FUNCTION (2+ WORKSHEETS) ---
+def create_multi_worksheet_pdf(filename, unit_num, eng_vocab, urdu_vocab, age_group, custom_prompt=""):
     doc = SimpleDocTemplate(
         filename,
         pagesize=letter,
@@ -474,40 +474,80 @@ def create_math_worksheet(filename, unit_num, eng_vocab, urdu_vocab, age_group):
     title_style = ParagraphStyle(
         'WorksheetTitle',
         parent=styles['Heading1'],
-        fontSize=20,
-        leading=24,
+        fontSize=18,
+        leading=22,
         textColor=colors.HexColor("#1A5276"),
         alignment=1
     )
     
-    story.append(Paragraph(f"<b>Unit {unit_num}: {eng_vocab} ({urdu_vocab}) Worksheet</b>", title_style))
-    story.append(Paragraph(f"<font size=10 color='#555555'>Tier: {age_group}</font>", ParagraphStyle('Sub', alignment=1)))
+    # --- PAGE 1: LITERACY & PHONICS WORKSHEET ---
+    story.append(Paragraph(f"<b>Worksheet 1: Bilingual Literacy & Phonics — Unit {unit_num}</b>", title_style))
+    story.append(Paragraph(f"<font size=10 color='#555555'>Theme: {eng_vocab} ({urdu_vocab}) | Tier: {age_group}</font>", ParagraphStyle('Sub', alignment=1)))
+    story.append(Spacer(1, 10))
+    
+    meta_table = Table([[Paragraph("<b>Name:</b> ____________________", styles['Normal']), Paragraph("<b>Date:</b> ______________", styles['Normal'])]], colWidths=[300, 240])
+    meta_table.setStyle(TableStyle([('LINEBELOW', (0,0), (-1,-1), 1, colors.lightgrey), ('BOTTOMPADDING', (0,0), (-1,-1), 6)]))
+    story.append(meta_table)
     story.append(Spacer(1, 15))
     
-    meta_data = [
-        [Paragraph("<b>Name:</b> ____________________", styles['Normal']), 
-         Paragraph("<b>Date:</b> ______________", styles['Normal'])]
+    story.append(Paragraph(f"<b>Part A: Vocabulary Tracing & Recognition</b>", styles['Heading3']))
+    story.append(Paragraph(f"Trace and write the target bilingual words below:", styles['Normal']))
+    story.append(Spacer(1, 8))
+    
+    vocab_box_data = [
+        [Paragraph(f"<b>English:</b> {eng_vocab} <br/><font color='grey'>Trace: __{eng_vocab}__ __{eng_vocab}__</font>", styles['Normal']),
+         Paragraph(f"<b>Urdu:</b> {urdu_vocab} <br/><font color='grey'>Trace: __{urdu_vocab}__ __{urdu_vocab}__</font>", styles['Normal'])]
     ]
-    meta_table = Table(meta_data, colWidths=[300, 240])
-    meta_table.setStyle(TableStyle([
-        ('LINEBELOW', (0,0), (-1,-1), 1, colors.lightgrey),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+    vocab_table = Table(vocab_box_data, colWidths=[270, 270], rowHeights=[60])
+    vocab_table.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#1A5276")),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('LEFTPADDING', (0,0), (-1,-1), 10),
     ]))
-    story.append(meta_table)
-    story.append(Spacer(1, 20))
+    story.append(vocab_table)
+    story.append(Spacer(1, 15))
+    
+    if custom_prompt:
+        story.append(Paragraph(f"<b>Part B: Custom Teacher Prompt Focus</b>", styles['Heading3']))
+        story.append(Paragraph(f"{custom_prompt}", styles['Normal']))
+        story.append(Spacer(1, 15))
+        
+    story.append(Paragraph(f"<b>Part C: Sentence Completion & Drawing Box</b>", styles['Heading3']))
+    story.append(Paragraph(f"Draw a picture representing <b>{eng_vocab}</b> and complete the sentence: <i>" + ("I love..." if "3–4" in age_group else "This reminds me of...") + "</i>", styles['Normal']))
+    story.append(Spacer(1, 8))
+    
+    drawing_box = Table([[Paragraph("<font color='#888888' align='center'><br/><br/>[ Draw Your Creative Response Here ]<br/><br/><br/></font>", styles['Normal'])]], colWidths=[540], rowHeights=[140])
+    drawing_box.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor("#1A5276")),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+    ]))
+    story.append(drawing_box)
+    
+    # --- PAGE BREAK FOR WORKSHEET 2 ---
+    story.append(PageBreak())
+    
+    # --- PAGE 2: MATH & TALLY COMPUTATION WORKSHEET ---
+    story.append(Paragraph(f"<b>Worksheet 2: Step-by-Step Math & Tally Practice — Unit {unit_num}</b>", title_style))
+    story.append(Paragraph(f"<font size=10 color='#555555'>Tier: {age_group}</font>", ParagraphStyle('Sub', alignment=1)))
+    story.append(Spacer(1, 10))
+    
+    meta_table_2 = Table([[Paragraph("<b>Name:</b> ____________________", styles['Normal']), Paragraph("<b>Date:</b> ______________", styles['Normal'])]], colWidths=[300, 240])
+    meta_table_2.setStyle(TableStyle([('LINEBELOW', (0,0), (-1,-1), 1, colors.lightgrey), ('BOTTOMPADDING', (0,0), (-1,-1), 6)]))
+    story.append(meta_table_2)
+    story.append(Spacer(1, 15))
     
     if "3–4" in age_group:
         raw_questions = [
             "1) Count: 🍎🍎🍎 = ___", "2) Count: 🎈🎈 = ___", "3) Count: ⭐⭐⭐⭐ = ___",
             "4) Count: 🐱🐱🐱 = ___", "5) Trace: 1, 2, 3", "6) Trace: 4, 5, 6"
         ]
-        grid_row_heights = [60, 60, 60]
+        grid_row_heights = [65, 65, 65]
     elif "4–5" in age_group:
         raw_questions = [
             "1) 3 + 1 = ____", "2) 2 + 2 = ____", "3) 4 + 1 = ____",
             "4) 5 + 2 = ____", "5) Count tally: |||| = ___", "6) Count tally: ||| = ___"
         ]
-        grid_row_heights = [60, 60, 60]
+        grid_row_heights = [65, 65, 65]
     else:
         raw_questions = [
             "1)  5 + 3 = ____", "2)  7 + 2 = ____", "3)  9 + 4 = ____",
@@ -519,7 +559,7 @@ def create_math_worksheet(filename, unit_num, eng_vocab, urdu_vocab, age_group):
     
     grid_data = []
     for i in range(0, len(raw_questions), 3):
-        row = [Paragraph(f"<font size=13>{q}</font>", styles['Normal']) for q in raw_questions[i:i+3]]
+        row = [Paragraph(f"<font size=12>{q}</font>", styles['Normal']) for q in raw_questions[i:i+3]]
         grid_data.append(row)
         
     question_table = Table(grid_data, colWidths=[180, 180, 180], rowHeights=grid_row_heights)
@@ -528,8 +568,8 @@ def create_math_worksheet(filename, unit_num, eng_vocab, urdu_vocab, age_group):
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
         ('BOX', (0,0), (-1,-1), 1.5, colors.HexColor("#1A5276")),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.lightgrey),
-        ('TOPPADDING', (0,0), (-1,-1), 8),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+        ('TOPPADDING', (0,0), (-1,-1), 6),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
     ]))
     
     story.append(question_table)
@@ -557,6 +597,7 @@ st.sidebar.markdown("---")
 
 nav_home = "🏠 Home"
 nav_units = "📚 50 Units Library"
+nav_custom_worksheet = "📄 Feed Custom Worksheet Generator"
 nav_batch = "🎬 Batch Video Generator Hub"
 nav_diary = "📝 My Teaching Diary"
 
@@ -565,6 +606,9 @@ if st.sidebar.button(nav_home, use_container_width=True):
     st.rerun()
 if st.sidebar.button(nav_units, use_container_width=True):
     st.session_state.current_page = "Unit Library"
+    st.rerun()
+if st.sidebar.button(nav_custom_worksheet, use_container_width=True):
+    st.session_state.current_page = "Custom Worksheet Feeder"
     st.rerun()
 if st.sidebar.button(nav_batch, use_container_width=True):
     st.session_state.current_page = "Batch Video Generator"
@@ -576,7 +620,7 @@ if st.sidebar.button(nav_diary, use_container_width=True):
 # --- HOME PAGE ---
 if st.session_state.current_page == "Home":
     st.title("🌟 Welcome to EFALL Master Curriculum Hub")
-    st.markdown(f"### 🎯 Active Profile: **{selected_age}** | Fully Scaled Backend Engine")
+    st.markdown(f"### 🎯 Active Profile: **{selected_age}** | Integrated Unit Worksheet Engine")
     
     col_a, col_b = st.columns(2)
     with col_a:
@@ -585,8 +629,8 @@ if st.session_state.current_page == "Home":
             st.session_state.current_page = "Unit Library"
             st.rerun()
     with col_b:
-        if st.button("🚀 Go to Batch Video Hub", use_container_width=True):
-            st.session_state.current_page = "Batch Video Generator"
+        if st.button("📄 Feed Custom Worksheet Generator", use_container_width=True):
+            st.session_state.current_page = "Custom Worksheet Feeder"
             st.rerun()
 
     st.markdown("---")
@@ -702,6 +746,29 @@ elif st.session_state.current_page == "Unit Library":
            * Conclude Phase 1 by bridging the story theme directly into our hands-on exploration and maker challenge.
         """)
 
+        # --- EMBEDDED BACKEND WORKSHEET GENERATOR FOR PHASE 1 ---
+        st.markdown("---")
+        st.markdown("### 📄 Unit-Aligned Worksheet Integration")
+        st.info(f"The backend generator has automatically pre-loaded vocabulary **{eng_vocab} ({urdu_vocab})** and tier **{selected_age}** for this unit.")
+        
+        unit_pdf_filename = f"Unit_{unit_number}_Worksheet_Package.pdf"
+        if st.button("📄 Generate & Download Unit-Specific Worksheets", use_container_width=True, key="btn_phase1_gen"):
+            with st.spinner("Compiling backend worksheet package based on unit parameters..."):
+                create_multi_worksheet_pdf(unit_pdf_filename, unit_number, eng_vocab, urdu_vocab, selected_age)
+                st.session_state[f"pdf_ready_{unit_number}"] = True
+                st.success("✅ Worksheets generated successfully from unit curriculum!")
+
+        if st.session_state.get(f"pdf_ready_{unit_number}", False) and os.path.exists(unit_pdf_filename):
+            with open(unit_pdf_filename, "rb") as f:
+                st.download_button(
+                    label="📥 Download Ready-to-Print Unit Worksheets (PDF)",
+                    data=f.read(),
+                    file_name=f"Unit_{unit_number}_{eng_vocab}_Worksheets.pdf",
+                    mime="application/pdf",
+                    use_container_width=True,
+                    key="dl_phase1_pdf"
+                )
+
     with t2:
         st.markdown(f"### 🎨 Phase 2: Theme-Aligned STEAM & Maker Challenges ({selected_age})")
         st.info(f"Teacher Note ({selected_age} Tier): Design thinking level is set to **{design_phase}** using low-resource classroom materials within limited furniture spaces.")
@@ -750,29 +817,30 @@ elif st.session_state.current_page == "Unit Library":
            * Verify understanding by having students complete collaborative counting circles in your compact space (`{space_mgmt}`).
         3. **Independent Tallying & Math Application:**
            * {age_dynamics['math_scale']}
-           * Distribute counters or blocks and have students complete counting exercises before generating the worksheet.
+           * Distribute counters or blocks and have students complete counting exercises before generating the worksheet package.
         """)
 
         st.markdown("---")
-        st.markdown("### 📝 Professional PDF Worksheet Generator")
-        st.markdown(f"Generate a customized ReportLab PDF math and tracing worksheet for **Unit {unit_number}: {eng_vocab} ({urdu_vocab})** tailored for **{selected_age}**.")
+        st.markdown("### 📝 Professional 2-Page Worksheet Package Generator")
+        st.markdown(f"Generate a customized, multi-page ReportLab PDF package containing **both** the Literacy Worksheet (Phase 1) and the Math Worksheet (Phase 3) for **Unit {unit_number}: {eng_vocab} ({urdu_vocab})** tailored for **{selected_age}**.")
         
-        pdf_filename = f"Unit_{unit_number}_Math_Worksheet.pdf"
+        pdf_filename = f"Unit_{unit_number}_Complete_Worksheets.pdf"
         
-        if st.button("📄 Generate Printable PDF Worksheet", use_container_width=True):
-            with st.spinner("Compiling PDF document layout..."):
-                create_math_worksheet(pdf_filename, unit_number, eng_vocab, urdu_vocab, selected_age)
-                st.success("✅ Worksheet PDF compiled successfully!")
+        if st.button("📄 Generate 2-Page Printable PDF Package", use_container_width=True, key="btn_phase3_gen"):
+            with st.spinner("Compiling multi-page worksheet package layout..."):
+                create_multi_worksheet_pdf(pdf_filename, unit_number, eng_vocab, urdu_vocab, selected_age)
+                st.success("✅ Multi-page worksheet PDF compiled successfully!")
         
         if os.path.exists(pdf_filename):
             with open(pdf_filename, "rb") as pdf_file:
                 pdf_bytes = pdf_file.read()
                 st.download_button(
-                    label="📥 Download Worksheet PDF",
+                    label="📥 Download Complete PDF Worksheets (2 Pages)",
                     data=pdf_bytes,
                     file_name=pdf_filename,
                     mime="application/pdf",
-                    use_container_width=True
+                    use_container_width=True,
+                    key="dl_phase3_pdf"
                 )
 
     with t4:
@@ -798,6 +866,44 @@ elif st.session_state.current_page == "Unit Library":
             st.markdown("#### 📺 Live Video Preview Player")
             st.video(gif_url)
             st.caption(f"Status: Render Complete (Task ID: {st.session_state.generated_videos[unit_number]})")
+
+# --- CUSTOM WORKSHEET FEEDER PAGE ---
+elif st.session_state.current_page == "Custom Worksheet Feeder":
+    if st.button("⬅️ Back"):
+        st.session_state.current_page = "Home"
+        st.rerun()
+
+    st.title("📄 Feed Custom Worksheet Generator")
+    st.markdown("Feed your own custom unit text, vocabulary words, or specific lesson parameters below. The worksheet engine will instantly parse your inputs and compile a fully customized multi-page worksheet package matching your active age tier (**" + selected_age + "**).")
+
+    with st.form("custom_feeder_form"):
+        feed_unit_title = st.text_input("Custom Unit / Theme Title:", value="My Custom Inquiry Unit")
+        col_f1, col_f2 = st.columns(2)
+        with col_f1:
+            feed_eng = st.text_input("Custom English Vocabulary Word:", value="Discovery")
+        with col_f2:
+            feed_urdu = st.text_input("Custom Urdu Vocabulary Word:", value="دریافت")
+            
+        feed_instructions = st.text_area("Custom Teacher Instructions / Specific Worksheet Prompts:", value="Observe patterns around the small classroom space, record findings, and practice counting objects.")
+        
+        generate_custom_btn = st.form_submit_button("🚀 Compile Custom Multi-Page Worksheets")
+        
+        if generate_custom_btn:
+            custom_filename = "Custom_Feeder_Worksheets.pdf"
+            with st.spinner("Parsing custom feed and generating PDF package..."):
+                create_multi_worksheet_pdf(custom_filename, 1, feed_eng, feed_urdu, selected_age, custom_prompt=feed_instructions)
+                st.session_state["custom_pdf_ready"] = True
+                st.success("✅ Custom worksheets generated successfully from your fed parameters!")
+
+    if st.session_state.get("custom_pdf_ready", False) and os.path.exists("Custom_Feeder_Worksheets.pdf"):
+        with open("Custom_Feeder_Worksheets.pdf", "rb") as f:
+            st.download_button(
+                label="📥 Download Custom Worksheet Package (PDF)",
+                data=f.read(),
+                file_name="Custom_Unit_Worksheets.pdf",
+                mime="application/pdf",
+                use_container_width=True
+            )
 
 # --- BATCH VIDEO GENERATOR HUB ---
 elif st.session_state.current_page == "Batch Video Generator":
